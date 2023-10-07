@@ -50,8 +50,12 @@
 
 ;;; Load a dark theme to avoid flashing on load
 ;; On Emacs 28+: Modus Themes is built-in and loaded, otherwise deeper-blue
-(if (member 'modus-vivendi (custom-available-themes))
-    (load-theme 'modus-vivendi t)
+;; (if (member 'modus- (custom-available-themes))
+;;     (load-theme 'modus-operandi t)
+;;   (load-theme 'deeper-blue t))
+
+(if (member 'ef-maris-dark (custom-available-themes))
+    (load-theme 'ef-maris-dark t)
   (load-theme 'deeper-blue t))
 
 ;;; _

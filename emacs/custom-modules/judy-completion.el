@@ -6,7 +6,7 @@
 
 ;;; Code:
 
-;;; Vertico
+;;; TODO Vertico
 (define-key vertico-map (kbd "C-j") #'vertico-next)
 (define-key vertico-map (kbd "C-k") #'vertico-previous)
 (define-key vertico-map (kbd "C-<backspace>") #'vertico-directory-delete-word)
@@ -14,7 +14,7 @@
 ;;; Orderless
 (customize-set-variable 'completion-styles '(orderless flex))
 
-;;; Corfu
+;;; TODO Corfu
 ;; Do not auto-complete, ever
 (customize-set-variable 'corfu-auto nil)
 
