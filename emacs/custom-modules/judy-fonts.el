@@ -3,21 +3,21 @@
 
 ;;; Code:
 
-(set-face-attribute 'default nil :family "Sarasa Mono K" :width 'normal :weight 'regular :height 136)
-(set-fontset-font nil 'hangul (font-spec :family "Sarasa Mono K"))
-(set-face-attribute 'fixed-pitch nil :family "Sarasa Term K" :width 'normal :weight 'regular)
-;; (set-face-attribute 'fixed-pitch-serif nil :family "Hahmlet" :width 'normal :weight 'regular)
-(set-face-attribute 'variable-pitch nil :family "Pretendard Variable"
-                    :width 'normal :weight 'regular)
+(when (display-graphic-p)
+  (set-face-attribute 'default nil :family "Sarasa Mono K" :width 'normal :weight 'regular :height 136)
+  (set-fontset-font nil 'hangul (font-spec :family "Sarasa Mono K"))
+  (set-face-attribute 'fixed-pitch nil :family "Sarasa Term K" :width 'normal :weight 'regular)
+  ;; (set-face-attribute 'fixed-pitch-serif nil :family "Hahmlet" :width 'normal :weight 'regular)
+  (set-face-attribute 'variable-pitch nil :family "Pretendard Variable"
+                      :width 'normal :weight 'regular)
 
-(set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil)
-(set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend) ; Top
+  (set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil)
+  (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend) ; Top
 
-(set-fontset-font t 'symbol (font-spec :family "Symbola") nil)
-(set-fontset-font t 'symbol (font-spec :family "Noto Sans Symbols 2") nil 'prepend)
-(set-fontset-font t 'symbol (font-spec :family "Noto Sans Symbols") nil 'prepend)
-
-;; (require 'fontaine)
+  (set-fontset-font t 'symbol (font-spec :family "Symbola") nil)
+  (set-fontset-font t 'symbol (font-spec :family "Noto Sans Symbols 2") nil 'prepend)
+  (set-fontset-font t 'symbol (font-spec :family "Noto Sans Symbols") nil 'prepend)
+  )
 
 (defvar after-load-theme-hook nil
   "Hook run after a color theme is loaded using `load-theme'.")
