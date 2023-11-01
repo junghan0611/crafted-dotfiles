@@ -119,33 +119,33 @@ initialized with the current directory instead of filename."
      (if (not (tramp-tramp-file-p fname))
          (concat "/sudo:root@localhost:" fname)
        (with-parsed-tramp-file-name fname parsed
-                                    (when (equal parsed-user "root")
-                                      (error "Already root!"))
-                                    (let* ((new-hop (tramp-make-tramp-file-name
-                                                     ;; Try to retrieve a tramp method suitable for
-                                                     ;; multi-hopping
-                                                     (cond ((tramp-get-method-parameter
-                                                             parsed 'tramp-login-program))
-                                                           ((tramp-get-method-parameter
-                                                             parsed 'tramp-copy-program))
-                                                           (t parsed-method))
-                                                     parsed-user
-                                                     parsed-domain
-                                                     parsed-host
-                                                     parsed-port
-                                                     nil
-                                                     parsed-hop))
-                                           (new-hop (substring new-hop 1 -1))
-                                           (new-hop (concat new-hop "|"))
-                                           (new-fname (tramp-make-tramp-file-name
-                                                       "sudo"
-                                                       parsed-user
-                                                       parsed-domain
-                                                       parsed-host
-                                                       parsed-port
-                                                       parsed-localname
-                                                       new-hop)))
-                                      new-fname))))))
+         (when (equal parsed-user "root")
+           (error "Already root!"))
+         (let* ((new-hop (tramp-make-tramp-file-name
+                          ;; Try to retrieve a tramp method suitable for
+                          ;; multi-hopping
+                          (cond ((tramp-get-method-parameter
+                                  parsed 'tramp-login-program))
+                                ((tramp-get-method-parameter
+                                  parsed 'tramp-copy-program))
+                                (t parsed-method))
+                          parsed-user
+                          parsed-domain
+                          parsed-host
+                          parsed-port
+                          nil
+                          parsed-hop))
+                (new-hop (substring new-hop 1 -1))
+                (new-hop (concat new-hop "|"))
+                (new-fname (tramp-make-tramp-file-name
+                            "sudo"
+                            parsed-user
+                            parsed-domain
+                            parsed-host
+                            parsed-port
+                            parsed-localname
+                            new-hop)))
+           new-fname))))))
 
 (defun open-file-in-external-app (file-path)
   "Open FILE-PATH in external application."
@@ -405,7 +405,7 @@ a dedicated window."
                                (or (thing-at-point 'symbol t) "")))
                           ""))
          (default-directory
-           (or initial-directory (read-directory-name "Start from directory: "))))
+          (or initial-directory (read-directory-name "Start from directory: "))))
     (consult-ripgrep default-directory initial-input)))
 
 (defun spacemacs/consult-line ()
@@ -436,7 +436,7 @@ a dedicated window."
   (spacemacs/compleseus-search t default-directory))
 
 ;;; jump-out-of-pair
-  ;; no dependency approach
+;; no dependency approach
 (defun jump-out-of-pair ()
   (interactive)
   (let ((found (search-forward-regexp "[])}\"'`*=]" nil t)))
@@ -453,7 +453,7 @@ a dedicated window."
 ;; 아래 두 키가 괄호 편집할 때 편함.
 (define-key prog-mode-map (kbd "TAB") 'jump-out-of-pair)
 (define-key prog-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
-(evil-define-key '(insert) org-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
+;; (evil-define-key '(insert) org-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
 (define-key prog-mode-map (kbd "C-<return>") 'newline-and-indent)
 
 (provide 'core-funcs)

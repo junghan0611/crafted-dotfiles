@@ -36,7 +36,7 @@
 
 ;; Default editing
 (setq-default tab-width 2)
-(setq-default evil-shift-width tab-width)
+;; (setq-default evil-shift-width tab-width)
 (setq-default indent-tabs-mode nil)
 (setq-default display-line-numbers-width-start t)
 
@@ -81,14 +81,14 @@
   (if current-input-method
       (deactivate-input-method)))
 
-(advice-add 'evil-normal-state :before #'my/turn-off-input-method)
-(mapc (lambda (mode)
-        (let ((keymap (intern (format "evil-%s-state-map" mode))))
-          (define-key (symbol-value keymap) [?\S- ]
-                      #'(lambda () (interactive)
-                          (message
-                           (format "Input method is disabled in %s state." evil-state))))))
-      '(motion normal visual))
+;; (advice-add 'evil-normal-state :before #'my/turn-off-input-method)
+;; (mapc (lambda (mode)
+;;         (let ((keymap (intern (format "evil-%s-state-map" mode))))
+;;           (define-key (symbol-value keymap) [?\S- ]
+;;                       #'(lambda () (interactive)
+;;                           (message
+;;                            (format "Input method is disabled in %s state." evil-state))))))
+;;       '(motion normal visual))
 
 ;;; No Littering
 ;; banish customized variables
@@ -123,29 +123,29 @@
 
 ;;;; dired
 
-  (setq dired-listing-switches "-aBhl --group-directories-first") ; tshu
-  (setq dired-kill-when-opening-new-dired-buffer t)
-  (setq dired-make-directory-clickable t) ; Emacs 29.1
-  (setq dired-free-space nil) ; Emacs 29.1
-  (setq dired-auto-revert-buffer t
-        dired-create-destination-dirs 'always
-        dired-do-revert-buffer t
-        dired-dwim-target t
-        dired-vc-rename-file t)
-  (setq dired-recursive-copies 'always)
-  (setq dired-create-destination-dirs 'always)
+(setq dired-listing-switches "-aBhl --group-directories-first") ; tshu
+(setq dired-kill-when-opening-new-dired-buffer t)
+(setq dired-make-directory-clickable t) ; Emacs 29.1
+(setq dired-free-space nil) ; Emacs 29.1
+(setq dired-auto-revert-buffer t
+      dired-create-destination-dirs 'always
+      dired-do-revert-buffer t
+      dired-dwim-target t
+      dired-vc-rename-file t)
+(setq dired-recursive-copies 'always)
+(setq dired-create-destination-dirs 'always)
 
-  ;; wdired is a mode that allows you to rename files and directories by editing the
-  ;; =dired= buffer itself.
-  (require 'wdired)
+;; wdired is a mode that allows you to rename files and directories by editing the
+;; =dired= buffer itself.
+(require 'wdired)
 
-  (setq wdired-allow-to-change-permissions t)
-  (setq wdired-create-parent-directories t)
-  (evil-define-key 'normal wdired-mode-map (kbd "^") 'evil-first-non-blank)
-  (evil-define-key 'normal dired-mode-map
-    (kbd "C-c C-e") 'wdired-change-to-wdired-mode
-    (kbd "h") 'dired-up-directory
-    (kbd "l") 'dired-find-file)
+(setq wdired-allow-to-change-permissions t)
+(setq wdired-create-parent-directories t)
+;; (evil-define-key 'normal wdired-mode-map (kbd "^") 'evil-first-non-blank)
+;; (evil-define-key 'normal dired-mode-map
+;;   (kbd "C-c C-e") 'wdired-change-to-wdired-mode
+;;   (kbd "h") 'dired-up-directory
+;;   (kbd "l") 'dired-find-file)
 
 ;;; _
 (provide 'judy-defaults)

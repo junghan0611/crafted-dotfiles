@@ -17,7 +17,7 @@
 
 ;;; Configure packages to install
 (require 'crafted-completion-packages)
-(require 'crafted-evil-packages)
+;; (require 'crafted-evil-packages)
 (require 'crafted-ide-packages)
 (require 'crafted-lisp-packages)
 (require 'crafted-org-packages)
@@ -35,6 +35,10 @@
 (add-to-list 'package-selected-packages 'doom-modeline)
 (add-to-list 'package-selected-packages 'winum)
 
+(add-to-list 'package-selected-packages 'meow)
+(add-to-list 'package-selected-packages 'hydra)
+(add-to-list 'package-selected-packages 'major-mode-hydra) ; contains pretty-hydra
+
 ;; judy-theme
 (add-to-list 'package-selected-packages 'modus-themes)
 (add-to-list 'package-selected-packages 'ef-themes)
@@ -42,7 +46,7 @@
 (add-to-list 'package-selected-packages 'keycast)
 
 ;; judy-evil
-(add-to-list 'package-selected-packages 'evil-surround)
+;; (add-to-list 'package-selected-packages 'evil-surround)
 
 ;; judy-term
 (if (member system-type '(windows-nt ms-dos))
@@ -84,7 +88,7 @@
 ;;; Load configuration
 (require 'crafted-defaults-config)
 (require 'crafted-completion-config)
-(require 'crafted-evil-config)
+;; (require 'crafted-evil-config)
 (require 'crafted-ide-config)
 (crafted-ide-configure-tree-sitter '(protobuf))
 (require 'crafted-lisp-config)
@@ -113,8 +117,10 @@
 (message "judy-defaults")
 (require 'judy-dev)
 (message "judy-dev")
-(require 'judy-evil)
-(message "judy-evil")
+
+;; (require 'judy-evil)
+;; (message "judy-evil")
+
 (require 'judy-org)
 (message "judy-org")
 (require 'judy-term)
@@ -123,8 +129,15 @@
 (message "judy-fonts")
 (require 'judy-theme)
 (message "judy-theme")
-(require 'judy-keys)
-(message "judy-keys")
+
+;; (require 'judy-keys)
+;; (message "judy-keys")
+
+(require 'hydra-config)
+(message "meow-config")
+(require 'meow-config)
+(message "meow-config")
+
 (require 'judy-transparency)
 (message "judy-transparency")
 (judy-transparency-init 94)

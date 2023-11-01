@@ -27,7 +27,8 @@
                                  user-emacs-directory)))
 
 ;;; Crafted Emacs
-(defconst my/crafted-emacs-branch "craftedv2RC1"
+;; (defconst my/crafted-emacs-branch "craftedv2RC1"
+(defconst my/crafted-emacs-branch "master"
   "Branch to clone (does not update branch if already cloned).")
 
 (defvar crafted-emacs-home
