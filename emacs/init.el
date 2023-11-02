@@ -133,6 +133,9 @@
 ;; (require 'judy-keys)
 ;; (message "judy-keys")
 
+;; (require 'functions)
+;; (require 'functions-1)
+
 (require 'hydra-config)
 (message "meow-config")
 (require 'meow-config)

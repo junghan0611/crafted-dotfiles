@@ -1,5 +1,6 @@
 ;;; meow-config.el --- Configuring Emacs -*- lexical-binding: t; -*-
 
+;;;; TODO Move
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
@@ -29,23 +30,29 @@
 
 (which-key-mode)
 
-;;;; meow-setup
+;;; meow-setup
+
+;; /home/junghan/sync/man/dotsamples/vanilla/mememacs-meow-clojure-copy/lisp/init-meow.el:1
+;; /home/junghan/lambda-emacs/lambda-library/lambda-user-samples/cpm-setup-meow.el:216
 
 (require 'meow)
 
-;; /home/junghan/lambda-emacs/lambda-library/lambda-user-samples/cpm-setup-meow.el:216
-
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+
   (meow-motion-overwrite-define-key
    '("j" . meow-next)
    '("k" . meow-prev)
+   '("l" . meow-right)
+   '("h" . meow-left)
+   '("," . meow-keypad)
+   '("/" . isearch-forward)
    '("<escape>" . ignore))
 
   (meow-leader-define-key
    ;; SPC j/k will run the original command in MOTION state.
-   '("j" . "H-j")
-   '("k" . "H-k")
+   ;; '("j" . "H-j")
+   ;; '("k" . "H-k")
    ;; Use SPC (0-9) for digit arguments.
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
@@ -58,7 +65,10 @@
    '("9" . meow-digit-argument)
    '("0" . meow-digit-argument)
    '("/" . meow-keypad-describe-key)
-   '("?" . meow-cheatsheet))
+   '("?" . meow-cheatsheet)
+   '("bb" . consult-buffer) ;; TODO TEst
+   '("bh" . meow-last-buffer)
+   )
   (meow-normal-define-key
    '("0" . meow-expand-0)
    '("9" . meow-expand-9)
@@ -125,6 +135,8 @@
 
 (meow-global-mode 1)
 (meow-setup)
+
+;;;  provide
 
 (provide 'meow-config)
 
