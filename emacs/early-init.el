@@ -42,6 +42,7 @@
 (when (directory-empty-p crafted-emacs-home)
   (message "Cloning crafted-emacs ...")
   (shell-command-to-string
+   ;; (format "git clone https://github.com/SystemCrafters/crafted-emacs -b %s %s"
    (format "git clone https://github.com/jvdydev/crafted-emacs -b %s %s"
            my/crafted-emacs-branch
            crafted-emacs-home)))

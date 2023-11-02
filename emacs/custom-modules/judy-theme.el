@@ -37,8 +37,8 @@
 (customize-set-variable 'initial-scratch-message nil)
 (scroll-bar-mode -1)   ;; Disable visible scrollbar
 (tool-bar-mode -1)     ;; Disable toolbar
-(tooltip-mode -1)      ;; Disable tooltips
-(menu-bar-mode -1)     ;; Disable menubar
+(tooltip-mode 1)      ;; Enable tooltips
+(menu-bar-mode 1)     ;; Enable menubar
 (set-fringe-mode 10)   ;; "breathing room"
 (setq ring-bell-function 'ignore)
 
@@ -59,8 +59,6 @@
 ;;; Time
 
 (require 'time)
-;; (setq display-time-format " |🅆%U📅%Y-%m-%d⏲%H:%M| ")
-;; (setq display-time-format " |%m/%d|%H:%M| ")
 (setq display-time-format " | %a %e %b, %H:%M | ")
 ;; Covered by `display-time-format'
 ;; (setq display-time-24hr-format t)
@@ -130,12 +128,24 @@
 (setq doom-modeline-height 30)
 (setq doom-modeline-bar-width 10) ; = fringe-mode
 (setq Info-breadcrumbs-in-mode-line-mode nil)
+
+(setq doom-modeline-window-width-limit (- fill-column 10))
+
+;; (unless (display-graphic-p) ; terminal
+;;   (setq doom-modeline-icon nil)) ; important
+(setq doom-modeline-icon nil)
+
 (setq doom-modeline-enable-word-count t)
 (setq doom-modeline-repl t)
 (setq doom-modeline-lsp t)
 (setq doom-modeline-github t)
 (setq doom-modeline-indent-info t)
 (setq doom-modeline-hud t)
+(setq doom-modeline-env-python-executable "python")
+;; (setq doom-modeline-window-width-limit nil)
+
+;; truncate-upto-project => ~/P/F/emacs/lisp/comint.el
+(setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
 
 ;; (setq doom-modeline-env-python-executable "python")
 ;; (setq doom-modeline-window-width-limit nil)
@@ -180,7 +190,7 @@
 (setq modus-themes-common-palette-overrides
       `(
         ;; Customize the mode-line colors
-        ;; (fg-mode-line-active fg-main) ; Black
+        (fg-mode-line-active fg-main) ; Black
         ;; (bg-mode-line-active bg-blue-intense)
 
         ;; "Make the mode line borderless"
@@ -188,7 +198,7 @@
         (border-mode-line-inactive unspecified)
 
         ;; "Make matching parenthesis more or less intense"
-        (bg-paren-match bg-magenta-intense)
+        ;; (bg-paren-match bg-magenta-intense)
         ;; (underline-paren-match unspecified)
 
         ;; Links
@@ -237,33 +247,101 @@
   ;; the base font size (e.g. 1.5), and a `WEIGHT'.
   (setq modus-themes-headings
         '(
-          (0                . (variable-pitch bold 1.1))
-          (1                . (variable-pitch bold 1.0))
-          (2                . (variable-pitch semibold 1.0))
+          (0                . (variable-pitch bold 1.2))
+          (1                . (variable-pitch bold 1.1))
+          (2                . (variable-pitch semibold 1.05))
           (3                . (variable-pitch semibold 1.0))
           (4                . (variable-pitch medium 1.0))
           (5                . (variable-pitch medium 1.0))
           (6                . (variable-pitch medium 1.0))
-          (agenda-date      . (variable-pitch semibold 1.1))
+          (agenda-date      . (variable-pitch semibold 1.2))
           (agenda-structure . (variable-pitch semibold 1.1))
           (t                . (variable-pitch medium 1.0))))
   ) ; end-of gui-mode
+
+(defun my-modus-themes-fixed-pitch-colors ()
+  (modus-themes-with-colors
+    (custom-set-faces
+     `(org-property-value ((,c :inherit modus-themes-fixed-pitch :foreground ,prose-metadata-value)))
+     `(org-drawer ((,c :inherit modus-themes-fixed-pitch :foreground ,prose-metadata)))
+     `(org-tag ((,c :inherit modus-themes-fixed-pitch :foreground ,prose-tag)))
+     ;; `(org-sexp-date ((,c :inherit modus-themes-fixed-pitch :foreground ,date-common :height 0.9)))
+
+     `(org-document-info ((,c :inherit modus-themes-fixed-pitch :foreground ,prose-metadata-value)))
+     `(org-document-info-keyword ((,c :inherit modus-themes-fixed-pitch :foreground ,prose-metadata)))
+     `(org-meta-line ((,c :inherit modus-themes-fixed-pitch :foreground ,prose-metadata)))
+
+     `(org-block ((,c :inherit modus-themes-fixed-pitch :foreground ,fg-main :background ,bg-dim)))
+     `(org-block-begin-line ((,c :inherit modus-themes-fixed-pitch :foreground ,prose-block :background ,bg-inactive)))
+     `(org-block-end-line ((,c :inherit org-block-begin-line)))
+
+     `(org-date ((,c :inherit modus-themes-fixed-pitch :foreground ,date-common)))
+     `(org-date-selected ((,c :inherit modus-themes-fixed-pitch :foreground ,date-common :inverse-video t)))
+     `(org-table ((,c :inherit modus-themes-fixed-pitch :foreground ,prose-table)))
+     `(org-formula ((,c :inherit modus-themes-fixed-pitch :foreground ,fnname)))
+     `(org-hide ((,c :inherit modus-themes-fixed-pitch :foreground ,bg-main)))
+     )
+    )
+  )
 
 ;; Modus Toggle 로 불러올 때 아래 Hook 이 호출 된다.
 (defun my-modus-themes-colors ()
   (modus-themes-with-colors
     (custom-set-faces
      `(fringe ((,c :background ,bg-dim)))
-     ;; `(org-modern-statistics ((,c :inherit modus-themes-ui-variable-pitch :foreground ,fg-main :box ,fg-main :background ,bg-sage :weight regular)))
-     ;; `(org-modern-tag ((,c :inherit modus-themes-ui-variable-pitch :foreground ,fg-main :box ,fg-main :background ,bg-dim :weight regular)))
      `(vterm-color-black ((,c :background "gray25" :foreground "gray25")))
      `(vterm-color-yellow ((,c :background ,yellow-intense :foreground ,yellow-intense)))
-     `(org-mode-line-clock ((,c :inherit bold :foreground ,modeline-info)))
-     `(org-mode-line-clock-overrun ((,c :inherit bold :foreground ,modeline-err)))
+     `(translate-paragraph-highlight-face ((,c :extend t :background ,bg-red-subtle)))
      `(tab-bar ((,c :inherit modus-themes-ui-variable-pitch :background ,bg-tab-bar :weight semibold)))
      `(tab-line ((,c :inherit modus-themes-ui-variable-pitch :background ,bg-tab-bar :weight semibold))) ; :height 1.0
-     )))
-(add-hook 'modus-themes-after-load-theme-hook #'my-modus-themes-colors)
+     `(jinx-misspelled ((,c :underline (:style wave :color ,magenta-intense))))
+     `(treemacs-root-face ((,c :inherit org-level-2 :underline nil :weight bold :height 1.0)))
+     `(treemacs-directory-face ((,c :inherit org-level-3 :height 1.0)))
+     `(treemacs-file-face ((,c :inherit org-level-4 :weight regular :height 1.0)))
+
+     ;; `(line-number ((,c :inherit ,(if modus-themes-mixed-fonts '(fixed-pitch default) 'default) :background ,bg-line-number-inactive :foreground ,fg-line-number-inactive :height 0.9)))
+     ;; `(line-number-current-line ((,c :inherit (bold line-number) :background ,bg-line-number-active :foreground ,fg-line-number-active :height 0.9)))
+
+     `(imenu-list-entry-face-0 ((,c :inherit modus-themes-ui-variable-pitch :width narrow :weight bold :foreground ,fg-heading-1)))
+     `(imenu-list-entry-subalist-face-0 ((,c :inherit modus-themes-ui-variable-pitch :width narrow :weight bold :foreground ,fg-heading-1 :underline nil)))
+     `(imenu-list-entry-face-1 ((,c :inherit modus-themes-ui-variable-pitch :width narrow :weight semibold :foreground ,fg-heading-2)))
+     `(imenu-list-entry-subalist-face-1 ((,c :inherit modus-themes-ui-variable-pitch :width narrow :weight semibold :foreground ,fg-heading-2 :underline nil)))
+     `(imenu-list-entry-face-2 ((,c :inherit modus-themes-ui-variable-pitch :width narrow :weight semibold :foreground ,fg-heading-3)))
+     `(imenu-list-entry-subalist-face-2 ((,c :inherit modus-themes-ui-variable-pitch :width narrow :weight semibold :foreground ,fg-heading-3 :underline nil)))
+     `(imenu-list-entry-face-3 ((,c :inherit modus-themes-ui-variable-pitch :width narrow :weight semibold :foreground ,fg-heading-4)))
+     `(imenu-list-entry-subalist-face-3 ((,c :inherit modus-themes-ui-variable-pitch :width narrow :weight semibold :foreground ,fg-heading-4 :underline nil)))
+
+     `(org-side-tree-heading-face ((,c :inherit modus-themes-ui-variable-pitch :width narrow :weight bold :foreground ,fg-heading-1 :underline nil)))
+
+     `(highlight-indentation-current-column-face ((,c :background ,fg-alt))) ; fg-heading-0
+
+     `(doom-modeline-input-method ((,c :weight regular :foreground ,bg-main :background ,red-cooler)))
+     `(doom-modeline-evil-insert-state ((,c :weight regular :foreground ,bg-main :background ,green-cooler)))
+     `(doom-modeline-evil-visual-state ((,c :weight regular :foreground ,bg-main :background ,yellow-cooler)))
+     `(doom-modeline-evil-motion-state ((,c :weight regular :foreground ,bg-main :background ,blue-cooler)))
+     `(doom-modeline-evil-emacs-state ((,c :weight regular :foreground ,bg-main :background ,cyan-cooler)))
+     `(doom-modeline-evil-replace-state ((,c :weight regular :foreground ,bg-main :background ,magenta-cooler)))
+     ;; `(doom-modeline-evil-normal-state (( )))
+     ;; `(doom-modeline-evil-operator-state ((,c :inherit bold)))
+
+     `(lsp-ui-doc-background ((,c (:background ,bg-dim))))
+     `(lsp-ui-doc-header ((,c (:foreground ,fg-main :background ,bg-active :height 1.1))))
+     `(lsp-ui-doc-url ((,c (:foreground ,fg-alt))))
+     `(lsp-ui-sideline-code-action ((,c (:foreground ,fg-mark-select))))
+
+     ;; org-mode
+     `(org-level-2 ((,c :inherit modus-themes-heading-2 :underline t)))
+     `(org-mode-line-clock ((,c :inherit bold :foreground ,modeline-info)))
+     `(org-mode-line-clock-overrun ((,c :inherit bold :foreground ,modeline-err)))
+     )
+    )
+  )
+
+(add-hook 'modus-themes-after-load-theme-hook
+          (lambda ()
+            (my-modus-themes-colors)
+            (my-modus-themes-fixed-pitch-colors)
+            ))
 
 ;;; ef-themes
 

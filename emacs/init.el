@@ -25,7 +25,7 @@
 (require 'crafted-ui-packages)
 (require 'crafted-writing-packages)
 
-;; (require 'crafted-workspaces-packages) ; X
+(require 'crafted-workspaces-packages)
 
 ;;;; Additional packages for custom modules
 ;; judy-keys
@@ -99,11 +99,11 @@
 (require 'crafted-ui-config)
 (require 'crafted-writing-config)
 (require 'crafted-startup-config)
+(require 'crafted-workspaces-config)
 
-;; ?!
-;; crafted-package-config.el
-;; crafted-updates-config.el
-;; crafted-speedbar-config.el
+(require 'crafted-package-config)
+(require 'crafted-updates-config)
+(require 'crafted-speedbar-config)
 
 ;; Custom modules
 
