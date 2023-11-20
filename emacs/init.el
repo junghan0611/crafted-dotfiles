@@ -16,18 +16,29 @@
 (load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))
 
 ;;; Configure packages to install
+
+(setq crafted-package-update-days 7)
+
+(setq package-archives
+      '(("elpa" . "https://elpa.gnu.org/packages/")
+        ("elpa-devel" . "https://elpa.gnu.org/devel/")
+        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+        ("melpa" . "https://melpa.org/packages/")))
+(setq  package-archive-priorities
+       '(;; Prefer development packages
+         ("elpa-devel" . 99)
+         ("melpa" . 90)))
+
 (require 'crafted-completion-packages)
 ;; (require 'crafted-evil-packages)
 (require 'crafted-ide-packages)
 (require 'crafted-lisp-packages)
 (require 'crafted-org-packages)
-
 (require 'crafted-ui-packages)
 (require 'crafted-writing-packages)
 
-;; (require 'crafted-workspaces-packages)
-
 ;;;; Additional packages for custom modules
+
 ;; judy-keys
 (add-to-list 'package-selected-packages 'general)
 (add-to-list 'package-selected-packages 'combobulate)
@@ -97,6 +108,7 @@
 ;;; Load configuration
 
 (require 'crafted-defaults-config)
+(require 'crafted-startup-config)
 (require 'crafted-completion-config)
 ;; (require 'crafted-evil-config)
 (require 'crafted-ide-config)
@@ -112,7 +124,6 @@
 
 (require 'crafted-ui-config)
 (require 'crafted-writing-config)
-(require 'crafted-startup-config)
 
 (require 'crafted-package-config)
 (require 'crafted-updates-config)

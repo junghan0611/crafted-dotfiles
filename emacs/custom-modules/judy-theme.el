@@ -119,8 +119,6 @@
 
 ;;; Modus Theme
 
-(mapc #'disable-theme custom-enabled-themes)
-
 ;; default to dark-mode
 (setq modus-theme-region '(bg-only))
 
