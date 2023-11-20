@@ -389,7 +389,7 @@ a dedicated window."
   (interactive)
   (consult-buffer
    '(consult--source-hidden-buffer
-     consult--source-persp-buffers
+     ;; consult--source-persp-buffers
      consult--source-modified-buffers
      consult--source-recent-file
      consult--source-bookmark
@@ -425,6 +425,14 @@ a dedicated window."
         (region-beginning) (region-end))
      (thing-at-point 'symbol t))))
 
+(defun consult-line-symbol ()
+  (interactive)
+  (consult-line
+   (if (region-active-p)
+       (buffer-substring-no-properties
+        (region-beginning) (region-end))
+     (thing-at-point 'symbol t))))
+
 (defun spacemacs/compleseus-search-auto ()
   "Choose folder to search."
   (interactive)
@@ -434,6 +442,43 @@ a dedicated window."
   "Search current folder."
   (interactive)
   (spacemacs/compleseus-search t default-directory))
+
+;;;###autoload
+(defun my/compleseus-search-dir ()
+  "Search current folder with no initial input"
+  (interactive)
+  (spacemacs/compleseus-search nil default-directory))
+
+(defun my/compleseus-search-auto-hidden ()
+  "Search folder with hiddens files"
+  (interactive)
+  (let*
+      ((initial-directory (read-directory-name "Start from directory: "))
+       (consult-ripgrep-args
+        (concat "rg "
+                "--null "
+                "-. "  ;; for dotfiles e.g. .spacemacs.el
+                "--line-buffered "
+                "--color=never "
+                "--line-number "
+                "--smart-case "
+                "--no-heading "
+                "--max-columns=1000 "
+                "--max-columns-preview "
+                "--with-filename "
+                (shell-quote-argument initial-directory))))
+    (consult-ripgrep)))
+
+;; our own implementation of kill-this-buffer from menu-bar.el
+(defun spacemacs/kill-this-buffer (&optional arg)
+  "Kill the current buffer.
+If the universal prefix argument is used then kill also the window."
+  (interactive "P")
+  (if (window-minibuffer-p)
+      (abort-recursive-edit)
+    (if (equal '(4) arg)
+        (kill-buffer-and-window)
+      (kill-buffer))))
 
 ;;; jump-out-of-pair
 ;; no dependency approach
@@ -455,6 +500,7 @@ a dedicated window."
 (define-key prog-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
 ;; (evil-define-key '(insert) org-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
 (define-key prog-mode-map (kbd "C-<return>") 'newline-and-indent)
+
 
 (provide 'core-funcs)
 ;;; core-funcs.el ends here
