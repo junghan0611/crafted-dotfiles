@@ -47,7 +47,7 @@
   (display-line-numbers-mode 0))
 
 (column-number-mode)
-(setq display-line-numbers-type 'relative)
+;; (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode t)
 (dolist (mode '(term-mode-hook
                 shell-mode-hook
@@ -176,8 +176,8 @@
 ;; Load the theme of your choice.
 (setq modus-themes-to-toggle (let ((hr (nth 2 (decode-time))))
                                (if (or (< hr 7) (< 19 hr))           ; between 8 PM and 7 AM
-                                   '(modus-vivendi-tinted modus-operandi-tinted) ; load dark theme first
-                                 '(modus-operandi-tinted modus-vivendi-tinted))))
+                                   '(modus-vivendi-tinted modus-operandi) ; load dark theme first
+                                 '(modus-operandi modus-vivendi-tinted))))
 
 (setq modus-themes-org-blocks 'gray-background)
 (setq modus-themes-italic-constructs t
@@ -190,6 +190,7 @@
   (modus-themes-with-colors
     (custom-set-faces
      ;; `(fringe ((,c :background ,bg-dim)))
+     `(denote-faces-link ((,c :weight bold :slant italic)))
      `(org-level-2 ((,c :inherit modus-themes-heading-2 :underline t)))
      `(org-mode-line-clock ((,c :inherit bold :foreground ,modeline-info)))
      `(org-mode-line-clock-overrun ((,c :inherit bold :foreground ,modeline-err))))

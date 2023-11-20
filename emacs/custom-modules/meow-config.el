@@ -66,7 +66,10 @@
    '("0" . meow-digit-argument)
    '("/" . meow-keypad-describe-key)
    '("?" . meow-cheatsheet)
-   '("bb" . consult-buffer) ;; TODO TEst
+   '("bb" . consult-buffer)
+   '("bd" . kill-buffer)
+   '("bx" . kill-buffer-and-window)
+   '("bm" . switch-to-messages-buffer)
    '("bh" . meow-last-buffer)
    )
   (meow-normal-define-key
@@ -135,6 +138,36 @@
 
 (meow-global-mode 1)
 (meow-setup)
+
+(with-eval-after-load 'meow
+  (defvar +input-method-state nil)
+
+  (add-hook 'meow-insert-mode-hook
+            (lambda ()
+              (when +input-method-state
+                (activate-input-method +input-method-state)))) ; 입력 모드로 가면 한글 모드 였다면 다시 활성화.
+
+  (defadvice meow-insert-exit (after ad-meow activate)
+    (setq +input-method-state current-input-method) ;; 저장
+    (when current-input-method
+      (deactivate-input-method))) ;; 무조건 영어로 변경. 잇풋 메소드 끈다.
+
+  (defadvice activate-input-method (after ad-meow activate)
+    (when (meow-normal-mode-p)
+      (when current-input-method
+        ;; 이건 다른 방식으로 처리 필요. 모드 별 키바인딩
+        (message "Input method is disabled in normal state.")
+        ;; (meow-normal-mode)
+        ))
+    )
+
+  ;; 한글 끌 때는 상태 정보도 지워야 한다.
+  (add-hook 'input-method-deactivate-hook
+            (lambda ()
+              (when current-input-method
+                (setq +input-method-state nil)
+                )))
+  )
 
 ;;;  provide
 

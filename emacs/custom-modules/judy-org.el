@@ -133,6 +133,96 @@
 
 ;; ;; ;; Enable automatic sync of the SQLite database
 ;; (org-roam-db-autosync-mode)
+;;; denote
+
+(require 'denote)
+(require 'denote-org-dblock)
+(setq denote-known-keywords '("emacs" "philosophy" "politics" "economics"))
+(setq denote-infer-keywords t)
+(setq denote-sort-keywords t)
+
+;; By default, we do not show the context of links.  We just display
+;; file names.  This provides a more informative view.
+(setq denote-backlinks-show-context t)
+
+;; Pick dates, where relevant, with Org's advanced interface:
+(setq denote-date-prompt-use-org-read-date nil)
+
+;; If you use Markdown or plain text files (Org renders links as buttons
+;; right away)
+;; (add-hook 'find-file-hook #'denote-link-buttonize-buffer)
+
+;; We use different ways to specify a path for demo purposes.
+;; (setq denote-dired-directories
+;;       (list denote-directory            ; The Zettelkasten directory
+;;             ;; (thread-last denote-directory (expand-file-name "excerpts"))
+;;             (thread-last denote-directory "excerpts")
+;;             ;; (thread-last denote-directory (expand-file-name "attachments"))
+;;             ;; (expand-file-name "~/Documents/books")
+;;             ))
+
+(setq denote-dired-directories
+      (list denote-directory
+            (concat denote-directory "excerpts/")))
+
+(add-hook 'dired-mode-hook #'denote-dired-mode)
+
+;; OR if only want it in `denote-dired-directories':
+;; (add-hook 'dired-mode-hook #'denote-dired-mode-in-directories)
+
+;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
+(denote-rename-buffer-mode 1)
+
+;; Denote DOES NOT define any key bindings.  This is for the user to
+;; decide.  For example:
+(define-prefix-command 'denote-map)
+(define-key global-map (kbd "C-c w") 'denote-map)
+(let ((map denote-map))
+  ;; (define-key map (kbd "n") #'denote)
+  (define-key map (kbd "t") #'denote-type)
+  (define-key map (kbd "T") #'denote-template)
+  (define-key map (kbd "D") #'denote-date)
+  (define-key map (kbd "z") #'denote-signature) ; "zettelkasten" mnemonic
+  (define-key map (kbd "s") #'denote-subdirectory)
+  ;; If you intend to use Denote with a variety of file types, it is
+  ;; easier to bind the link-related commands to the `global-map', as
+  ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
+  ;; `markdown-mode-map', and/or `text-mode-map'.
+  (define-key map (kbd "l") #'denote-link) ; "insert" mnemonic
+  (define-key map (kbd "L") #'denote-add-links)
+  (define-key map (kbd "b") #'denote-backlinks)
+  (define-key map (kbd "f f") #'denote-find-link)
+  (define-key map (kbd "f b") #'denote-find-backlink)
+  ;; Note that `denote-rename-file' can work from any context, not just
+  ;; Dired bufffers.  That is why we bind it here to the `global-map'.
+  (define-key map (kbd "r") #'denote-region) ; "contents" mnemonic
+  (define-key map (kbd "R") #'denote-rename-file-using-front-matter)
+  (define-key map (kbd "M-r") #'denote-rename-file)
+
+  (define-key map (kbd "k") #'denote-keywords-add)
+  (define-key map (kbd "K") #'denote-keywords-remove)
+
+  (define-key map (kbd "i") #'denote-org-dblock-insert-links)
+  (define-key map (kbd "I") #'denote-org-dblock-insert-backlinks)
+  )
+
+;; Key bindings specifically for Dired.
+(let ((map dired-mode-map))
+  (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
+  (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-files)
+  (define-key map (kbd "C-c C-d C-k") #'denote-dired-rename-marked-files-with-keywords)
+  (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
+
+(with-eval-after-load 'org-capture
+  (setq denote-org-capture-specifiers "%l\n%i\n%?")
+  (add-to-list 'org-capture-templates
+               '("n" "New note (with denote.el)" plain
+                 (file denote-last-path)
+                 #'denote-org-capture
+                 :no-save t
+                 :immediate-finish nil
+                 :kill-buffer t
+                 :jump-to-captured t)))
 
 ;;; _
 (provide 'judy-org)
