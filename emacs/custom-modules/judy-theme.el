@@ -117,6 +117,38 @@
 (define-key winum-keymap (kbd "M-9") 'winum-select-window-9)
 (winum-mode 1)
 
+;;; Modus Theme
+
+(mapc #'disable-theme custom-enabled-themes)
+
+;; default to dark-mode
+(setq modus-theme-region '(bg-only))
+
+(customize-set-variable 'modus-themes-italic-constructs t)
+(customize-set-variable 'modus-themes-bold-constructs t)
+
+;; Headings for related modes
+(customize-set-variable 'modus-themes-headings
+                        '((1 . (rainbow overline 1.0))
+                          (2 . (rainbow 1.0))
+                          (3 . (rainbow bold 1.0))
+                          (t . (semilight 1.0))))
+(setq modus-theme-scale-headings nil)
+
+(customize-set-variable 'modus-themes-org-blocks 'gray-background)
+(setq modus-mixed-fonts nil)
+
+;; general source
+(customize-set-variable 'modus-themes-syntax '(yellow-comments))
+(customize-set-variable 'modus-themes-lang-checkers '(straight-underline background))
+(customize-set-variable 'modus-themes-paren-match '(bold))
+
+;; Modeline
+;; (setq modus-theme-mode-line '(accented borderless (padding . 4) (height . 0.9)))
+
+;; Load theme
+(load-theme 'modus-operandi t)
+
 ;;; Doom-modeline
 
 (require 'doom-modeline)
@@ -149,72 +181,6 @@
 (remove-hook 'doom-modeline-mode-hook #'doom-modeline-override-time)
 
 (doom-modeline-mode 1)
-
-;;; doom-theme
-
-(require 'doom-themes)
-(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-      doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;; Enable flashing mode-line on errors
-(doom-themes-visual-bell-config)
-
-;; ;; Enable custom neotree theme (all-the-icons must be installed!)
-;; (setq doom-themes-neotree-line-spacing 1
-;;       doom-themes-neotree-project-size 1.0
-;;       doom-themes-neotree-folder-size 1.0)
-;; (doom-themes-neotree-config)
-
-;; or for treemacs users
-;; (setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
-;; (doom-themes-treemacs-config)
-;; Corrects (and improves) org-mode's native fontification.
-(doom-themes-org-config)
-
-;;; modus-themes
-
-(require 'modus-themes)
-;; Load the theme of your choice.
-(setq modus-themes-to-toggle (let ((hr (nth 2 (decode-time))))
-                               (if (or (< hr 7) (< 19 hr))           ; between 8 PM and 7 AM
-                                   '(modus-vivendi-tinted modus-operandi) ; load dark theme first
-                                 '(modus-operandi modus-vivendi-tinted))))
-
-(setq modus-themes-org-blocks 'gray-background)
-(setq modus-themes-italic-constructs t
-      modus-themes-bold-constructs t
-      modus-themes-custom-auto-reload t
-      modus-themes-disable-other-themes t ; default t
-      )
-
-(defun my-modus-themes-colors ()
-  (modus-themes-with-colors
-    (custom-set-faces
-     ;; `(fringe ((,c :background ,bg-dim)))
-     `(denote-faces-link ((,c :weight bold :slant italic)))
-     `(org-level-2 ((,c :inherit modus-themes-heading-2 :underline t)))
-     `(org-mode-line-clock ((,c :inherit bold :foreground ,modeline-info)))
-     `(org-mode-line-clock-overrun ((,c :inherit bold :foreground ,modeline-err))))
-    )
-  )
-
-(add-hook 'modus-themes-after-load-theme-hook
-          (lambda ()
-            (my-modus-themes-colors)
-            ;; (my-modus-themes-fixed-pitch-colors)
-            ))
-
-;;; ef-themes
-
-(require 'ef-themes)
-
-;; Read the doc string or manual for this one.  The symbols can be
-;; combined in any order.
-(setq ef-themes-region '(intense no-extend neutral))
-
-(setq ef-themes-to-toggle (let ((hr (nth 2 (decode-time))))
-                            (if (or (< hr 7) (< 19 hr))           ; between 8 PM and 7 AM
-                                '(ef-maris-dark ef-trio-light) ; load dark theme first
-                              '(ef-trio-light ef-maris-dark))))
 
 ;;; keycast
 
@@ -250,11 +216,6 @@
   )
 
 (add-hook 'after-init-hook #'my/load-global-mode-string)
-
-;; Load-theme
-;; (ef-themes-toggle)
-;; (modus-themes-toggle)
-(add-hook 'after-init-hook #'modus-themes-toggle)
 
 ;;; _
 (provide 'judy-theme)

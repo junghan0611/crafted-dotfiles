@@ -98,6 +98,9 @@
    '("sD" . spacemacs/compleseus-search-dir)
    '("sf" . spacemacs/compleseus-search-auto)
    '("sF" . my/compleseus-search-auto-hidden)
+   '("ff" . spacemacs/compleseus-find-file)
+   '("fs" . save-buffer)
+   '("fD" . spacemacs/delete-current-buffer-file)
    )
   (meow-normal-define-key
    '("0" . meow-expand-0)

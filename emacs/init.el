@@ -30,24 +30,25 @@
 ;;;; Additional packages for custom modules
 ;; judy-keys
 (add-to-list 'package-selected-packages 'general)
+(add-to-list 'package-selected-packages 'combobulate)
 (add-to-list 'package-selected-packages 'which-key)
 (add-to-list 'package-selected-packages 'pcre2el)
-(add-to-list 'package-selected-packages 'doom-themes)
-(add-to-list 'package-selected-packages 'ct)
+;; (add-to-list 'package-selected-packages 'doom-themes)
+;; (add-to-list 'package-selected-packages 'ct)
 ;; (add-to-list 'package-selected-packages 'auto-dim-other-buffers)
 (add-to-list 'package-selected-packages 'doom-modeline)
 (add-to-list 'package-selected-packages 'winum)
-(add-to-list 'package-selected-packages 'imenu-list)
-(add-to-list 'package-selected-packages 'rainbow-mode)
-(add-to-list 'package-selected-packages 'ansi-color)
+;; (add-to-list 'package-selected-packages 'imenu-list)
+;; (add-to-list 'package-selected-packages 'rainbow-mode)
+;; (add-to-list 'package-selected-packages 'ansi-color)
 
 (add-to-list 'package-selected-packages 'meow)
 (add-to-list 'package-selected-packages 'hydra)
 (add-to-list 'package-selected-packages 'major-mode-hydra) ; contains pretty-hydra
 
 ;; judy-theme
-(add-to-list 'package-selected-packages 'modus-themes)
-(add-to-list 'package-selected-packages 'ef-themes)
+;; (add-to-list 'package-selected-packages 'modus-themes)
+;; (add-to-list 'package-selected-packages 'ef-themes)
 ;; (add-to-list 'package-selected-packages 'fontaine)
 (add-to-list 'package-selected-packages 'keycast)
 
@@ -90,7 +91,7 @@
 ;; (add-to-list 'package-selected-packages 'arduino-cli-mode)
 
 ;;; Install packages
-(package-install-selected-packages :no-confirm)
+(package-install-selected-packages :noconfirm)
 
 ;;; Load configuration
 
@@ -98,6 +99,10 @@
 (require 'crafted-completion-config)
 ;; (require 'crafted-evil-config)
 (require 'crafted-ide-config)
+;; install all language grammars
+;; (crafted-ide-configure-tree-sitter)
+;; (setq treesit-auto-install 'prompt)
+;; install all language grammars, except protobuf
 (crafted-ide-configure-tree-sitter '(protobuf))
 (require 'crafted-lisp-config)
 (require 'crafted-org-config)
@@ -108,7 +113,6 @@
 (require 'crafted-ui-config)
 (require 'crafted-writing-config)
 (require 'crafted-startup-config)
-;; (require 'crafted-workspaces-config)
 
 (require 'crafted-package-config)
 (require 'crafted-updates-config)

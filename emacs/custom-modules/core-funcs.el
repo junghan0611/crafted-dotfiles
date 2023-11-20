@@ -480,6 +480,108 @@ If the universal prefix argument is used then kill also the window."
         (kill-buffer-and-window)
       (kill-buffer))))
 
+(defun spacemacs/compleseus-search-from (input)
+  "Embark action to start ripgrep search from candidate's directory."
+  (interactive "s")
+  (message "The first input %s." input)
+  (let ((dir (if (file-directory-p input)
+                 input
+               (file-name-directory input))))
+    (consult-ripgrep dir)))
+
+(defun spacemacs/compleseus-find-file ()
+  "Calls the interactive find-file browser.
+This solves the problem: Binding a key to: `find-file' calls: `ido-find-file'"
+  (interactive)
+  (call-interactively 'find-file))
+
+;; (defun spacemacs/embark-preview ()
+;;   "Previews candidate in vertico buffer, unless it's a consult command"
+;;   (interactive)
+;;   (unless (bound-and-true-p consult--preview-function)
+;;     (save-selected-window
+;;       (let ((embark-quit-after-action nil))
+;;         (embark-dwim)))))
+
+(defun spacemacs/delete-current-buffer-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (ido-kill-buffer)
+      (if (yes-or-no-p
+           (format "Are you sure you want to delete this file: '%s'?" name))
+          (progn
+            (delete-file filename t)
+            (kill-buffer buffer)
+            ;; (when (and (configuration-layer/package-used-p 'projectile)
+            ;;            (projectile-project-p))
+            ;;   (call-interactively #'projectile-invalidate-cache))
+            (message "File deleted: '%s'" filename))
+        (message "Canceled: File deletion")))))
+
+;; from magnars
+(defun spacemacs/sudo-edit (&optional arg)
+  (interactive "P")
+  (require 'tramp)
+  (let ((fname (if (or arg (not buffer-file-name))
+                   (read-file-name "File: ")
+                 buffer-file-name)))
+    (find-file
+     (if (not (tramp-tramp-file-p fname))
+         (concat "/sudo:root@localhost:" fname)
+       (with-parsed-tramp-file-name fname parsed
+         (when (equal parsed-user "root")
+           (error "Already root!"))
+         (let* ((new-hop (tramp-make-tramp-file-name
+                          ;; Try to retrieve a tramp method suitable for
+                          ;; multi-hopping
+                          (cond ((tramp-get-method-parameter
+                                  parsed 'tramp-login-program))
+                                ((tramp-get-method-parameter
+                                  parsed 'tramp-copy-program))
+                                (t parsed-method))
+                          parsed-user
+                          parsed-domain
+                          parsed-host
+                          parsed-port
+                          nil
+                          parsed-hop))
+                (new-hop (substring new-hop 1 -1))
+                (new-hop (concat new-hop "|"))
+                (new-fname (tramp-make-tramp-file-name
+                            "sudo"
+                            parsed-user
+                            parsed-domain
+                            parsed-host
+                            parsed-port
+                            parsed-localname
+                            new-hop)))
+           new-fname))))))
+
+(defun spacemacs/delete-file (filename &optional ask-user)
+  "Remove specified file or directory.
+
+Also kills associated buffer (if any exists) and invalidates
+projectile cache when it's possible.
+
+When ASK-USER is non-nil, user will be asked to confirm file
+removal."
+  (interactive "f")
+  (when (and filename (file-exists-p filename))
+    (let ((buffer (find-buffer-visiting filename)))
+      (when buffer
+        (kill-buffer buffer)))
+    (when (or (not ask-user)
+              (yes-or-no-p "Are you sure you want to delete this file? "))
+      (delete-file filename)
+      ;; (when (and (configuration-layer/package-used-p 'projectile)
+      ;;            (projectile-project-p))
+      ;;   (call-interactively #'projectile-invalidate-cache))
+      )))
+
 ;;; jump-out-of-pair
 ;; no dependency approach
 (defun jump-out-of-pair ()
