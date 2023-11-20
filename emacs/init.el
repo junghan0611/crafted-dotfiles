@@ -47,8 +47,9 @@
 (add-to-list 'package-selected-packages 'major-mode-hydra) ; contains pretty-hydra
 
 ;; judy-theme
-;; (add-to-list 'package-selected-packages 'modus-themes)
-;; (add-to-list 'package-selected-packages 'ef-themes)
+(unless (member 'modus-vivendi (custom-available-themes))
+  (add-to-list 'package-selected-packages 'modus-themes))
+(add-to-list 'package-selected-packages 'ef-themes)
 ;; (add-to-list 'package-selected-packages 'fontaine)
 (add-to-list 'package-selected-packages 'keycast)
 
@@ -100,10 +101,9 @@
 ;; (require 'crafted-evil-config)
 (require 'crafted-ide-config)
 ;; install all language grammars
-;; (crafted-ide-configure-tree-sitter)
+(crafted-ide-configure-tree-sitter)
 ;; (setq treesit-auto-install 'prompt)
 ;; install all language grammars, except protobuf
-(crafted-ide-configure-tree-sitter '(protobuf))
 (require 'crafted-lisp-config)
 (require 'crafted-org-config)
 
