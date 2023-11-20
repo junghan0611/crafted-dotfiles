@@ -4,12 +4,12 @@
 ;;; Code:
 
 (when (display-graphic-p)
-  (set-face-attribute 'default nil :family "Sarasa Mono K" :width 'normal :weight 'regular :height 136)
-  (set-fontset-font nil 'hangul (font-spec :family "Sarasa Mono K"))
-  (set-face-attribute 'fixed-pitch nil :family "Sarasa Term K" :width 'normal :weight 'regular)
+  (set-face-attribute 'default nil :family "Monoplex KR Nerd" :width 'normal :weight 'regular :height 140)
+  (set-fontset-font nil 'hangul (font-spec :family "Monoplex KR Nerd"))
+  ;; (set-face-attribute 'fixed-pitch nil :family "Sarasa Term K" :width 'normal :weight 'regular)
   ;; (set-face-attribute 'fixed-pitch-serif nil :family "Hahmlet" :width 'normal :weight 'regular)
-  (set-face-attribute 'variable-pitch nil :family "Pretendard Variable"
-                      :width 'normal :weight 'regular)
+  ;; (set-face-attribute 'variable-pitch nil :family "Pretendard Variable"
+  ;;                     :width 'normal :weight 'regular)
 
   (set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil)
   (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend) ; Top
@@ -19,38 +19,38 @@
   (set-fontset-font t 'symbol (font-spec :family "Noto Sans Symbols") nil 'prepend)
   )
 
-(defvar after-load-theme-hook nil
-  "Hook run after a color theme is loaded using `load-theme'.")
+;; (defvar after-load-theme-hook nil
+;;   "Hook run after a color theme is loaded using `load-theme'.")
 
-(defun load-theme@run-hooks (&rest _)
-  "Run `after-load-theme-hook'."
-  (run-hooks 'after-load-theme-hook))
-(advice-add 'load-theme :after #'load-theme@run-hooks)
+;; (defun load-theme@run-hooks (&rest _)
+;;   "Run `after-load-theme-hook'."
+;;   (run-hooks 'after-load-theme-hook))
+;; (advice-add 'load-theme :after #'load-theme@run-hooks)
 
-(defun load-theme@theme-dont-propagate (&rest _)
-  "Discard all themes before loading new."
-  (mapc #'disable-theme custom-enabled-themes))
-(advice-add #'load-theme :before #'load-theme@theme-dont-propagate)
+;; (defun load-theme@theme-dont-propagate (&rest _)
+;;   "Discard all themes before loading new."
+;;   (mapc #'disable-theme custom-enabled-themes))
+;; (advice-add #'load-theme :before #'load-theme@theme-dont-propagate)
 
 ;; ;; (add-hook 'after-load-theme-hook
 ;; ;;           (defun bolder-faces ()
 ;; ;;             (set-face-attribute 'font-lock-function-name-face nil :weight 'semi-bold)
 ;; ;;             (set-face-attribute 'font-lock-keyword-face nil :weight 'semi-bold)))
 
-(defun +theme--tweaks-h (&optional _)
-  (interactive)
-  "Use smaller font (80% of the default) for line numbers in graphic mode."
-  (when (display-graphic-p)
-    (set-face-attribute
-     'line-number nil
-     :background (face-attribute 'default :background)
-     :height (truncate (* 0.80 (face-attribute 'default :height)))
-     :weight 'semi-light)
-    (set-face-attribute
-     'line-number-current-line nil
-     :height (truncate (* 0.80 (face-attribute 'default :height)))
-     :weight 'bold)))
-(add-hook 'after-load-theme-hook #'+theme--tweaks-h)
+;; (defun +theme--tweaks-h (&optional _)
+;;   (interactive)
+;;   "Use smaller font (80% of the default) for line numbers in graphic mode."
+;;   (when (display-graphic-p)
+;;     (set-face-attribute
+;;      'line-number nil
+;;      :background (face-attribute 'default :background)
+;;      :height (truncate (* 0.80 (face-attribute 'default :height)))
+;;      :weight 'semi-light)
+;;     (set-face-attribute
+;;      'line-number-current-line nil
+;;      :height (truncate (* 0.80 (face-attribute 'default :height)))
+;;      :weight 'bold)))
+;; (add-hook 'after-load-theme-hook #'+theme--tweaks-h)
 
 ;; ;; 프리셋을 바꿀 경우 필수 수정 요소들
 ;; (add-hook 'fontaine-set-preset-hook #'+theme--tweaks-h)

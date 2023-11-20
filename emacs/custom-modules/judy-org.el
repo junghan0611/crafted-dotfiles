@@ -3,30 +3,27 @@
 
 ;;; Code:
 
-(message "1")
-
-;; (global-set-key (kbd "C-c l") 'org-store-link)
-;; (global-set-key (kbd "C-c i") 'org-insert-link)
-;; (global-set-key (kbd "C-c a") 'org-agenda)
-;; (global-set-key (kbd "C-c c") 'org-capture)
-;; (global-set-key (kbd "C-c \\") 'org-tags-sparse-tree)
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c i") 'org-insert-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c \\") 'org-tags-sparse-tree)
 
 (setq org-directory user-org-directory)
-(setq denote-directory (concat org-directory "denote/"))
+(setq denote-directory (concat org-directory "roam/notes/"))
 ;; (setq org-roam-directory (concat org-directory "roam/"))
 
-(setq org-workflow-directory (concat org-directory "workflow/"))
-(setq org-inbox-file (concat org-workflow-directory "inbox.org"))
-(setq org-default-notes-file (concat org-workflow-directory "inbox.org"))
-(setq org-user-agenda-files (list (concat org-directory "workflow/")))
+(setq org-workflow-directory (concat org-directory "roam/workflow/"))
+(setq org-inbox-file (concat org-workflow-directory "20230202T020200--inbox__agenda.org"))
+(setq org-default-notes-file org-inbox-file)
+(setq org-user-agenda-files (list (concat org-directory "roam/workflow/")))
+(setq org-user-agenda-diary-file (concat org-workflow-directory "20220101T010100--log__agenda.org"))
 
 ;; Set initial buffer to org
 (setq initial-major-mode #'org-mode)
 
-(message "2")
-
 ;; Some pretty settings
-(setq org-pretty-entities t
+(setq org-pretty-entities nil
       org-hide-emphasis-markers t
       org-hide-block-startup nil
       org-fontify-quote-and-verse-blocks t
@@ -57,7 +54,7 @@
 ;; (require 'ox-beamer)
 ;; (require 'ox-texinfo)
 
-;; (customize-set-variable 'org-export-coding-system 'utf-8)
+(setq org-export-coding-system 'utf-8)
 
 ;; ;; set up LaTeX export to work with minted package
 ;; (setq org-latex-listings 'minted

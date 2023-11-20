@@ -8,10 +8,10 @@
 ;; Default to home
 (setq default-directory "~/")
 
-;; Disable warnings
-(customize-set-variable 'byte-compile-warnings '(cl-functions))
-(customize-set-variable 'large-file-warning-threshold nil)
-(customize-set-variable 'vc-follow-symlinks t)
+;; 불필요한 Package cl is deprecated 경고 숨기기
+(customize-set-variable 'byte-compile-warnings '(not cl-functions))
+;; (customize-set-variable 'large-file-warning-threshold nil)
+;; (customize-set-variable 'vc-follow-symlinks t)
 
 ;; Auto-revert buffers
 (customize-set-variable 'global-auto-revert-non-file-buffers t)
@@ -59,7 +59,7 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
-(setq-default line-spacing 2) ; use fontaine
+(setq-default line-spacing 3) ; use fontaine
 
 ;; (setenv "LANG" "en_US.UTF-8")
 ;; (setenv "LC_ALL" "en_US.UTF-8")
@@ -77,9 +77,9 @@
 ;; (global-unset-key (kbd "S-SPC"))
 
 ;; 입력 모드에서만 한영 변환 가능!
-(defun my/turn-off-input-method (&rest _)
-  (if current-input-method
-      (deactivate-input-method)))
+;; (defun my/turn-off-input-method (&rest _)
+;;   (if current-input-method
+;;       (deactivate-input-method)))
 
 ;; (advice-add 'evil-normal-state :before #'my/turn-off-input-method)
 ;; (mapc (lambda (mode)
@@ -123,24 +123,54 @@
 
 ;;;; dired
 
-(setq dired-listing-switches "-aBhl --group-directories-first") ; tshu
-(setq dired-kill-when-opening-new-dired-buffer t)
-(setq dired-make-directory-clickable t) ; Emacs 29.1
-(setq dired-free-space nil) ; Emacs 29.1
-(setq dired-auto-revert-buffer t
-      dired-create-destination-dirs 'always
-      dired-do-revert-buffer t
-      dired-dwim-target t
-      dired-vc-rename-file t)
-(setq dired-recursive-copies 'always)
-(setq dired-create-destination-dirs 'always)
+(require 'dired)
+(require 'dired-x)
+
+(setq
+ ;; dired-listing-switches "-laFGh1v --group-directories-first"
+ dired-ls-F-marks-symlinks t ; -F marks links with @
+ ;; Inhibit prompts for simple recursive operations
+ dired-recursive-copies 'always
+ ;; Auto-copy to other Dired split window
+ dired-dwim-target t
+
+ ;; dired-auto-revert-buffer t ; Revert on re-visiting
+ ;; (setq dired-auto-revert-buffer #'dired-directory-changed-p) ; also see `dired-do-revert-buffer'
+ ;; (setq dired-do-revert-buffer (lambda (dir) (not (file-remote-p dir)))) ; Emacs 28
+ dired-auto-revert-buffer t
+
+ dired-listing-switches
+ "-AGFhlv --group-directories-first --time-style=long-iso"
+
+ dired-kill-when-opening-new-dired-buffer t
+ dired-make-directory-clickable t ; Emacs 29.1
+ dired-mouse-drag-files t) ; Emacs 29.1
+
+;; (setq dired-recursive-deletes 'always)
+;; Open dired folders in same buffer
+(put 'dired-find-alternate-file 'disabled nil)
+
+;; (setq copy-directory-create-symlink t)
+;; (setq dired-hide-details-hide-symlink-targets nil) ; default t
+
+;; In Emacs 29 there is a binding for `repeat-mode' which let you
+;; repeat C-x C-j just by following it up with j.  For me, this is a
+;; problem as j calls `dired-goto-file', which I often use.
+;; (define-key dired-jump-map (kbd "j") nil)
+
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (interactive)
+            (setq-local truncate-lines t) ; Do not wrap lines
+            ;; (visual-line-mode -1)
+            (hl-line-mode 1)))
 
 ;; wdired is a mode that allows you to rename files and directories by editing the
-;; =dired= buffer itself.
 (require 'wdired)
 
-(setq wdired-allow-to-change-permissions t)
-(setq wdired-create-parent-directories t)
+(setq wdired-allow-to-change-permissions t
+      wdired-create-parent-directories t)
 ;; (evil-define-key 'normal wdired-mode-map (kbd "^") 'evil-first-non-blank)
 ;; (evil-define-key 'normal dired-mode-map
 ;;   (kbd "C-c C-e") 'wdired-change-to-wdired-mode

@@ -25,15 +25,21 @@
 (require 'crafted-ui-packages)
 (require 'crafted-writing-packages)
 
-(require 'crafted-workspaces-packages)
+;; (require 'crafted-workspaces-packages)
 
 ;;;; Additional packages for custom modules
 ;; judy-keys
 (add-to-list 'package-selected-packages 'general)
 (add-to-list 'package-selected-packages 'which-key)
 (add-to-list 'package-selected-packages 'pcre2el)
+(add-to-list 'package-selected-packages 'doom-themes)
+(add-to-list 'package-selected-packages 'ct)
+;; (add-to-list 'package-selected-packages 'auto-dim-other-buffers)
 (add-to-list 'package-selected-packages 'doom-modeline)
 (add-to-list 'package-selected-packages 'winum)
+(add-to-list 'package-selected-packages 'imenu-list)
+(add-to-list 'package-selected-packages 'rainbow-mode)
+(add-to-list 'package-selected-packages 'ansi-color)
 
 (add-to-list 'package-selected-packages 'meow)
 (add-to-list 'package-selected-packages 'hydra)
@@ -65,6 +71,7 @@
 ;; (add-to-list 'package-selected-packages 'smartparens)
 (add-to-list 'package-selected-packages 'puni)
 (add-to-list 'package-selected-packages 'diff-hl)
+(add-to-list 'package-selected-packages 'tabspaces)
 
 ;; (add-to-list 'package-selected-packages 'org-roam)
 ;; (add-to-list 'package-selected-packages 'emacsql-sqlite-builtin)
@@ -86,6 +93,7 @@
 (package-install-selected-packages :no-confirm)
 
 ;;; Load configuration
+
 (require 'crafted-defaults-config)
 (require 'crafted-completion-config)
 ;; (require 'crafted-evil-config)
@@ -93,13 +101,14 @@
 (crafted-ide-configure-tree-sitter '(protobuf))
 (require 'crafted-lisp-config)
 (require 'crafted-org-config)
+
 (customize-set-variable 'crafted-startup-module-list
                         '(crafted-startup-recentf crafted-startup-projects))
 
 (require 'crafted-ui-config)
 (require 'crafted-writing-config)
 (require 'crafted-startup-config)
-(require 'crafted-workspaces-config)
+;; (require 'crafted-workspaces-config)
 
 (require 'crafted-package-config)
 (require 'crafted-updates-config)
@@ -136,6 +145,8 @@
 ;; (require 'functions)
 ;; (require 'functions-1)
 
+(require 'workspace)
+
 (require 'hydra-config)
 (message "meow-config")
 (require 'meow-config)
@@ -146,6 +157,25 @@
 (judy-transparency-init 94)
 
 (message "END")
+
+(when (= 1 (length (tab-bar-tabs)))
+  (tab-bar-new-tab)
+  (tab-bar-new-tab)
+  (tab-bar-new-tab)
+  (tab-bar-rename-tab "Org" 1)
+  (tab-bar-rename-tab "Note" 2)
+  (tab-bar-rename-tab "Code" 3)
+  (tab-bar-rename-tab "Emacs" 4)
+  (tab-bar-select-tab 2)
+  (dired denote-directory)
+  (tab-bar-select-tab 3)
+  (dired user-org-directory) ;; per-machine.el
+  (tab-bar-select-tab 4)
+  (find-file "~/.config/emacs/init.el")
+  (delete-other-windows)
+  (tab-bar-select-tab 1)
+  (org-agenda nil "a")
+  )
 
 ;;; _
 (provide 'init)
