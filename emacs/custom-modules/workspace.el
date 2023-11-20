@@ -88,6 +88,7 @@
   (setq tab-bar-show t)
   (tab-bar-history-mode 1)
 
+  (keycast-tab-bar-mode t)
   (tab-bar-mode 1))
 
 ;; explicitly re-enable the cat for the first GUI client
