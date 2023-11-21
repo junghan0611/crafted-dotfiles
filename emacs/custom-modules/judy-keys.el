@@ -5,6 +5,40 @@
 
 ;;; Code:
 
+;;;; TODO Move
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+
+(progn
+  (global-set-key (kbd "C-s-h") 'tab-previous)
+  (global-set-key (kbd "C-<backtab>") 'tab-previous)
+  (global-set-key (kbd "C-s-l") 'tab-next)
+  (global-set-key (kbd "s-\\") 'tab-bar-switch-to-tab)
+  (global-set-key (kbd "C-s-1") #'(lambda() (interactive) (tab-bar-select-tab 1)))
+   (global-set-key (kbd "C-s-2") #'(lambda() (interactive) (tab-bar-select-tab 2)))
+   (global-set-key (kbd "C-s-3") #'(lambda() (interactive) (tab-bar-select-tab 3)))
+   (global-set-key (kbd "C-s-4") #'(lambda() (interactive) (tab-bar-select-tab 4)))
+   (global-set-key (kbd "C-s-5") #'(lambda() (interactive) (tab-bar-select-tab 5)))
+   (global-set-key (kbd "C-s-6") #'(lambda() (interactive) (tab-bar-select-tab 6)))
+   (global-set-key (kbd "C-s-7") #'(lambda() (interactive) (tab-bar-select-tab 7)))
+  )
+
+;; If you use a window manager be careful of possible key binding clashes
+(global-set-key (kbd "M-<tab>") 'other-window) ; very useful
+(global-set-key (kbd "M-<iso-lefttab>") (lambda() (interactive) (other-window -1))) ; == M-S-<tab>
+(global-set-key (kbd "M-<backtab>") (lambda() (interactive) (other-window -1))) ; for terminal
+
+;;;; Which Key
+(require 'which-key)
+
+(setq which-key-idle-delay 0.4
+      which-key-min-display-lines 3
+      which-key-idle-secondary-delay 0.01
+      which-key-max-description-length 32
+      which-key-sort-order 'which-key-key-order-alpha
+      which-key-allow-evil-operators t
+      )
+
 ;;;; General Definer
 ;; (general-create-definer judy-leader-keys
 ;;                         :keymaps '(normal insert visual emacs)
@@ -72,13 +106,21 @@
  "aP"      'proced
 
  "b"       (cons "buffers" (make-sparse-keymap))
- "bb"      'switch-to-buffer
- "bB"      'ibuffer
- "bd"      'kill-current-buffer
- "bm"      'switch-to-messages-buffer
- "bs"      'switch-to-scratch-buffer
- "bu"      'reopen-killed-buffer
- "bx"      'kill-buffer-and-window
+ "bb" 'consult-buffer
+ "bB" 'spacemacs/compleseus-switch-to-buffer
+ "bd" 'spacemacs/kill-this-buffer
+ "bx" 'kill-buffer-and-window
+ "bm" 'switch-to-messages-buffer
+ "ss" 'consult-line
+ "sS" 'consult-line-symbol
+ "sg" 'consult-grep
+ "sd" 'my/compleseus-search-dir
+ "sD" 'spacemacs/compleseus-search-dir
+ "sf" 'spacemacs/compleseus-search-auto
+ "sF" 'my/compleseus-search-auto-hidden
+ "ff" 'spacemacs/compleseus-find-file
+ "fs" 'save-buffer
+ "fD" 'spacemacs/delete-current-buffer-file
 
  "c"       (cons "code" (make-sparse-keymap))
  "cb"      'flymake-show-buffer-diagnostics
@@ -202,14 +244,14 @@
  "wD"      'delete-other-windows
  "wm"      'toggle-maximize-buffer
  "wf"      'follow-mode
- ;; "wh"      'evil-window-left
- ;; "wH"      'evil-window-move-far-left
- ;; "wj"      'evil-window-down
- ;; "wJ"      'evil-window-move-very-bottom
- ;; "wk"      'evil-window-up
- ;; "wK"      'evil-window-move-very-top
- ;; "wl"      'evil-window-right
- ;; "wL"      'evil-window-move-far-right
+ "wh"      'evil-window-left
+ "wH"      'evil-window-move-far-left
+ "wj"      'evil-window-down
+ "wJ"      'evil-window-move-very-bottom
+ "wk"      'evil-window-up
+ "wK"      'evil-window-move-very-top
+ "wl"      'evil-window-right
+ "wL"      'evil-window-move-far-right
  "wr"      'rotate-windows-forward
  "wR"      'rotate-windows-backward
  "ws"      'split-window-vertically
@@ -230,36 +272,36 @@
          (interactive "P")
          (scroll-other-window (- (or arg 1)))))
 
-;; (with-eval-after-load 'evil-maps
-;;   ;; 편집 창 포커스 이동을 간단하게
-;;   (define-key evil-normal-state-map (kbd "<SPC> <right> ") 'evil-window-right)
-;;   (define-key evil-normal-state-map (kbd "<SPC> <left> ") 'evil-window-left)
-;;   (define-key evil-normal-state-map (kbd "<SPC> <up> ") 'evil-window-up)
-;;   (define-key evil-normal-state-map (kbd "<SPC> <down> ") 'evil-window-down)
+(with-eval-after-load 'evil-maps
+  ;; 편집 창 포커스 이동을 간단하게
+  (define-key evil-normal-state-map (kbd "<SPC> <right> ") 'evil-window-right)
+  (define-key evil-normal-state-map (kbd "<SPC> <left> ") 'evil-window-left)
+  (define-key evil-normal-state-map (kbd "<SPC> <up> ") 'evil-window-up)
+  (define-key evil-normal-state-map (kbd "<SPC> <down> ") 'evil-window-down)
 
-;;   ;; replace "." search with consul-line in Evil normal state
-;;   ;; use default "/" evil search
-;;   (evil-global-set-key 'normal "." 'consult-line)
+  ;; replace "." search with consul-line in Evil normal state
+  ;; use default "/" evil search
+  (evil-global-set-key 'normal "." 'consult-line)
 
-;;   ;; TODO disable evil-mc key-binding with meta
-;;   ;; 내 커스텀 키로 이용한다. evil-mc 를 어떻게 할지 고민
-;;   ;; (with-eval-after-load 'evil-mc
-;;   ;;   (evil-define-key '(insert normal visual) evil-mc-key-map (kbd "M-n") nil)
-;;   ;;   (evil-define-key '(insert normal visual) evil-mc-key-map (kbd "M-p") nil)
-;;   ;;   (evil-define-key '(normal visual) evil-mc-key-map (kbd "C-n") nil)
-;;   ;;   (evil-define-key '(normal visual) evil-mc-key-map (kbd "C-p") nil)
-;;   ;;   (evil-define-key '(normal visual) evil-mc-key-map (kbd "C-t") nil)
-;;   ;;   (evil-define-key '(normal visual) evil-mc-key-map (kbd "C-M-j") nil)
-;;   ;;   (evil-define-key '(normal visual) evil-mc-key-map (kbd "C-M-k") nil)
-;;   ;; )
+  ;; TODO disable evil-mc key-binding with meta
+  ;; 내 커스텀 키로 이용한다. evil-mc 를 어떻게 할지 고민
+  ;; (with-eval-after-load 'evil-mc
+  ;;   (evil-define-key '(insert normal visual) evil-mc-key-map (kbd "M-n") nil)
+  ;;   (evil-define-key '(insert normal visual) evil-mc-key-map (kbd "M-p") nil)
+  ;;   (evil-define-key '(normal visual) evil-mc-key-map (kbd "C-n") nil)
+  ;;   (evil-define-key '(normal visual) evil-mc-key-map (kbd "C-p") nil)
+  ;;   (evil-define-key '(normal visual) evil-mc-key-map (kbd "C-t") nil)
+  ;;   (evil-define-key '(normal visual) evil-mc-key-map (kbd "C-M-j") nil)
+  ;;   (evil-define-key '(normal visual) evil-mc-key-map (kbd "C-M-k") nil)
+  ;; )
 
-;;   (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
-;;   (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
-;;   (define-key evil-insert-state-map (kbd "C-a") 'evil-beginning-of-line)
-;;   (define-key evil-insert-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
-;;   ;; =C-w= 'insert 'evil-delete-backward-word
-;;   ;; =C-w= 'visual 'evil-window-map
-;;   )
+  (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
+  (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
+  (define-key evil-insert-state-map (kbd "C-a") 'evil-beginning-of-line)
+  (define-key evil-insert-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
+  ;; =C-w= 'insert 'evil-delete-backward-word
+  ;; =C-w= 'visual 'evil-window-map
+  )
 
 (provide 'judy-keys)
 ;;; judy-keys.el ends here

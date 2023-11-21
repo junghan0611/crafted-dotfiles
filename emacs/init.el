@@ -30,7 +30,7 @@
          ("melpa" . 90)))
 
 (require 'crafted-completion-packages)
-;; (require 'crafted-evil-packages)
+(require 'crafted-evil-packages)
 (require 'crafted-ide-packages)
 (require 'crafted-lisp-packages)
 (require 'crafted-org-packages)
@@ -65,7 +65,7 @@
 (add-to-list 'package-selected-packages 'keycast)
 
 ;; judy-evil
-;; (add-to-list 'package-selected-packages 'evil-surround)
+(add-to-list 'package-selected-packages 'evil-surround)
 
 ;; judy-term
 (if (member system-type '(windows-nt ms-dos))
@@ -81,13 +81,9 @@
 (add-to-list 'package-selected-packages 'transient)
 (add-to-list 'package-selected-packages 'xref)
 (add-to-list 'package-selected-packages 'eldoc)
-;; (add-to-list 'package-selected-packages 'smartparens)
 (add-to-list 'package-selected-packages 'puni)
 (add-to-list 'package-selected-packages 'diff-hl)
 (add-to-list 'package-selected-packages 'tabspaces)
-
-;; (add-to-list 'package-selected-packages 'org-roam)
-;; (add-to-list 'package-selected-packages 'emacsql-sqlite-builtin)
 
 ;; Programming modes
 (add-to-list 'package-selected-packages 'web-mode)
@@ -110,12 +106,8 @@
 (require 'crafted-defaults-config)
 (require 'crafted-startup-config)
 (require 'crafted-completion-config)
-;; (require 'crafted-evil-config)
+(require 'crafted-evil-config)
 (require 'crafted-ide-config)
-;; install all language grammars
-(crafted-ide-configure-tree-sitter)
-;; (setq treesit-auto-install 'prompt)
-;; install all language grammars, except protobuf
 (require 'crafted-lisp-config)
 (require 'crafted-org-config)
 
@@ -142,8 +134,8 @@
 (require 'judy-dev)
 (message "judy-dev")
 
-;; (require 'judy-evil)
-;; (message "judy-evil")
+(require 'judy-evil)
+(message "judy-evil")
 
 (require 'judy-org)
 (message "judy-org")
@@ -154,8 +146,8 @@
 (require 'judy-theme)
 (message "judy-theme")
 
-;; (require 'judy-keys)
-;; (message "judy-keys")
+(require 'judy-keys)
+(message "judy-keys")
 
 ;; (require 'functions)
 ;; (require 'functions-1)
@@ -163,9 +155,9 @@
 (require 'workspace)
 
 (require 'hydra-config)
-(message "meow-config")
-(require 'meow-config)
-(message "meow-config")
+
+;; (message "meow-config")
+;; (require 'meow-config)
 
 (require 'judy-transparency)
 (message "judy-transparency")
@@ -191,6 +183,11 @@
   (tab-bar-select-tab 1)
   (org-agenda nil "a")
   )
+
+;; install all language grammars
+;; (crafted-ide-configure-tree-sitter)
+;; (setq treesit-auto-install 'prompt)
+;; install all language grammars, except protobuf
 
 ;;; _
 (provide 'init)

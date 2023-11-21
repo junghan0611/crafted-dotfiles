@@ -29,7 +29,7 @@
 ;; (setq magit-save-repository-buffers 'dontask) ; default t
 
 ;; Show a message when garbage collection happens? Useful while tuning the GC
-(setq garbage-collection-messages t)
+;; (setq garbage-collection-messages t)
 
 
 ;;; Base UI
@@ -37,7 +37,7 @@
 (scroll-bar-mode -1)   ;; Disable visible scrollbar
 (tool-bar-mode -1)     ;; Disable toolbar
 (tooltip-mode 1)      ;; Enable tooltips
-(menu-bar-mode 1)     ;; Enable menubar
+(menu-bar-mode -1)     ;; disable menubar
 (set-fringe-mode 10)   ;; "breathing room"
 (setq ring-bell-function 'ignore)
 

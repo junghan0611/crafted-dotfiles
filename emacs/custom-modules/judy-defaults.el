@@ -10,8 +10,8 @@
 
 ;; 불필요한 Package cl is deprecated 경고 숨기기
 (customize-set-variable 'byte-compile-warnings '(not cl-functions))
-;; (customize-set-variable 'large-file-warning-threshold nil)
-;; (customize-set-variable 'vc-follow-symlinks t)
+(customize-set-variable 'large-file-warning-threshold nil)
+(customize-set-variable 'vc-follow-symlinks t)
 
 ;; Auto-revert buffers
 (customize-set-variable 'global-auto-revert-non-file-buffers t)
@@ -77,18 +77,18 @@
 ;; (global-unset-key (kbd "S-SPC"))
 
 ;; 입력 모드에서만 한영 변환 가능!
-;; (defun my/turn-off-input-method (&rest _)
-;;   (if current-input-method
-;;       (deactivate-input-method)))
+(defun my/turn-off-input-method (&rest _)
+  (if current-input-method
+      (deactivate-input-method)))
 
-;; (advice-add 'evil-normal-state :before #'my/turn-off-input-method)
-;; (mapc (lambda (mode)
-;;         (let ((keymap (intern (format "evil-%s-state-map" mode))))
-;;           (define-key (symbol-value keymap) [?\S- ]
-;;                       #'(lambda () (interactive)
-;;                           (message
-;;                            (format "Input method is disabled in %s state." evil-state))))))
-;;       '(motion normal visual))
+(advice-add 'evil-normal-state :before #'my/turn-off-input-method)
+(mapc (lambda (mode)
+        (let ((keymap (intern (format "evil-%s-state-map" mode))))
+          (define-key (symbol-value keymap) [?\S- ]
+                      #'(lambda () (interactive)
+                          (message
+                           (format "Input method is disabled in %s state." evil-state))))))
+      '(motion normal visual))
 
 ;;; No Littering
 ;; banish customized variables
@@ -171,11 +171,11 @@
 
 (setq wdired-allow-to-change-permissions t
       wdired-create-parent-directories t)
-;; (evil-define-key 'normal wdired-mode-map (kbd "^") 'evil-first-non-blank)
-;; (evil-define-key 'normal dired-mode-map
-;;   (kbd "C-c C-e") 'wdired-change-to-wdired-mode
-;;   (kbd "h") 'dired-up-directory
-;;   (kbd "l") 'dired-find-file)
+(evil-define-key 'normal wdired-mode-map (kbd "^") 'evil-first-non-blank)
+(evil-define-key 'normal dired-mode-map
+  (kbd "C-c C-e") 'wdired-change-to-wdired-mode
+  (kbd "h") 'dired-up-directory
+  (kbd "l") 'dired-find-file)
 
 ;;; _
 (provide 'judy-defaults)

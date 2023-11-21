@@ -1,38 +1,5 @@
 ;;; meow-config.el --- Configuring Emacs -*- lexical-binding: t; -*-
 
-;;;; TODO Move
-(global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-
-(progn
-  (global-set-key (kbd "C-s-h") 'tab-previous)
-  (global-set-key (kbd "C-<backtab>") 'tab-previous)
-  (global-set-key (kbd "C-s-l") 'tab-next)
-  (global-set-key (kbd "s-\\") 'tab-bar-switch-to-tab)
-  ;; (global-set-key (kbd "C-s-1") #'(lambda() (interactive) (tab-bar-select-tab 1)))
-  ;; (global-set-key (kbd "C-s-2") #'(lambda() (interactive) (tab-bar-select-tab 2)))
-  ;; (global-set-key (kbd "C-s-3") #'(lambda() (interactive) (tab-bar-select-tab 3)))
-  ;; (global-set-key (kbd "C-s-4") #'(lambda() (interactive) (tab-bar-select-tab 4)))
-  ;; (global-set-key (kbd "C-s-5") #'(lambda() (interactive) (tab-bar-select-tab 5)))
-  ;; (global-set-key (kbd "C-s-6") #'(lambda() (interactive) (tab-bar-select-tab 6)))
-  ;; (global-set-key (kbd "C-s-7") #'(lambda() (interactive) (tab-bar-select-tab 7)))
-  )
-
-;; If you use a window manager be careful of possible key binding clashes
-(global-set-key (kbd "M-<tab>") 'other-window) ; very useful
-(global-set-key (kbd "M-<iso-lefttab>") (lambda() (interactive) (other-window -1))) ; == M-S-<tab>
-(global-set-key (kbd "M-<backtab>") (lambda() (interactive) (other-window -1))) ; for terminal
-
-;;;; Which Key
-(require 'which-key)
-
-(setq which-key-idle-delay 0.4
-      which-key-min-display-lines 3
-      which-key-idle-secondary-delay 0.01
-      which-key-max-description-length 32
-      which-key-sort-order 'which-key-key-order-alpha
-      ;; which-key-allow-evil-operators t
-      )
 
 ;; from lambda-emacs
 ;; Allow C-h to trigger which-key before it is done automatically

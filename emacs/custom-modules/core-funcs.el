@@ -583,26 +583,63 @@ removal."
       )))
 
 ;;; jump-out-of-pair
-;; no dependency approach
-(defun jump-out-of-pair ()
-  (interactive)
-  (let ((found (search-forward-regexp "[])}\"'`*=]" nil t)))
-    (when found
-      (cond ((or (looking-back "\\*\\*" 2)
-                 (looking-back "``" 2)
-                 (looking-back "\"\"" 2) ; 2023-10-02 added
-                 (looking-back "''" 2)
-                 (looking-back "==" 2))
-             (forward-char))
-            (t (forward-char 0))))))
-(global-set-key [remap indent-for-tab-command] #'jump-out-of-pair)
 
-;; 아래 두 키가 괄호 편집할 때 편함.
-(define-key prog-mode-map (kbd "TAB") 'jump-out-of-pair)
-(define-key prog-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
-;; (evil-define-key '(insert) org-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
-(define-key prog-mode-map (kbd "C-<return>") 'newline-and-indent)
+  ;;;###autoload
+  (defun jump-out-of-pair ()
+    (interactive)
+    (let ((found (search-forward-regexp "[])}\"'`*=]" nil t)))
+  	  (when found
+  	    (cond ((or (looking-back "\\*\\*" 2)
+  		             (looking-back "``" 2)
+  		             (looking-back "\"\"" 2) ; 2023-10-02 added
+  		             (looking-back "''" 2)
+  		             (looking-back "==" 2))
+  			       (forward-char))
+  			      (t (forward-char 0))))))
 
+  ;;;###autoload
+  (defun jump-backward-pair ()
+    (interactive)
+    (let ((found (search-backward-regexp "[])}\"'`*=]" nil t)))
+      (when found
+        (cond ((or (looking-back "\\*\\*" 2)
+                   (looking-back "``" 2)
+                   (looking-back "\"\"" 2) ; 2023-10-02 added
+                   (looking-back "''" 2)
+                   (looking-back "==" 2))
+               (backward-char))
+              (t (backward-char 0))))))
+
+  ;; Keybindings
+  ;; 자동 완성 하지 않고 다음 줄 - C-<return>
+  ;; 자동 완성 하지 않고 괄호 점프 - Tab
+  ;; 자동 완성 하지 않고 현재 위치 - C-q : corfu-quit
+  ;; 자동 완성 하지 않고 다음 위치 - Space
+  ;; 자동 완성 - <return>
+
+  ;;   ;; Tab 이 자동 완성이면 괄호 점프랑 충돌 난다.
+  ;;   ;; C-j/k C-n/p는 직관적인 기본 설정이므로 건들이지 않는다.
+  (with-eval-after-load 'corfu
+    (evil-define-key '(insert) org-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
+    (evil-define-key '(insert) prog-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
+
+    (evil-define-key '(insert) prog-mode-map (kbd "<tab>") 'jump-out-of-pair)
+    (evil-define-key '(insert) prog-mode-map (kbd "TAB") 'jump-out-of-pair)
+    (evil-define-key '(insert) corfu-map (kbd "<tab>") 'jump-out-of-pair)
+    (evil-define-key '(insert) corfu-map (kbd "TAB") 'jump-out-of-pair)
+
+    ;; (define-key prog-mode-map (kbd "<backtab>") 'jump-backward-pair)
+    (evil-define-key '(insert) prog-mode-map (kbd "<backtab>") 'jump-backward-pair)
+    (evil-define-key '(insert) prog-mode-map (kbd "S-<iso-lefttab>") 'jump-backward-pair)
+    (evil-define-key '(insert) corfu-map (kbd "<backtab>") 'jump-backward-pair)
+    (evil-define-key '(insert) corfu-map (kbd "S-<iso-lefttab>") 'jump-backward-pair)
+
+    (evil-define-key '(insert) corfu-map (kbd "C-<return>") 'newline-and-indent) ;; <C-return>
+    (evil-define-key '(insert) prog-mode-map (kbd "C-<return>") 'newline-and-indent) ;; <C-return>
+
+    ;;     ;; M-g                             corfu-info-location
+    ;;     ;; M-h                             corfu-info-documentation
+    )
 
 (provide 'core-funcs)
 ;;; core-funcs.el ends here
