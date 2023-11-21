@@ -39,6 +39,8 @@
       which-key-allow-evil-operators t
       )
 
+(which-key-mode +1)
+
 ;;;; General Definer
 ;; (general-create-definer judy-leader-keys
 ;;                         :keymaps '(normal insert visual emacs)

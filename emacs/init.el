@@ -17,18 +17,6 @@
 
 ;;; Configure packages to install
 
-(setq crafted-package-update-days 7)
-
-(setq package-archives
-      '(("elpa" . "https://elpa.gnu.org/packages/")
-        ("elpa-devel" . "https://elpa.gnu.org/devel/")
-        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-        ("melpa" . "https://melpa.org/packages/")))
-(setq  package-archive-priorities
-       '(;; Prefer development packages
-         ("elpa-devel" . 99)
-         ("melpa" . 90)))
-
 (require 'crafted-completion-packages)
 (require 'crafted-evil-packages)
 (require 'crafted-ide-packages)
@@ -49,11 +37,11 @@
 ;; (add-to-list 'package-selected-packages 'auto-dim-other-buffers)
 (add-to-list 'package-selected-packages 'doom-modeline)
 (add-to-list 'package-selected-packages 'winum)
+(add-to-list 'package-selected-packages 'kind-icon)
 ;; (add-to-list 'package-selected-packages 'imenu-list)
 ;; (add-to-list 'package-selected-packages 'rainbow-mode)
 ;; (add-to-list 'package-selected-packages 'ansi-color)
 
-(add-to-list 'package-selected-packages 'meow)
 (add-to-list 'package-selected-packages 'hydra)
 (add-to-list 'package-selected-packages 'major-mode-hydra) ; contains pretty-hydra
 
@@ -106,21 +94,18 @@
 (require 'crafted-defaults-config)
 (require 'crafted-startup-config)
 (require 'crafted-completion-config)
+(require 'crafted-ui-config)
 (require 'crafted-evil-config)
 (require 'crafted-ide-config)
 (require 'crafted-lisp-config)
 (require 'crafted-org-config)
-
-(customize-set-variable 'crafted-startup-module-list
-                        '(crafted-startup-recentf crafted-startup-projects))
-
-(require 'crafted-ui-config)
 (require 'crafted-writing-config)
-
 (require 'crafted-package-config)
 (require 'crafted-updates-config)
 (require 'crafted-speedbar-config)
 
+(customize-set-variable 'crafted-startup-module-list
+                        '(crafted-startup-recentf crafted-startup-projects))
 ;; Custom modules
 
 (require 'core-funcs)

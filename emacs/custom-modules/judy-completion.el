@@ -73,6 +73,14 @@
 ;; Both < and C-+ work reasonably well.
 (setq consult-narrow-key "<") ;; (kbd "C-+")
 
+;;; kind-icon
+
+(require 'kind-icon)
+(setq kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+(add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
+(setq kind-icon-default-style '(:padding 0 :stroke 0 :margin 0 :radius 0 :height 0.9 :scale 0.9))
+(add-hook 'after-load-theme-hook 'kind-icon-reset-cache)
+
 ;;; _
 (provide 'judy-completion)
 ;;; judy-completion.el ends here
