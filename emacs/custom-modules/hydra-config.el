@@ -213,15 +213,16 @@
    (("f" yas-next-field "forward field" :exit nil)
     ("b" yas-prev-field "previous field" :exit nil))))
 
-;;;;;; hydra-flycheck
-(pretty-hydra-define hydra-flycheck ()
+;;;;;; hydra-flymake
+
+(pretty-hydra-define hydra-flymake   ()
   ("Movement"
    (("n" flymake-goto-next-error "next error")
     ("p" flymake-goto-prev-error "previous error")
     ("d" flymake-goto-diagnostic "diagnostic")
-    ("<" flycheck-previous-error "previous flycheck error")
-    (">" flycheck-next-error "next flycheck error")
-    ("l" flycheck-list-errors "list")
+    ;; ("<" flycheck-previous-error "previous flycheck error")
+    ;; (">" flycheck-next-error "next flycheck error")
+    ;; ("l" flycheck-list-errors "list")
     ("." consult-flymake))
    "Display"
    (("." flymake-show-diagnostic "show diagnostic")
@@ -245,7 +246,7 @@
    (("i" consult-imenu "imenu" :exit t)
     ("m" consult-mark "mark rings" :exit t)
     ("o" consult-multi-occur "occur" :exit t)
-    ("e" consult-flycheck "errors" :exit t)
+    ("e" consult-flymake "errors" :exit t)
     ("l" consult-goto-line "line" :exit t))
    "Other"
    (("r" consult-ripgrep "grep" :exit t)
@@ -272,7 +273,7 @@
     ("y" hydra-yas/body "snippets" :exit t))
    "Movement"
    (("j" hydra-jumps/body "jumps" :exit t)
-    ("E" hydra-flycheck/body "errors" :exit t)
+    ("E" hydra-flymake/body "errors" :exit t)
     ;; ("G" deadgrep "grep" :exit t)
     )
    "Misc"

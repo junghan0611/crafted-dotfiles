@@ -73,29 +73,29 @@
    )
   )
 
-  ;; Note: Ensure CIDER and lsp-mode play well together, as we use both.
-  ;; - LSP for more static-analysis-y services (completions, lookups, errors etc.),
-  ;; - CIDER for "live" runtime services (enhanced REPL, interactive debugger etc.).
+;; Note: Ensure CIDER and lsp-mode play well together, as we use both.
+;; - LSP for more static-analysis-y services (completions, lookups, errors etc.),
+;; - CIDER for "live" runtime services (enhanced REPL, interactive debugger etc.).
 
-  ;; /home/junghan/sync/man/dotsamples/vanilla/evalapply-dotfiles-clojure/init.el
-  ;; Use clojure-lsp for eldoc and completions
-  ;; layer 에서 eldoc 을 빼주면 된다. lsp 로만 동작하게 된다.
-  ;; h/t cider docs and ericdallo/dotfiles/.config/doom/config.el
-  ;; (remove-hook 'eldoc-documentation-functions #'cider-eldoc)
-  ;; (remove-hook 'completion-at-point-functions #'cider-complete-at-point)
+;; /home/junghan/sync/man/dotsamples/vanilla/evalapply-dotfiles-clojure/init.el
+;; Use clojure-lsp for eldoc and completions
+;; layer 에서 eldoc 을 빼주면 된다. lsp 로만 동작하게 된다.
+;; h/t cider docs and ericdallo/dotfiles/.config/doom/config.el
+;; (remove-hook 'eldoc-documentation-functions #'cider-eldoc)
+;; (remove-hook 'completion-at-point-functions #'cider-complete-at-point)
 
-  ;; settings h/t suvratapte/dot-emacs-dot-d
-  ;; (setq
-  ;;  ;; cider-prompt-for-symbol nil
-  ;;  ;; play nice with lsp-mode
-  ;;  ;; h/t ericdallo/dotfiles/.config/doom/config.el
-  ;;  cider-font-lock-dynamically nil ; use lsp semantic tokens
-  ;;  cider-eldoc-display-for-symbol-at-point nil ; use lsp
-  ;;  cider-prompt-for-symbol nil ; use lsp
-  ;;  cider-use-xref nil ; use lsp
-  ;;  ;; Maybe customize variables for cider-jack-in
-  ;;  ;; https://docs.cider.mx/cider/basics/up_and_running.html
-  ;;  )
+;; settings h/t suvratapte/dot-emacs-dot-d
+;; (setq
+;;  ;; cider-prompt-for-symbol nil
+;;  ;; play nice with lsp-mode
+;;  ;; h/t ericdallo/dotfiles/.config/doom/config.el
+;;  cider-font-lock-dynamically nil ; use lsp semantic tokens
+;;  cider-eldoc-display-for-symbol-at-point nil ; use lsp
+;;  cider-prompt-for-symbol nil ; use lsp
+;;  cider-use-xref nil ; use lsp
+;;  ;; Maybe customize variables for cider-jack-in
+;;  ;; https://docs.cider.mx/cider/basics/up_and_running.html
+;;  )
 
 ;;; C/C++
 ;; (defun clang-format-buffer-with-config ()
@@ -159,6 +159,23 @@
   (customize-set-variable 'web-mode-css-indent-offset 2)
   (customize-set-variable 'web-mode-code-indent-offset 2)
   (customize-set-variable 'web-mode-indent-style 2))
+
+;;; Exercism
+
+;;(global-set-key (kbd "M-c e") 'exercism)
+
+;; (when (require 'exercism nil :noerror)
+;;   (customize-set-variable 'exercism-display-tests-after-run t)
+;;   (keymap-global-set "M-g 0" 'exercism)
+;;   )
+
+;; (require 'exercism)
+(require 'awk-ts-mode)
+(require 'bats-mode)
+(bats-mode)
+
+;; (require 'asdf)
+;; (asdf-enable)
 
 ;;; _
 (provide 'judy-dev)

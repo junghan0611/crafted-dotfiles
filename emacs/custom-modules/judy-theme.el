@@ -114,7 +114,9 @@
 (define-key winum-keymap (kbd "M-6") 'winum-select-window-6)
 (define-key winum-keymap (kbd "M-7") 'winum-select-window-7)
 (define-key winum-keymap (kbd "M-8") 'winum-select-window-8)
-(define-key winum-keymap (kbd "M-9") 'winum-select-window-9)
+;; (define-key winum-keymap (kbd "M-9") 'winum-select-window-9)
+(define-key winum-keymap
+            [remap winum-select-window-9] #'switch-to-minibuffer-window)
 (winum-mode 1)
 
 ;;; Modus Theme

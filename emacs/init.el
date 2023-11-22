@@ -7,6 +7,14 @@
 ;;; Code:
 
 ;;; Custom file
+
+(customize-set-variable
+ 'package-archive-priorities
+ '(("melpa"    . 99) ("nongnu" . 80) ("stable" . 70) ("gnu"  . 0)))
+
+(setq package-archive-priorities
+      '(("melpa"    . 99) ("nongnu" . 80) ("stable" . 70) ("gnu"  . 0)))
+
 (setq custom-file
       (expand-file-name ".cache/custom-vars.el" user-emacs-directory))
 (when (file-exists-p custom-file)
@@ -14,6 +22,8 @@
 
 ;;; Bootstrap Crafted Emacs
 (load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))
+
+(setq treesit-extra-load-path `(,(concat user-emacs-directory "tree-sitter/")))
 
 ;;; Configure packages to install
 
@@ -51,6 +61,17 @@
 (add-to-list 'package-selected-packages 'ef-themes)
 ;; (add-to-list 'package-selected-packages 'fontaine)
 (add-to-list 'package-selected-packages 'keycast)
+(add-to-list 'package-selected-packages 'awk-ts-mode)
+(add-to-list 'package-selected-packages 'bats-mode)
+;; (add-to-list 'package-selected-packages 'asdf)
+
+;; 추가하고 melpa 로 등록
+(add-to-list 'package-selected-packages 'promise)
+(add-to-list 'package-selected-packages 'exercism)
+(add-to-list 'package-pinned-packages (cons 'promise "melpa"))
+(add-to-list 'package-pinned-packages (cons 'nerd-icons "melpa"))
+(add-to-list 'package-pinned-packages (cons 'exercism "melpa"))
+(add-to-list 'package-pinned-packages (cons 'treesit-auto "melpa"))
 
 ;; judy-evil
 (add-to-list 'package-selected-packages 'evil-surround)
@@ -62,7 +83,7 @@
 
 ;; judy-dev (also writing)
 (add-to-list 'package-selected-packages 'let-alist)
-(add-to-list 'package-selected-packages 'flycheck)
+;; (add-to-list 'package-selected-packages 'flycheck) ?
 (add-to-list 'package-selected-packages 'flymake-aspell)
 
 (add-to-list 'package-selected-packages 'magit)
@@ -91,6 +112,8 @@
 
 ;;; Load configuration
 
+(global-unset-key (kbd "M-c"))  ; unset capitalize-word
+
 (require 'crafted-defaults-config)
 (require 'crafted-startup-config)
 (require 'crafted-completion-config)
@@ -113,26 +136,17 @@
 (require 'per-machine)
 
 (require 'judy-completion)
-(message "judy-completion")
 (require 'judy-defaults)
-(message "judy-defaults")
 (require 'judy-dev)
-(message "judy-dev")
 
 (require 'judy-evil)
-(message "judy-evil")
 
 (require 'judy-org)
-(message "judy-org")
 (require 'judy-term)
-(message "judy-term")
 (require 'judy-fonts)
-(message "judy-fonts")
 (require 'judy-theme)
-(message "judy-theme")
 
 (require 'judy-keys)
-(message "judy-keys")
 
 ;; (require 'functions)
 ;; (require 'functions-1)
@@ -141,11 +155,7 @@
 
 (require 'hydra-config)
 
-;; (message "meow-config")
-;; (require 'meow-config)
-
 (require 'judy-transparency)
-(message "judy-transparency")
 (judy-transparency-init 94)
 
 (message "END")
@@ -169,9 +179,10 @@
   (org-agenda nil "a")
   )
 
-;; install all language grammars
-;; (crafted-ide-configure-tree-sitter)
-;; (setq treesit-auto-install 'prompt)
+;; install all language grammars hello
+
+(setq treesit-auto-install 'prompt)
+(crafted-ide-configure-tree-sitter)
 ;; install all language grammars, except protobuf
 
 ;;; _
