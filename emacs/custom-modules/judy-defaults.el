@@ -239,8 +239,10 @@
 
   (setq evil-motions nil)
 
-  (require 'xclip)
-  (xclip-mode 1)
+  (unless *is-termux*
+    (require 'xclip)
+    (xclip-mode 1))
+
   (require 'term-keys)
   (term-keys-mode t)
   )
