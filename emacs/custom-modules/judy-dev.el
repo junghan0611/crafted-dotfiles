@@ -224,6 +224,25 @@
 (require 'awk-ts-mode)
 (require 'bats-mode)
 
+;;; apheleia
+
+(require 'apheleia)
+(add-hook 'markdown-mode-hook 'apheleia-mode)
+(add-hook 'yaml-mode-hook 'apheleia-mode)
+
+;;;###autoload
+(defun my/format-buffer ()
+  "Format a buffer."
+  (interactive)
+  (cond
+   ((eq major-mode 'emacs-lisp-mode)
+    (indent-region (point-min) (point-max)))
+   ((eq major-mode 'ledger-mode)
+    (ledger-mode-clean-buffer))
+   (t (call-interactively 'apheleia-format-buffer))))
+
+(global-set-key (kbd "M-g =") 'my/format-buffer)
+
 ;;; _
 (provide 'judy-dev)
 ;;; judy-dev.el ends here

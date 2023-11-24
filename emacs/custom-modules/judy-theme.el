@@ -249,42 +249,42 @@
 
 ;;; popwin
 
-(defun spacemacs/advice-popwin (orig-fun &rest args)
-  "Advice to `popwin:match-config' around to save the buffer active."
-  (let ((result (apply orig-fun args)))
-    (when result
-      (setq spacemacs-popwin--last-buffer (car args)))
-    result))
+;; (defun spacemacs/advice-popwin (orig-fun &rest args)
+;;   "Advice to `popwin:match-config' around to save the buffer active."
+;;   (let ((result (apply orig-fun args)))
+;;     (when result
+;;       (setq spacemacs-popwin--last-buffer (car args)))
+;;     result))
 
-(require 'popwin)
-(popwin-mode 1)
+;; (require 'popwin)
+;; (popwin-mode 1)
 
-;; don't use default value but manage it ourselves
-(setq popwin:special-display-config nil)
+;; ;; don't use default value but manage it ourselves
+;; (setq popwin:special-display-config nil)
 
-;; buffers that we manage
-(push '("*quickrun*"             :dedicated t :position bottom :stick t :noselect t   :height 0.3) popwin:special-display-config)
-(push '("*Help*"                 :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
-(push '("*Process List*"         :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
-(push '("*Shell Command Output*" :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-(push '("*Async Shell Command*"  :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-(push '("*ert*"                  :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-(push '("*grep*"                 :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-(push '("*nosetests*"            :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-(push '("^\*WoMan.+\*$" :regexp t             :position bottom                                   ) popwin:special-display-config)
-(push '(helpful-mode :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
-(push '(help-mode :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
-(push '("*Keyboard layout*" :dedicated t :position bottom :stick t :noselect t :height 13) popwin:special-display-config)
-(push '(flymake-diagnostics-buffer-mode :dedicated t :position bottom :stick t :noselect t :width 0.3 :height 0.3) popwin:special-display-config)
-(push '("^\\*EGLOT" :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
-(push '("*info*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
-(push '("*eldoc*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
-(push '("*eww*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
-(push '("^\\*eldoc for" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
-(push '("^\\*Flycheck.+\\*$" :regexp t :dedicated t :position bottom :width 0.3 :height 0.3 :stick t :noselect t) popwin:special-display-config)
-(push '("^\\*Backtrace\\*" :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
-(push '("*lsp-documentation*" :dedicated t :position right :stick t :noselect t :width 0.3) popwin:special-display-config)
-(advice-add 'popwin:match-config :around #'spacemacs/advice-popwin)
+;; ;; buffers that we manage
+;; (push '("*quickrun*"             :dedicated t :position bottom :stick t :noselect t   :height 0.3) popwin:special-display-config)
+;; (push '("*Help*"                 :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+;; (push '("*Process List*"         :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+;; (push '("*Shell Command Output*" :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+;; (push '("*Async Shell Command*"  :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+;; (push '("*ert*"                  :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+;; (push '("*grep*"                 :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+;; (push '("*nosetests*"            :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+;; (push '("^\*WoMan.+\*$" :regexp t             :position bottom                                   ) popwin:special-display-config)
+;; (push '(helpful-mode :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
+;; (push '(help-mode :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
+;; (push '("*Keyboard layout*" :dedicated t :position bottom :stick t :noselect t :height 13) popwin:special-display-config)
+;; (push '(flymake-diagnostics-buffer-mode :dedicated t :position bottom :stick t :noselect t :width 0.3 :height 0.3) popwin:special-display-config)
+;; (push '("^\\*EGLOT" :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
+;; (push '("*info*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
+;; (push '("*eldoc*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
+;; (push '("*eww*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
+;; (push '("^\\*eldoc for" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
+;; (push '("^\\*Flycheck.+\\*$" :regexp t :dedicated t :position bottom :width 0.3 :height 0.3 :stick t :noselect t) popwin:special-display-config)
+;; (push '("^\\*Backtrace\\*" :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+;; (push '("*lsp-documentation*" :dedicated t :position right :stick t :noselect t :width 0.3) popwin:special-display-config)
+;; (advice-add 'popwin:match-config :around #'spacemacs/advice-popwin)
 
 ;; /prot-dotfiles/emacs/.emacs.d/prot-emacs-modules/prot-emacs-window.el:55
 (add-to-list 'display-buffer-alist

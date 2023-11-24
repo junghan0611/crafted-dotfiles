@@ -50,19 +50,7 @@
   ("M-[ 4 ~" "End key" end-of-line)
   ("<select>" "Home key" end-of-line))
 
- (motion
-  ("SPC" "Global leader key"
-   ("b" "Buffer commands"
-    ("b" "Switch buffer" consult-buffer)
-    ("B" "My Switch buffer" spacemacs/compleseus-switch-to-buffer)
-    ;; ("d" "Kill current buffer" kill-current-buffer)
-    ("d" "Kill current buffer" spacemacs/kill-this-buffer)
-    ("x" "kill buffer and window" kill-buffer-and-window)
-    ("k" "Pick & kill" kill-buffer)
-    ("l" "List buffers" list-buffers)
-    ("r" "Rename buffer" rename-buffer))))
-
- (normal|visual
+ (normal|visual|motion
   ("TAB" "Indent" :format/tab-indent)
   (">" "Slurp" :sexp/slurp-forward)
   ("<" "Barf" :sexp/barf-forward)

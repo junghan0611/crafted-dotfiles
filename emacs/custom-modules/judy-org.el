@@ -82,7 +82,14 @@
 
 (setq diary-file org-agenda-diary-file)
 
-(message "4")
+(with-eval-after-load 'org-agenda
+  (autoload #'evil-org-agenda-set-keys "evil-org-agenda" nil t)
+  (evil-org-agenda-set-keys))
+
+(with-eval-after-load 'org-capture
+  (add-hook 'org-capture-mode-hook #'evil-insert-state)
+  (add-hook 'org-capture-after-finalize-hook #'evil-normal-state)
+  )
 
 ;;; org-roam
 

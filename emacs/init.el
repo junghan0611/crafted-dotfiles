@@ -21,6 +21,7 @@
   '(
     corfu
     kind-icon
+    evil-org
     tempel
     promise
     nerd-icons
@@ -30,6 +31,7 @@
     treesit-auto
     magit
     evil-textobj-tree-sitter
+    dash-functional
     )
   )
 
@@ -74,10 +76,14 @@
 (add-to-list 'package-selected-packages 'undo-fu)
 (add-to-list 'package-selected-packages 'tempel)
 (add-to-list 'package-selected-packages 'neotree)
+(add-to-list 'package-selected-packages 'revert-buffer-all)
+
+;; (add-to-list 'package-selected-packages 'citar)
+;; (add-to-list 'package-selected-packages 'citar-denote)
 
 (add-to-list 'package-selected-packages 'evil-escape)
-(add-to-list 'package-selected-packages 'popwin)
 (add-to-list 'package-selected-packages 'popper)
+;; (add-to-list 'package-selected-packages 'popwin)
 
 ;; (add-to-list 'package-selected-packages 'doom-themes)
 ;; (add-to-list 'package-selected-packages 'ct)
@@ -94,6 +100,7 @@
 (add-to-list 'package-selected-packages 'ef-themes)
 ;; (add-to-list 'package-selected-packages 'fontaine)
 (add-to-list 'package-selected-packages 'keycast)
+(add-to-list 'package-selected-packages 'apheleia)
 (add-to-list 'package-selected-packages 'awk-ts-mode)
 (add-to-list 'package-selected-packages 'bats-mode)
 (add-to-list 'package-selected-packages 'xclip)
