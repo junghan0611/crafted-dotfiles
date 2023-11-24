@@ -8,6 +8,8 @@
 
 ;;; Custom file
 
+(customize-set-variable 'crafted-startup-inhibit-splash t)
+
 (setq custom-file
       (expand-file-name ".cache/custom-vars.el" user-emacs-directory))
 (when (file-exists-p custom-file)
@@ -232,7 +234,8 @@
   (find-file user-init-file)
   (delete-other-windows)
   (tab-bar-select-tab 1)
-  (org-agenda nil "a")
+  ;; (delete-other-windows)
+  ;; (org-agenda nil "a")
   )
 
 ;; install all language grammars hello

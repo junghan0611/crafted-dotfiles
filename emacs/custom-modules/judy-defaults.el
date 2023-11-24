@@ -27,7 +27,7 @@
 
 ;; 80 cols inidicator
 (setq-default fill-column 80)
-(global-display-fill-column-indicator-mode)
+
 ;; Clean up Files on save
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 
@@ -216,16 +216,13 @@
   ;; Disable visible scrollbar
   (scroll-bar-mode -1))
 
-(unless (display-graphic-p) ; gui
-  (require 'xclip)
-  (xclip-mode 1)
-  (require 'term-keys)
-  (term-keys-mode t)
+(when (display-graphic-p) ; gui
 
   ;; Read 'The Forgotten History of the Blinking Cursor'
   (blink-cursor-mode 1)
   (set-fringe-mode 10) ;; Give some breathing room
   (tooltip-mode 1)
+  (global-display-fill-column-indicator-mode)
 
   ;; For my mouse that also has left - right mouse scroll
   (setq mouse-wheel-tilt-scroll t)
@@ -254,6 +251,11 @@
    )
 
   (setq evil-motions nil)
+
+  (require 'xclip)
+  (xclip-mode 1)
+  (require 'term-keys)
+  (term-keys-mode t)
   )
 
 ;;; _
