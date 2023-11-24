@@ -159,6 +159,9 @@
 (global-unset-key (kbd "M-c"))  ; unset capitalize-word
 
 (require 'crafted-defaults-config)
+(remove-hook 'text-mode-hook #'flyspell-mode)
+(remove-hook 'prog-mode-hook #'flyspell-prog-mode)
+
 (require 'crafted-startup-config)
 (require 'crafted-completion-config)
 (require 'crafted-ui-config)
@@ -251,7 +254,7 @@
 ;; install all language grammars hello
 
 (setq treesit-auto-install 'prompt)
-(crafted-ide-configure-tree-sitter)
+;; (crafted-ide-configure-tree-sitter)
 ;; install all language grammars, except protobuf
 
 ;;; _
