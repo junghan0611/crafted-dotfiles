@@ -114,9 +114,13 @@
 (define-key winum-keymap (kbd "M-6") 'winum-select-window-6)
 (define-key winum-keymap (kbd "M-7") 'winum-select-window-7)
 (define-key winum-keymap (kbd "M-8") 'winum-select-window-8)
-;; (define-key winum-keymap (kbd "M-9") 'winum-select-window-9)
+(define-key winum-keymap (kbd "M-9") 'winum-select-window-9)
+
 (define-key winum-keymap
             [remap winum-select-window-9] #'switch-to-minibuffer-window)
+(define-key winum-keymap
+            [remap winum-select-window-7] #'spacemacs/neotree-smart-focus)
+
 (winum-mode 1)
 
 ;;; Modus Theme
@@ -224,9 +228,154 @@
 
 (when (display-graphic-p) ; gui
   (add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
-  (nerd-icons-completion-mode)
-  )
+  (nerd-icons-completion-mode))
 
+;;; neotree
+
+(require 'neotree)
+
+(setq neo-window-width 32
+      neo-create-file-auto-open t
+      neo-banner-message "Press ? for neotree help"
+      neo-show-updir-line nil
+      neo-mode-line-type 'neotree
+      neo-smart-open t
+      neo-dont-be-alone t
+      neo-persist-show nil
+      neo-show-hidden-files t
+      neo-auto-indent-point t
+      neo-modern-sidebar t
+      neo-vc-integration nil)
+
+;;; popwin
+
+(defun spacemacs/advice-popwin (orig-fun &rest args)
+  "Advice to `popwin:match-config' around to save the buffer active."
+  (let ((result (apply orig-fun args)))
+    (when result
+      (setq spacemacs-popwin--last-buffer (car args)))
+    result))
+
+(require 'popwin)
+(popwin-mode 1)
+
+;; don't use default value but manage it ourselves
+(setq popwin:special-display-config nil)
+
+;; buffers that we manage
+(push '("*quickrun*"             :dedicated t :position bottom :stick t :noselect t   :height 0.3) popwin:special-display-config)
+(push '("*Help*"                 :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
+(push '("*Process List*"         :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+(push '("*Shell Command Output*" :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+(push '("*Async Shell Command*"  :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+(push '("*ert*"                  :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+(push '("*grep*"                 :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+(push '("*nosetests*"            :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
+(push '("^\*WoMan.+\*$" :regexp t             :position bottom                                   ) popwin:special-display-config)
+(push '(helpful-mode :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
+(push '(help-mode :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
+(push '("*Keyboard layout*" :dedicated t :position bottom :stick t :noselect t :height 13) popwin:special-display-config)
+(push '(flymake-diagnostics-buffer-mode :dedicated t :position bottom :stick t :noselect t :width 0.3 :height 0.3) popwin:special-display-config)
+(push '("^\\*EGLOT" :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
+(push '("*info*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
+(push '("*eldoc*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
+(push '("*eww*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
+(push '("^\\*eldoc for" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
+(push '("^\\*Flycheck.+\\*$" :regexp t :dedicated t :position bottom :width 0.3 :height 0.3 :stick t :noselect t) popwin:special-display-config)
+(push '("^\\*Backtrace\\*" :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
+(push '("*lsp-documentation*" :dedicated t :position right :stick t :noselect t :width 0.3) popwin:special-display-config)
+(advice-add 'popwin:match-config :around #'spacemacs/advice-popwin)
+
+;; /prot-dotfiles/emacs/.emacs.d/prot-emacs-modules/prot-emacs-window.el:55
+(add-to-list 'display-buffer-alist
+             `("\\*\\(Output\\|Register Preview\\).*"
+               (display-buffer-reuse-mode-window display-buffer-at-bottom)))
+(add-to-list 'display-buffer-alist
+             `("\\*\\(Calendar\\|Bookmark Annotation\\|Buffer List\\).*"
+               (display-buffer-reuse-mode-window display-buffer-below-selected)
+               (window-height . fit-window-to-buffer)))
+
+(add-to-list 'display-buffer-alist
+             ;; bottom side window
+             `("\\*Org Select\\*" ; the `org-capture' key selection
+               (display-buffer-in-side-window)
+               (dedicated . t)
+               (side . bottom)
+               (slot . 0)
+               (window-parameters . ((mode-line-format . none)))))
+(add-to-list 'display-buffer-alist
+             `("\\*Embark Actions\\*"
+               (display-buffer-reuse-mode-window display-buffer-at-bottom)
+               (window-height . fit-window-to-buffer)
+               (window-parameters . ((no-other-window . t)
+                                     (mode-line-format . none)))))
+
+;;; popper
+
+(require 'popper)
+(setq popper-echo-dispatch-keys '(?q ?w ?e ?r ?t ?y ?u ?i ?o ?p))
+(setq popper-display-control nil) ; use popwin and display-buffer-alist
+(setq popper-reference-buffers
+      '("\\*Messages\\*"
+        ;; "Output\\*$"
+        "*cider-error*"
+        ;; "*cider-doc*"
+        ;; "^\\*eldoc for"
+        "\\*Async-native-compile-log\\*" ; JH
+        "^\\*EGLOT" ; JH
+        "^\\*Flycheck.+\\*$" ; JH
+        ;; treemacs-mode ; JH
+        "*Go-Translate*" ; JH
+        "*wordreference*" ; JH
+        "*tmr-tabulated-view*" ; JH
+        "*SDCV*" ; JH
+        "*Dogears List*" ; JH
+        "^\\*Backtrace\\*"
+        "*Hammy Log*"
+        ;; "*eww*"
+        "*lsp-documentation*"
+        "*devdocs-javascript*"
+        ;; zk-index-mode
+        help-mode
+        telega-chat-mode
+        helpful-mode
+        compilation-mode
+        process-menu-mode
+        special-mode
+        eww-mode
+        ;; "*Emacs Log*"
+        ;; "*command-log*" ; JH
+        flymake-diagnostics-buffer-mode))
+(add-to-list
+ 'popper-reference-buffers
+ '(("^\\*Warnings\\*$" . hide)
+   ("^\\*Compile-Log\\*$" . hide)
+   "^\\*Matlab Help.*\\*$"
+   "^\\*Messages\\*$"
+   ("*typst-ts-compilation*" . hide)
+   ("^\\*dash-docs-errors\\*$" . hide)
+   "^\\*evil-registers\\*"
+   "^\\*Apropos"
+   "^Calc:"
+   "^\\*eldoc\\*"
+   "^\\*TeX errors\\*"
+   "^\\*ielm\\*"
+   "^\\*TeX Help\\*"
+   "^\\*ChatGPT\\*"
+   "^\\*gptel-quick\\*"
+   "^\\*define-it:"
+   "\\*Shell Command Output\\*"
+   "\\*marginal notes\\*"
+   ("\\*Async Shell Command\\*" . hide)
+   "\\*Completions\\*"
+   "[Oo]utput\\*"))
+
+;; (global-set-key (kbd "C-`") 'popper-toggle)
+;; (global-set-key (kbd "C-~") 'popper-kill-latest-popup)
+;; (global-set-key (kbd "M-`") 'popper-cycle)
+;; (global-set-key (kbd "C-M-`") 'popper-toggle-type)
+(popper-mode +1)
+(popper-echo-mode +1)
 
 ;;; _
 (provide 'judy-theme)

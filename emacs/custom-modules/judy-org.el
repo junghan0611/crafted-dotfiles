@@ -224,6 +224,14 @@
                  :kill-buffer t
                  :jump-to-captured t)))
 
+;; https://emacs.stackexchange.com/questions/39434/evil-dont-yank-with-only-whitespace-to-register/53536#53536
+(with-eval-after-load 'evil-org
+  (define-key evil-normal-state-map "x" 'delete-forward-char)
+  (define-key evil-normal-state-map "X" 'delete-backward-char)
+  (evil-define-key 'normal 'evil-org-mode "x" 'delete-forward-char)
+  (evil-define-key 'normal 'evil-org-mode "X" 'delete-backward-char)
+  )
+
 ;;; _
 (provide 'judy-org)
 ;;; judy-org.el ends here

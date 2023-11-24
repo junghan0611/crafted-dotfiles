@@ -50,7 +50,12 @@
 ;;; tab-bar
 
 (require 'tab-bar)
-(setq auto-resize-tab-bars t) ; important
+
+(unless (display-graphic-p) ; terminal
+  (setq auto-resize-tab-bars nil) ; important
+  (setq tab-bar-separator nil) ; important
+  )
+
 (setq tab-bar-select-tab-modifiers '(control meta))
 (setq tab-bar-new-tab-choice "*scratch*")
 (setq tab-bar-close-button-show nil)
@@ -67,10 +72,9 @@
       '(
         tab-bar-separator
         tab-bar-format-menu-bar
-        ;; tab-bar-format-tabs
         tab-bar-format-tabs-groups
         tab-bar-separator
-        tab-bar-format-add-tab
+        ;; tab-bar-format-add-tab
 
         tab-bar-format-align-right
         tab-bar-format-global

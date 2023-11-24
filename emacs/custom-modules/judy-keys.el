@@ -15,12 +15,16 @@
   (global-set-key (kbd "C-s-l") 'tab-next)
   (global-set-key (kbd "s-\\") 'tab-bar-switch-to-tab)
   (global-set-key (kbd "C-s-1") #'(lambda() (interactive) (tab-bar-select-tab 1)))
-   (global-set-key (kbd "C-s-2") #'(lambda() (interactive) (tab-bar-select-tab 2)))
-   (global-set-key (kbd "C-s-3") #'(lambda() (interactive) (tab-bar-select-tab 3)))
-   (global-set-key (kbd "C-s-4") #'(lambda() (interactive) (tab-bar-select-tab 4)))
-   (global-set-key (kbd "C-s-5") #'(lambda() (interactive) (tab-bar-select-tab 5)))
-   (global-set-key (kbd "C-s-6") #'(lambda() (interactive) (tab-bar-select-tab 6)))
-   (global-set-key (kbd "C-s-7") #'(lambda() (interactive) (tab-bar-select-tab 7)))
+  (global-set-key (kbd "C-s-2") #'(lambda() (interactive) (tab-bar-select-tab 2)))
+  (global-set-key (kbd "C-s-3") #'(lambda() (interactive) (tab-bar-select-tab 3)))
+  (global-set-key (kbd "C-s-4") #'(lambda() (interactive) (tab-bar-select-tab 4)))
+  (global-set-key (kbd "C-s-5") #'(lambda() (interactive) (tab-bar-select-tab 5)))
+  (global-set-key (kbd "C-s-6") #'(lambda() (interactive) (tab-bar-select-tab 6)))
+  (global-set-key (kbd "C-s-7") #'(lambda() (interactive) (tab-bar-select-tab 7)))
+  (global-set-key (kbd "M-s-l") 'evil-window-right)
+  (global-set-key (kbd "M-s-h") 'evil-window-left)
+  (global-set-key (kbd "M-s-k") 'evil-window-up)
+  (global-set-key (kbd "M-s-j") 'evil-window-down)
   )
 
 ;; If you use a window manager be careful of possible key binding clashes
@@ -28,23 +32,44 @@
 (global-set-key (kbd "M-<iso-lefttab>") (lambda() (interactive) (other-window -1))) ; == M-S-<tab>
 (global-set-key (kbd "M-<backtab>") (lambda() (interactive) (other-window -1))) ; for terminal
 
+(global-set-key (kbd "<f7>") 'neotree-toggle)
 (global-set-key (kbd "<f8>") 'imenu-list-smart-toggle)
 (global-set-key (kbd "M-y") 'consult-yank-pop)
 
-;;;; Which Key
+;;;; jump out / in parens
 
-(require 'which-key)
+;; Keybindings
+;; 자동 완성 하지 않고 다음 줄 - C-<return>
+;; 자동 완성 하지 않고 괄호 점프 - Tab
+;; 자동 완성 하지 않고 현재 위치 - C-q : corfu-quit
+;; 자동 완성 하지 않고 다음 위치 - Space
+;; 자동 완성 - <return>
 
-(setq which-key-idle-delay 0.4
-      which-key-min-display-lines 6
-      which-key-idle-secondary-delay 0.01
-      which-key-max-description-length 40
-      which-key-sort-order 'which-key-key-order-alpha
-      which-key-allow-evil-operators t
-      )
+;;   ;; Tab 이 자동 완성이면 괄호 점프랑 충돌 난다.
+;;   ;; C-j/k C-n/p는 직관적인 기본 설정이므로 건들이지 않는다.
+(with-eval-after-load 'corfu
+  (evil-define-key '(insert) org-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
+  (evil-define-key '(insert) prog-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
 
-(which-key-mode +1)
+  (evil-define-key '(insert) prog-mode-map (kbd "<tab>") 'jump-out-of-pair)
+  (evil-define-key '(insert) prog-mode-map (kbd "TAB") 'jump-out-of-pair)
+  (evil-define-key '(insert) corfu-map (kbd "<tab>") 'jump-out-of-pair)
+  (evil-define-key '(insert) corfu-map (kbd "TAB") 'jump-out-of-pair)
 
+  ;; (define-key prog-mode-map (kbd "<backtab>") 'jump-backward-pair)
+  (evil-define-key '(insert) prog-mode-map (kbd "<backtab>") 'jump-backward-pair)
+  (evil-define-key '(insert) prog-mode-map (kbd "S-<iso-lefttab>") 'jump-backward-pair)
+  (evil-define-key '(insert) corfu-map (kbd "<backtab>") 'jump-backward-pair)
+  (evil-define-key '(insert) corfu-map (kbd "S-<iso-lefttab>") 'jump-backward-pair)
+
+  (evil-define-key '(insert) corfu-map (kbd "C-<return>") 'newline-and-indent) ;; <C-return>
+  (evil-define-key '(insert) prog-mode-map (kbd "C-<return>") 'newline-and-indent) ;; <C-return>
+
+  ;;     ;; M-g                             corfu-info-location
+  ;;     ;; M-h                             corfu-info-documentation
+  )
+
+;;; Disable general leader
 ;;;; General Definer
 
 ;; (general-create-definer judy-leader-keys
@@ -279,24 +304,6 @@
 ;;          (interactive "P")
 ;;          (scroll-other-window (- (or arg 1)))))
 
-(with-eval-after-load 'evil-maps
-  ;; 편집 창 포커스 이동을 간단하게
-  ;; (define-key evil-normal-state-map (kbd "<SPC> <right> ") 'evil-window-right)
-  ;; (define-key evil-normal-state-map (kbd "<SPC> <left> ") 'evil-window-left)
-  ;; (define-key evil-normal-state-map (kbd "<SPC> <up> ") 'evil-window-up)
-  ;; (define-key evil-normal-state-map (kbd "<SPC> <down> ") 'evil-window-down)
-
-  ;; replace "." search with consul-line in Evil normal state
-  ;; use default "/" evil search
-  ;; (evil-global-set-key 'normal "." 'consult-line)
-
-  (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
-  (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
-  (define-key evil-insert-state-map (kbd "C-a") 'evil-beginning-of-line)
-  (define-key evil-insert-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
-  ;; =C-w= 'insert 'evil-delete-backward-word
-  ;; =C-w= 'visual 'evil-window-map
-  )
 
 (provide 'judy-keys)
 ;;; judy-keys.el ends here

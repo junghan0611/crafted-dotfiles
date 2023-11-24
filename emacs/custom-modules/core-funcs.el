@@ -505,24 +505,24 @@ This solves the problem: Binding a key to: `find-file' calls: `ido-find-file'"
 ;;       (let ((embark-quit-after-action nil))
 ;;         (embark-dwim)))))
 
-(defun spacemacs/delete-current-buffer-file ()
-  "Removes file connected to current buffer and kills buffer."
-  (interactive)
-  (let ((filename (buffer-file-name))
-        (buffer (current-buffer))
-        (name (buffer-name)))
-    (if (not (and filename (file-exists-p filename)))
-        (ido-kill-buffer)
-      (if (yes-or-no-p
-           (format "Are you sure you want to delete this file: '%s'?" name))
-          (progn
-            (delete-file filename t)
-            (kill-buffer buffer)
-            ;; (when (and (configuration-layer/package-used-p 'projectile)
-            ;;            (projectile-project-p))
-            ;;   (call-interactively #'projectile-invalidate-cache))
-            (message "File deleted: '%s'" filename))
-        (message "Canceled: File deletion")))))
+;; (defun spacemacs/delete-current-buffer-file ()
+;;   "Removes file connected to current buffer and kills buffer."
+;;   (interactive)
+;;   (let ((filename (buffer-file-name))
+;;         (buffer (current-buffer))
+;;         (name (buffer-name)))
+;;     (if (not (and filename (file-exists-p filename)))
+;;         (ido-kill-buffer)
+;;       (if (yes-or-no-p
+;;            (format "Are you sure you want to delete this file: '%s'?" name))
+;;           (progn
+;;             (delete-file filename t)
+;;             (kill-buffer buffer)
+;;             ;; (when (and (configuration-layer/package-used-p 'projectile)
+;;             ;;            (projectile-project-p))
+;;             ;;   (call-interactively #'projectile-invalidate-cache))
+;;             (message "File deleted: '%s'" filename))
+;;         (message "Canceled: File deletion")))))
 
 ;; from magnars
 (defun spacemacs/sudo-edit (&optional arg)
@@ -612,37 +612,6 @@ removal."
              (backward-char))
             (t (backward-char 0))))))
 
-;; Keybindings
-;; 자동 완성 하지 않고 다음 줄 - C-<return>
-;; 자동 완성 하지 않고 괄호 점프 - Tab
-;; 자동 완성 하지 않고 현재 위치 - C-q : corfu-quit
-;; 자동 완성 하지 않고 다음 위치 - Space
-;; 자동 완성 - <return>
-
-;;   ;; Tab 이 자동 완성이면 괄호 점프랑 충돌 난다.
-;;   ;; C-j/k C-n/p는 직관적인 기본 설정이므로 건들이지 않는다.
-(with-eval-after-load 'corfu
-  (evil-define-key '(insert) org-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
-  (evil-define-key '(insert) prog-mode-map (kbd "C-M-<return>") 'jump-out-of-pair)
-
-  (evil-define-key '(insert) prog-mode-map (kbd "<tab>") 'jump-out-of-pair)
-  (evil-define-key '(insert) prog-mode-map (kbd "TAB") 'jump-out-of-pair)
-  (evil-define-key '(insert) corfu-map (kbd "<tab>") 'jump-out-of-pair)
-  (evil-define-key '(insert) corfu-map (kbd "TAB") 'jump-out-of-pair)
-
-  ;; (define-key prog-mode-map (kbd "<backtab>") 'jump-backward-pair)
-  (evil-define-key '(insert) prog-mode-map (kbd "<backtab>") 'jump-backward-pair)
-  (evil-define-key '(insert) prog-mode-map (kbd "S-<iso-lefttab>") 'jump-backward-pair)
-  (evil-define-key '(insert) corfu-map (kbd "<backtab>") 'jump-backward-pair)
-  (evil-define-key '(insert) corfu-map (kbd "S-<iso-lefttab>") 'jump-backward-pair)
-
-  (evil-define-key '(insert) corfu-map (kbd "C-<return>") 'newline-and-indent) ;; <C-return>
-  (evil-define-key '(insert) prog-mode-map (kbd "C-<return>") 'newline-and-indent) ;; <C-return>
-
-  ;;     ;; M-g                             corfu-info-location
-  ;;     ;; M-h                             corfu-info-documentation
-  )
-
 ;;; corgi
 
 ;; /corgi-packages/corgi-commands/corgi-commands.el:17
@@ -725,6 +694,18 @@ Will create one if it doesn't exist."
 ;;   (let ((cmd (key-binding (kbd "<tab>"))))
 ;;     (when (commandp cmd)
 ;;       (call-interactively cmd))))
+
+;;; tools
+
+(defun spacemacs/neotree-smart-focus ()
+  "Focus the `neotree' buffer, creating as necessary.
+If the imenu-list buffer is displayed in any window, focus it, otherwise create and focus.
+Note that all the windows in every frame searched, even invisible ones, not
+only those in the selected frame."
+  (interactive)
+  (if (get-buffer-window neo-buffer-name t)
+      (neotree-show)
+    (neotree-toggle)))
 
 (provide 'core-funcs)
 ;;; core-funcs.el ends here

@@ -43,6 +43,7 @@
     ("f" "spacemacs/compleseus-search-auto" spacemacs/compleseus-search-auto)
     ("F" "my/compleseus-search-auto-hidden" my/compleseus/search-auto-hidden))
    ("g" "Git"
+    ("c" "evilnc-comment-operator" evilnc-comment-operator)
     ("b" "Git blame" magit-blame))
    ("o" "Open"
     ("u" "Open URL at point" browse-url-at-point)

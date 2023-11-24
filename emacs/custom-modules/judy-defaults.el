@@ -36,9 +36,9 @@
 
 ;; Default editing
 (setq-default tab-width 2)
-;; (setq-default evil-shift-width tab-width)
 (setq-default indent-tabs-mode nil)
 (setq-default display-line-numbers-width-start t)
+;; (setq-default evil-shift-width tab-width)
 
 ;;; Hangul Korean
 
@@ -76,19 +76,6 @@
 (global-set-key (kbd "<Hangul>") 'toggle-input-method)
 ;; (global-unset-key (kbd "S-SPC"))
 
-;; 입력 모드에서만 한영 변환 가능!
-(defun my/turn-off-input-method (&rest _)
-  (if current-input-method
-      (deactivate-input-method)))
-
-(advice-add 'evil-normal-state :before #'my/turn-off-input-method)
-(mapc (lambda (mode)
-        (let ((keymap (intern (format "evil-%s-state-map" mode))))
-          (define-key (symbol-value keymap) [?\S- ]
-                      #'(lambda () (interactive)
-                          (message
-                           (format "Input method is disabled in %s state." evil-state))))))
-      '(motion normal visual))
 
 ;;; No Littering
 ;; banish customized variables

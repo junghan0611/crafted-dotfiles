@@ -73,6 +73,11 @@
 (add-to-list 'package-selected-packages 'imenu-list)
 (add-to-list 'package-selected-packages 'undo-fu)
 (add-to-list 'package-selected-packages 'tempel)
+(add-to-list 'package-selected-packages 'neotree)
+
+(add-to-list 'package-selected-packages 'evil-escape)
+(add-to-list 'package-selected-packages 'popwin)
+(add-to-list 'package-selected-packages 'popper)
 
 ;; (add-to-list 'package-selected-packages 'doom-themes)
 ;; (add-to-list 'package-selected-packages 'ct)
@@ -92,14 +97,11 @@
 (add-to-list 'package-selected-packages 'awk-ts-mode)
 (add-to-list 'package-selected-packages 'bats-mode)
 (add-to-list 'package-selected-packages 'xclip)
-
-;; 추가하고 melpa 로 등록
+(add-to-list 'package-selected-packages 'evil-org)
 (add-to-list 'package-selected-packages 'promise)
 (add-to-list 'package-selected-packages 'exercism)
 (add-to-list 'package-selected-packages 'evil-textobj-tree-sitter)
 (add-to-list 'package-selected-packages 'hungry-delete)
-
-
 (add-to-list 'package-selected-packages 'evil-surround)
 
 ;; judy-term
@@ -109,7 +111,6 @@
 
 ;; judy-dev (also writing)
 (add-to-list 'package-selected-packages 'let-alist)
-;; (add-to-list 'package-selected-packages 'flycheck) ?
 (add-to-list 'package-selected-packages 'flymake-aspell)
 
 (add-to-list 'package-selected-packages 'magit)
@@ -144,14 +145,16 @@
 
 ;;; Load configuration
 
-
 (global-unset-key (kbd "M-c"))  ; unset capitalize-word
 
 (require 'crafted-defaults-config)
 (require 'crafted-startup-config)
 (require 'crafted-completion-config)
 (require 'crafted-ui-config)
-(require 'crafted-evil-config)
+
+;; X (require 'crafted-evil-config)
+(require 'core-evil)
+
 (require 'crafted-ide-config)
 (require 'crafted-lisp-config)
 (require 'crafted-org-config)
@@ -164,16 +167,12 @@
                         '(crafted-startup-recentf crafted-startup-projects))
 
 ;; Custom modules
-
-(require 'core-funcs)
-
 (require 'per-machine)
-
-(require 'judy-completion)
+(require 'core-funcs)
 (require 'judy-defaults)
-(require 'judy-dev)
-
+(require 'judy-completion)
 (require 'judy-evil)
+(require 'judy-dev)
 
 (require 'judy-org)
 (require 'judy-term)

@@ -6,23 +6,21 @@
 
 ;;; Code:
 
-(require 'undo-fu)
-;; C-r 은 isearch-backward 가 기본
-(define-key evil-normal-state-map "u" 'undo-fu-only-undo)
-(define-key evil-normal-state-map "\C-r" 'undo-fu-only-redo)
+;;; Which Key
 
-;; Undo-fu customization options
-;; Undoing with a selection will use undo within that region.
-(setq undo-fu-allow-undo-in-region t)
-;; Use the `undo-fu-disable-checkpoint' command instead of Ctrl-G `keyboard-quit' for non-linear behavior.
-(setq undo-fu-ignore-keyboard-quit t)
-;; By default while in insert all changes are one big blob. Be more granular
-(setq evil-want-fine-undo t)
+(require 'which-key)
+
+(setq which-key-idle-delay 0.4
+      which-key-min-display-lines 6
+      which-key-idle-secondary-delay 0.01
+      which-key-max-description-length 40
+      which-key-sort-order 'which-key-key-order-alpha
+      which-key-allow-evil-operators t
+      )
+
+(which-key-mode +1)
 
 ;;; more motions
-;; Use Ctrl + vim-up/down to move between headings in org-mode
-;; (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
-;; (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
 
 ;; from DW
 (evil-define-key '(normal insert visual) org-mode-map (kbd "C-n") 'org-next-visible-heading)
@@ -38,9 +36,28 @@
 (evil-set-initial-state 'messages-buffer-mode 'normal)
 (evil-set-initial-state 'dashboard-mode 'normal)
 
-;; Some defaults
-(customize-set-variable 'evil-respect-visual-line-mode t)
-(customize-set-variable 'evil-want-abbrev-expand-on-insert-exit nil)
+;; Replace Emacs Tabs key bindings with Workspace key bindings
+(with-eval-after-load 'evil-maps
+  ;; 되는 것인가?
+  (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
+  (define-key evil-motion-state-map "gc" 'evilnc-comment-operator)
+  ;; 편집 창 포커스 이동을 간단하게
+  ;; (define-key evil-normal-state-map (kbd "<SPC> <right> ") 'evil-window-right)
+  ;; (define-key evil-normal-state-map (kbd "<SPC> <left> ") 'evil-window-left)
+  ;; (define-key evil-normal-state-map (kbd "<SPC> <up> ") 'evil-window-up)
+  ;; (define-key evil-normal-state-map (kbd "<SPC> <down> ") 'evil-window-down)
+
+  ;; replace "." search with consul-line in Evil normal state
+  ;; use default "/" evil search
+  ;; (evil-global-set-key 'normal "." 'consult-line)
+
+  (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
+  (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
+  (define-key evil-insert-state-map (kbd "C-a") 'evil-beginning-of-line)
+  (define-key evil-insert-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
+  ;; =C-w= 'insert 'evil-delete-backward-word
+  ;; =C-w= 'visual 'evil-window-map
+  )
 
 ;;; evil-surround
 (defun my/evil-org-additional-surround-pairs ()
@@ -50,42 +67,6 @@
 (add-hook 'org-mode-hook #'my/evil-org-additional-surround-pairs)
 (global-evil-surround-mode t)
 
-;;; evil
-
-(setq-default evil-want-C-u-scroll t)
-
-;; `evil-want-C-i-jump' is set to nil to avoid `TAB' being
-;; overlapped in terminal mode. The GUI specific `<C-i>' is used
-;; instead.
-
-(setq-default evil-want-C-i-jump t) ; use C-i / C-o  evil-jump-backward/forward
-
-(setq evil-want-C-h-delete nil)
-(setq evil-want-C-w-delete nil)
-
-;; Don't move the block cursor when toggling insert mode
-(setq evil-move-cursor-back nil) ; nil is better - default t
-;; Don't put overwritten text in the kill ring
-(setq evil-kill-on-visual-paste nil) ; needed
-
-(setq evil-move-beyond-eol nil) ; default nil
-
-;; Don't create a kill entry on every visual movement.
-;; More details: https://emacs.stackexchange.com/a/15054:
-(fset 'evil-visual-update-x-selection 'ignore)
-
-;; https://emacs.stackexchange.com/questions/39434/evil-dont-yank-with-only-whitespace-to-register/53536#53536
-(with-eval-after-load 'evil-org
-  (define-key evil-normal-state-map "x" 'delete-forward-char)
-  (define-key evil-normal-state-map "X" 'delete-backward-char)
-  (evil-define-key 'normal 'evil-org-mode "x" 'delete-forward-char)
-  (evil-define-key 'normal 'evil-org-mode "X" 'delete-backward-char)
-  )
-
-;; Prevent evil-motion-state from shadowing previous/next sexp
-(require 'evil-maps)
-(define-key evil-motion-state-map "L" nil)
-(define-key evil-motion-state-map "M" nil)
 
 ;;;; winner
 
@@ -102,7 +83,6 @@
 ;;; hungry-delete
 
 (require 'hungry-delete)
-
 (nconc hungry-delete-except-modes '(term-mode vterm-mode))
 (setq-default hungry-delete-chars-to-skip " \t\f\v") ; only horizontal whitespace
 
@@ -139,7 +119,7 @@
 
 (global-hungry-delete-mode t)
 
-;;; evil
+;;; evil-textobj-tree-sitter
 
 (require 'evil-textobj-tree-sitter)
 ;; bind `function.outer`(entire function block) to `f` for use in things like `vaf`, `yaf`
@@ -149,6 +129,36 @@
 ;; You can also bind multiple items and we will match the first one we can find
 (define-key evil-outer-text-objects-map "a" (evil-textobj-tree-sitter-get-textobj ("conditional.outer" "loop.outer")))
 
+;;; hangul input method
+
+;; 입력 모드에서만 한영 변환 가능!
+(defun my/turn-off-input-method (&rest _)
+  (if current-input-method
+      (deactivate-input-method)))
+
+(advice-add 'evil-normal-state :before #'my/turn-off-input-method)
+(mapc (lambda (mode)
+        (let ((keymap (intern (format "evil-%s-state-map" mode))))
+          (define-key (symbol-value keymap) [?\S- ]
+                      #'(lambda () (interactive)
+                          (message
+                           (format "Input method is disabled in %s state." evil-state))))))
+      '(motion normal visual))
+
+;;; evil-escape
+
+(require 'evil-escape)
+
+;; evil-escape - switch between insert and normal state
+;; fd 는 ㄹㅇ일 때 적용이 안되니 ,.을 입력 시 escape 하도록 바꿈.
+;; unordered 로 해보니 minor-mode 를 열기도 해서 아예 논란이 없도록 바꿈.
+(setq-default evil-escape-key-sequence ",.")
+(setq-default evil-escape-unordered-key-sequence nil)
+(setq-default evil-escape-delay 1.0) ;; 0.5, default 0.1
+;; (setq-default evil-escape-inhibit-functions nil)
+
+(evil-escape-mode)
+;; (add-to-list 'evil-escape-excluded-major-modes 'code-review-mode)
 
 ;;; _
 (provide 'judy-evil)

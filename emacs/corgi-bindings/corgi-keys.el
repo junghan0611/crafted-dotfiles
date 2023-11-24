@@ -50,6 +50,18 @@
   ("M-[ 4 ~" "End key" end-of-line)
   ("<select>" "Home key" end-of-line))
 
+ (motion
+  ("SPC" "Global leader key"
+   ("b" "Buffer commands"
+    ("b" "Switch buffer" consult-buffer)
+    ("B" "My Switch buffer" spacemacs/compleseus-switch-to-buffer)
+    ;; ("d" "Kill current buffer" kill-current-buffer)
+    ("d" "Kill current buffer" spacemacs/kill-this-buffer)
+    ("x" "kill buffer and window" kill-buffer-and-window)
+    ("k" "Pick & kill" kill-buffer)
+    ("l" "List buffers" list-buffers)
+    ("r" "Rename buffer" rename-buffer))))
+
  (normal|visual
   ("TAB" "Indent" :format/tab-indent)
   (">" "Slurp" :sexp/slurp-forward)
@@ -96,6 +108,7 @@
     ("f" "Find file" :file/open)
     ("s" "Save file" :file/save)
     ("S" "Save all" :file/save-all)
+    ("D" "delete current buffer file" delete-current-buffer-file)
     ("r" "Recently opened files" :file/open-recent)
     ("A" "Find alternate file" find-alternate-file)
     ("e" "Emacs files"
@@ -141,6 +154,8 @@
     ("1" "Delete other windows" delete-other-windows)
     ("2" "Two column layout" corgi/double-columns)
     ("/" "Split window right" split-window-right)
+    ("+" "window-layout-toggle" window-layout-toggle)
+    ("v" "Split window right" split-window-right)
     ("-" "Split window below" split-window-below)
     ("o" "Go to other window" other-window)
     ("d" "Delete window" delete-window))
@@ -156,25 +171,26 @@
     ("W" "Toggle hard word-wrap" :toggle/hard-word-wrap)
     ("W" "Toggle wrap at fill-column" visual-fill-column-mode))
 
+   ("i" "insertion"
+    ("i" "insert char" insert-char)
+    ("e" "emoji-search" emoji-search)
+    ("E" "emoji-list" emoji-list))
+
    ("x" "Text editing"
     ("t" "Transpose sexps" transpose-sexps)
     ("s" "Splice backwards" puni-splice-killing-backward))
 
+   ("v" "expand-region" er/expand-region)
+
    ("SPC" "Execute command (M-x)" :command/execute)
    ("u" "Universal prefix" universal-argument)
+   (";" "popper-toggle" popper-toggle)
+   (":" "popper-kill-latest-popup" popper-kill-latest-popup)
+
    ("TAB" "Switch to previous buffer" corgi/switch-to-previous-buffer)
-   ;; ("1" "Go to window 1" winum-select-window-1)
-   ;; ("2" "Go to window 2" winum-select-window-2)
-   ;; ("3" "Go to window 3" winum-select-window-3)
-   ;; ("4" "Go to window 4" winum-select-window-4)
-   ;; ("5" "Go to window 5" winum-select-window-5)
-   ;; ("6" "Go to window 6" winum-select-window-6)
-   ;; ("7" "Go to window 7" winum-select-window-7)
-   ;; ("8" "Go to window 8" winum-select-window-8)
-   ;; ("9" "Go to window 9" winum-select-window-9)
-   ;; ("0" "Go to window 0 or 10" winum-select-window-0-or-10)
    )
 
+  ;; leader key
   ("," "Project specific leader key"
 
    ("j" "Jack-in"
@@ -237,4 +253,5 @@
     ("n" "Toggle trace ns" :trace/toggle-ns))
 
    ("," "Eval from registry and pprint" :eval/registry-pprint)
-   ("<RET>" "Eval outer sexp" :eval/outer-sexp))))
+   ("<RET>" "Eval outer sexp" :eval/outer-sexp)))
+ )
