@@ -121,6 +121,37 @@
 (setq bookmark-default-file
       (expand-file-name ".cache/booksmark" user-emacs-directory))
 
+;;;; CJK Word Wrap
+
+;; Emacs 28 adds better word wrap / line break support for CJK.
+(setq word-wrap-by-category t) ; default nil
+
+;;;; default value
+
+;; default 120 emacs-29, 60 emacs-28
+(setq kill-ring-max 30) ; keep it small
+
+;; automatically revert buffers for changed files
+(setq auto-revert-interval 5) ; default 5
+
+;; 시간 표시 형식은 영어로 표시해서 호환성을 높입니다.
+(setq system-time-locale "C")
+
+;; Disable .# lock files
+(setq create-lockfiles nil)
+
+;; Shr group: Simple HTML Renderer 를 의미한다. 여기 설정을 바꾸면 faces 를 수정할 수 있음
+(setq shr-use-fonts nil)
+
+;; buffer size 를 표기 합니다.
+(setq size-indication-mode t)
+
+;; (global-visual-line-mode +1)
+
+;; (tooltip-mode -1)           ; Disable tooltips
+(tool-bar-mode -1)          ; Disable the toolbar
+(menu-bar-mode -1)          ; Disable the menu bar
+
 ;;;; dired
 
 (require 'dired)
@@ -178,6 +209,52 @@
   (kbd "S-SPC") 'dired-toggle-marks
   (kbd "h") 'dired-up-directory
   (kbd "l") 'dired-find-file)
+
+;;; gui and terminal
+
+(unless *is-termux*
+  ;; Disable visible scrollbar
+  (scroll-bar-mode -1))
+
+(unless (display-graphic-p) ; gui
+  (require 'xclip)
+  (xclip-mode 1)
+  (require 'term-keys)
+  (term-keys-mode t)
+
+  ;; Read 'The Forgotten History of the Blinking Cursor'
+  (blink-cursor-mode 1)
+  (set-fringe-mode 10) ;; Give some breathing room
+  (tooltip-mode 1)
+
+  ;; For my mouse that also has left - right mouse scroll
+  (setq mouse-wheel-tilt-scroll t)
+  (setq mouse-wheel-scroll-amount-horizontal 2)
+  (setq mouse-wheel-flip-direction nil) ; default nil
+  )
+
+(unless (display-graphic-p) ; terminal
+  (menu-bar-mode -1)          ; Disable the menu bar
+  (blink-cursor-mode -1)
+  (gpm-mouse-mode -1)
+  (xterm-mouse-mode -1)
+  (mouse-wheel-mode -1)
+  (pixel-scroll-precision-mode -1)
+
+  (setq all-the-icons-color-icons nil)
+
+  (setq mouse-wheel-follow-mouse -1)
+  (setq
+   mouse-drag-and-drop-region nil
+   mouse-drag-and-drop-region-cross-program nil
+   auto-window-vscroll nil
+   fast-but-imprecise-scrolling nil
+   scroll-preserve-screen-position nil
+   pixel-scroll-precision-use-momentum nil
+   )
+
+  (setq evil-motions nil)
+  )
 
 ;;; _
 (provide 'judy-defaults)

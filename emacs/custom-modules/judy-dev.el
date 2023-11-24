@@ -154,9 +154,6 @@
 (add-to-list 'outli-heading-config '(elixir-ts-mode "##" ?# t))
 (add-to-list 'outli-heading-config '(sh-mode "##" ?# t))
 (add-to-list 'outli-heading-config '(bash-ts-mode "##" ?# t))
-
-;; ess
-
 (add-to-list 'outli-heading-config '(clojure-mode ";;" ?\; t))
 (add-to-list 'outli-heading-config '(clojurescript-mode ";;" ?\; t))
 ;; check - outline-mode-map

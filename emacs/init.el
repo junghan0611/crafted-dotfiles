@@ -13,6 +13,30 @@
 (when (file-exists-p custom-file)
   (load custom-file nil :nomessage))
 
+;;; pinned-melpa-packages
+
+(defvar my/pinned-melpa-packages
+  '(
+    corfu
+    kind-icon
+    tempel
+    promise
+    nerd-icons
+    nerd-icons-dired
+    nerd-icons-completion
+    exercism
+    treesit-auto
+    magit
+    evil-textobj-tree-sitter
+    )
+  )
+
+(customize-set-variable 'package-pinned-packages
+      `(,@(mapcar
+           (lambda (package)
+             (cons package "melpa"))
+           my/pinned-melpa-packages)))
+
 ;;; Bootstrap Crafted Emacs
 (load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))
 
@@ -31,13 +55,10 @@
 ;;;; Additional packages for custom modules
 
 ;; judy-keys
-(add-to-list 'package-selected-packages 'general)
-(add-to-list 'package-selected-packages 'combobulate)
+;; (add-to-list 'package-selected-packages 'general)
+;; (add-to-list 'package-selected-packages 'combobulate)
 (add-to-list 'package-selected-packages 'which-key)
 (add-to-list 'package-selected-packages 'pcre2el)
-;; (add-to-list 'package-selected-packages 'doom-themes)
-;; (add-to-list 'package-selected-packages 'ct)
-;; (add-to-list 'package-selected-packages 'auto-dim-other-buffers)
 (add-to-list 'package-selected-packages 'doom-modeline)
 (add-to-list 'package-selected-packages 'winum)
 (add-to-list 'package-selected-packages 'kind-icon)
@@ -47,9 +68,14 @@
 (add-to-list 'package-selected-packages 'goto-last-change)
 (add-to-list 'package-selected-packages 'nerd-icons-dired)
 (add-to-list 'package-selected-packages 'nerd-icons-completion)
-;; (add-to-list 'package-selected-packages 'imenu-list)
+(add-to-list 'package-selected-packages 'imenu-list)
+(add-to-list 'package-selected-packages 'undo-fu)
+(add-to-list 'package-selected-packages 'tempel)
+
+;; (add-to-list 'package-selected-packages 'doom-themes)
+;; (add-to-list 'package-selected-packages 'ct)
+;; (add-to-list 'package-selected-packages 'auto-dim-other-buffers)
 ;; (add-to-list 'package-selected-packages 'rainbow-mode)
-;; (add-to-list 'package-selected-packages 'ansi-color)
 
 (add-to-list 'package-selected-packages 'hydra)
 (add-to-list 'package-selected-packages 'major-mode-hydra) ; contains pretty-hydra
@@ -63,20 +89,15 @@
 (add-to-list 'package-selected-packages 'keycast)
 (add-to-list 'package-selected-packages 'awk-ts-mode)
 (add-to-list 'package-selected-packages 'bats-mode)
+(add-to-list 'package-selected-packages 'xclip)
 
 ;; 추가하고 melpa 로 등록
 (add-to-list 'package-selected-packages 'promise)
 (add-to-list 'package-selected-packages 'exercism)
+(add-to-list 'package-selected-packages 'evil-textobj-tree-sitter)
+(add-to-list 'package-selected-packages 'hungry-delete)
 
-(add-to-list 'package-pinned-packages (cons 'promise "melpa"))
-(add-to-list 'package-pinned-packages (cons 'nerd-icons "melpa"))
-(add-to-list 'package-pinned-packages (cons 'nerd-icons-dired "melpa"))
-(add-to-list 'package-pinned-packages (cons 'nerd-icons-completion "melpa"))
-(add-to-list 'package-pinned-packages (cons 'exercism "melpa"))
-(add-to-list 'package-pinned-packages (cons 'treesit-auto "melpa"))
-(add-to-list 'package-pinned-packages (cons 'magit "melpa"))
 
-;; judy-evil
 (add-to-list 'package-selected-packages 'evil-surround)
 
 ;; judy-term
@@ -110,10 +131,17 @@
 ;; (add-to-list 'package-selected-packages 'arduino-mode)
 ;; (add-to-list 'package-selected-packages 'arduino-cli-mode)
 
+(unless (package-installed-p 'term-keys)
+  (package-vc-install "https://github.com/junghan0611/term-keys"))
+
+(unless (package-installed-p 'outli)
+  (package-vc-install "https://github.com/jdtsmith/outli"))
+
 ;;; Install packages
 (package-install-selected-packages :noconfirm)
 
 ;;; Load configuration
+
 
 (global-unset-key (kbd "M-c"))  ; unset capitalize-word
 
@@ -132,6 +160,7 @@
 
 (customize-set-variable 'crafted-startup-module-list
                         '(crafted-startup-recentf crafted-startup-projects))
+
 ;; Custom modules
 
 (require 'core-funcs)
@@ -161,7 +190,31 @@
 (require 'judy-transparency)
 (judy-transparency-init 94)
 
+
 (message "END")
+
+;;; corkey bindings
+
+(dolist (dir '("corkey" "corgi-bindings"))
+  (push (expand-file-name dir user-emacs-directory) load-path))
+
+(message "Loading corgi-bindings...")
+(require 'corgi-bindings)
+;; Corgi's keybinding system, which builds on top of Evil. See the manual, or
+;; visit the key binding and signal files (with `SPC f e k', `SPC f e K', `SPC
+;; f e s' `SPC f e S')
+;; Put this last here, otherwise keybindings for commands that aren't loaded
+;; yet won't be active.
+
+(message "Loading corkey...")
+(require 'corkey)
+(corkey-mode 1)
+;; Automatically pick up keybinding changes
+(corkey/load-and-watch)
+
+;;; Dashboard
+
+(message "Loading Dashboard...")
 
 (when (= 1 (length (tab-bar-tabs)))
   (tab-bar-new-tab)
@@ -187,34 +240,6 @@
 (setq treesit-auto-install 'prompt)
 (crafted-ide-configure-tree-sitter)
 ;; install all language grammars, except protobuf
-
-;;; corgi-bindings corkey
-
-(dolist (dir '("corkey" "corgi-bindings"))
-  (push (expand-file-name dir user-emacs-directory) load-path))
-
-(message "Loading corgi-bindings")
-(require 'corgi-bindings)
-;; Corgi's keybinding system, which builds on top of Evil. See the manual, or
-;; visit the key binding and signal files (with `SPC f e k', `SPC f e K', `SPC
-;; f e s' `SPC f e S')
-;; Put this last here, otherwise keybindings for commands that aren't loaded
-;; yet won't be active.
-
-(message "Loading corkey")
-(require 'corkey)
-(corkey-mode 1)
-;; Automatically pick up keybinding changes
-(corkey/load-and-watch)
-
-(message "End of init.el")
-
-;; (use-package esup
-;;   :ensure nil
-;;   :init
-;;   (unless (package-installed-p 'esup)
-;;     (package-vc-install "https://github.com/kiennq/esup.git"))
-;;   :commands esup)
 
 ;;; _
 (provide 'init)

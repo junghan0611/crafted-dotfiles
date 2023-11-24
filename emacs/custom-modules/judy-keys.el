@@ -28,13 +28,17 @@
 (global-set-key (kbd "M-<iso-lefttab>") (lambda() (interactive) (other-window -1))) ; == M-S-<tab>
 (global-set-key (kbd "M-<backtab>") (lambda() (interactive) (other-window -1))) ; for terminal
 
+(global-set-key (kbd "<f8>") 'imenu-list-smart-toggle)
+(global-set-key (kbd "M-y") 'consult-yank-pop)
+
 ;;;; Which Key
+
 (require 'which-key)
 
 (setq which-key-idle-delay 0.4
-      which-key-min-display-lines 3
+      which-key-min-display-lines 6
       which-key-idle-secondary-delay 0.01
-      which-key-max-description-length 32
+      which-key-max-description-length 40
       which-key-sort-order 'which-key-key-order-alpha
       which-key-allow-evil-operators t
       )
