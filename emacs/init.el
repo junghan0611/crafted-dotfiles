@@ -83,7 +83,7 @@
 
 (add-to-list 'package-selected-packages 'evil-escape)
 (add-to-list 'package-selected-packages 'popper)
-;; (add-to-list 'package-selected-packages 'popwin)
+(add-to-list 'package-selected-packages 'shackle)
 
 ;; (add-to-list 'package-selected-packages 'doom-themes)
 ;; (add-to-list 'package-selected-packages 'ct)
@@ -110,6 +110,7 @@
 (add-to-list 'package-selected-packages 'evil-textobj-tree-sitter)
 (add-to-list 'package-selected-packages 'hungry-delete)
 (add-to-list 'package-selected-packages 'evil-surround)
+(add-to-list 'package-selected-packages 'org-contrib)
 
 ;; judy-term
 (if (member system-type '(windows-nt ms-dos))
@@ -143,6 +144,9 @@
 
 (unless (package-installed-p 'term-keys)
   (package-vc-install "https://github.com/junghan0611/term-keys"))
+
+;; (unless (package-installed-p 'org-mode-crate)
+;;   (package-vc-install "https://github.com/junghan0611/org-mode-crate"))
 
 (unless (package-installed-p 'outli)
   (package-vc-install "https://github.com/jdtsmith/outli"))

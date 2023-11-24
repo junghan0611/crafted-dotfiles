@@ -6,6 +6,8 @@
 
 ;;; Code:
 
+(setq inhibit-compacting-font-caches t)
+
 ;; Show recursion depth in minibuffer (see `enable-recursive-minibuffers')
 (minibuffer-depth-indicate-mode 1)
 
@@ -242,68 +244,23 @@
       neo-modern-sidebar t
       neo-vc-integration nil)
 
-;;; popwin
+;;; shackle
 
-;; (defun spacemacs/advice-popwin (orig-fun &rest args)
-;;   "Advice to `popwin:match-config' around to save the buffer active."
-;;   (let ((result (apply orig-fun args)))
-;;     (when result
-;;       (setq spacemacs-popwin--last-buffer (car args)))
-;;     result))
+(require 'shackle)
+(setq shackle-default-size 0.4
+      shackle-rules `((help-mode                       :select t :align right :size ,fill-column)
+                      (helpful-mode                    :select t :align right :size ,fill-column)
+                      ("*Messages*"                    :select t :align t)
+                      ("*eldoc*"                       :align t)
+                      (special-mode                    :align t)
+                      (process-menu-mode               :align t)
+                      (compilation-mode                :align t)
+                      (flymake-diagnostics-buffer-mode :align t)
+                      ("*Shell Command Output*"        :align t)
+                      ("*Async Shell Command*"         :align t)
+                      ("\\*EGLOT.*"                    :select t :align right :size ,fill-column :regexp t)))
 
-;; (require 'popwin)
-;; (popwin-mode 1)
-
-;; ;; don't use default value but manage it ourselves
-;; (setq popwin:special-display-config nil)
-
-;; ;; buffers that we manage
-;; (push '("*quickrun*"             :dedicated t :position bottom :stick t :noselect t   :height 0.3) popwin:special-display-config)
-;; (push '("*Help*"                 :dedicated t :position bottom :stick t :noselect t   :height 0.4) popwin:special-display-config)
-;; (push '("*Process List*"         :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
-;; (push '("*Shell Command Output*" :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-;; (push '("*Async Shell Command*"  :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-;; (push '("*ert*"                  :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-;; (push '("*grep*"                 :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-;; (push '("*nosetests*"            :dedicated t :position bottom :stick t :noselect nil            ) popwin:special-display-config)
-;; (push '("^\*WoMan.+\*$" :regexp t             :position bottom                                   ) popwin:special-display-config)
-;; (push '(helpful-mode :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
-;; (push '(help-mode :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
-;; (push '("*Keyboard layout*" :dedicated t :position bottom :stick t :noselect t :height 13) popwin:special-display-config)
-;; (push '(flymake-diagnostics-buffer-mode :dedicated t :position bottom :stick t :noselect t :width 0.3 :height 0.3) popwin:special-display-config)
-;; (push '("^\\*EGLOT" :dedicated t :position bottom :stick t :noselect t :height 0.4) popwin:special-display-config)
-;; (push '("*info*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
-;; (push '("*eldoc*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
-;; (push '("*eww*" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
-;; (push '("^\\*eldoc for" :dedicated t :position right :stick t :noselect t :width 80) popwin:special-display-config)
-;; (push '("^\\*Flycheck.+\\*$" :regexp t :dedicated t :position bottom :width 0.3 :height 0.3 :stick t :noselect t) popwin:special-display-config)
-;; (push '("^\\*Backtrace\\*" :dedicated t :position bottom :stick t :noselect nil :height 0.4) popwin:special-display-config)
-;; (push '("*lsp-documentation*" :dedicated t :position right :stick t :noselect t :width 0.3) popwin:special-display-config)
-;; (advice-add 'popwin:match-config :around #'spacemacs/advice-popwin)
-
-;; /prot-dotfiles/emacs/.emacs.d/prot-emacs-modules/prot-emacs-window.el:55
-(add-to-list 'display-buffer-alist
-             `("\\*\\(Output\\|Register Preview\\).*"
-               (display-buffer-reuse-mode-window display-buffer-at-bottom)))
-(add-to-list 'display-buffer-alist
-             `("\\*\\(Calendar\\|Bookmark Annotation\\|Buffer List\\).*"
-               (display-buffer-reuse-mode-window display-buffer-below-selected)
-               (window-height . fit-window-to-buffer)))
-
-(add-to-list 'display-buffer-alist
-             ;; bottom side window
-             `("\\*Org Select\\*" ; the `org-capture' key selection
-               (display-buffer-in-side-window)
-               (dedicated . t)
-               (side . bottom)
-               (slot . 0)
-               (window-parameters . ((mode-line-format . none)))))
-(add-to-list 'display-buffer-alist
-             `("\\*Embark Actions\\*"
-               (display-buffer-reuse-mode-window display-buffer-at-bottom)
-               (window-height . fit-window-to-buffer)
-               (window-parameters . ((no-other-window . t)
-                                     (mode-line-format . none)))))
+(add-hook 'after-init-hook 'shackle-mode)
 
 ;;; popper
 

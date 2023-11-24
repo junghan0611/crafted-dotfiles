@@ -9,9 +9,25 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c \\") 'org-tags-sparse-tree)
 
+;; Agenda does not have a key-binding by default.
+;; Provide one as a starting point.
+(global-set-key (kbd "<f12>") 'org-agenda)
+
 (setq org-directory user-org-directory)
 (setq denote-directory (concat org-directory "roam/notes/"))
 ;; (setq org-roam-directory (concat org-directory "roam/"))
+
+(require 'org-mode-crate)
+
+(setq org-tag-alist
+      '(("next" . ?x)
+        ("notes" . ?n)
+        ("important" . ?i)
+        ("action_items" . ?a)
+        ("joy" . ?j)
+        ("waiting" . ?w)))
+
+(defvar bh/organization-task-id "eb155a82-92b2-4f25-a3c6-0304591af2f9")
 
 (setq org-workflow-directory (concat org-directory "roam/workflow/"))
 (setq org-inbox-file (concat org-workflow-directory "20230202T020200--inbox__agenda.org"))
