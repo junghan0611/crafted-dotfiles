@@ -217,6 +217,17 @@
 
 (add-hook 'after-init-hook #'my/load-global-mode-string)
 
+;;; nerd-icons
+
+(require 'nerd-icons-dired)
+(require 'nerd-icons-completion)
+
+(when (display-graphic-p) ; gui
+  (add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
+  (nerd-icons-completion-mode)
+  )
+
+
 ;;; _
 (provide 'judy-theme)
 ;;; judy-theme.el ends here

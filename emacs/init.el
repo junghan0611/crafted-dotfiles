@@ -8,13 +8,6 @@
 
 ;;; Custom file
 
-(customize-set-variable
- 'package-archive-priorities
- '(("melpa"    . 99) ("nongnu" . 80) ("stable" . 70) ("gnu"  . 0)))
-
-(setq package-archive-priorities
-      '(("melpa"    . 99) ("nongnu" . 80) ("stable" . 70) ("gnu"  . 0)))
-
 (setq custom-file
       (expand-file-name ".cache/custom-vars.el" user-emacs-directory))
 (when (file-exists-p custom-file)
@@ -48,6 +41,12 @@
 (add-to-list 'package-selected-packages 'doom-modeline)
 (add-to-list 'package-selected-packages 'winum)
 (add-to-list 'package-selected-packages 'kind-icon)
+(add-to-list 'package-selected-packages 'avy)
+(add-to-list 'package-selected-packages 'string-edit-at-point)
+(add-to-list 'package-selected-packages 'expand-region)
+(add-to-list 'package-selected-packages 'goto-last-change)
+(add-to-list 'package-selected-packages 'nerd-icons-dired)
+(add-to-list 'package-selected-packages 'nerd-icons-completion)
 ;; (add-to-list 'package-selected-packages 'imenu-list)
 ;; (add-to-list 'package-selected-packages 'rainbow-mode)
 ;; (add-to-list 'package-selected-packages 'ansi-color)
@@ -58,20 +57,24 @@
 ;; judy-theme
 (unless (member 'modus-vivendi (custom-available-themes))
   (add-to-list 'package-selected-packages 'modus-themes))
+
 (add-to-list 'package-selected-packages 'ef-themes)
 ;; (add-to-list 'package-selected-packages 'fontaine)
 (add-to-list 'package-selected-packages 'keycast)
 (add-to-list 'package-selected-packages 'awk-ts-mode)
 (add-to-list 'package-selected-packages 'bats-mode)
-;; (add-to-list 'package-selected-packages 'asdf)
 
 ;; 추가하고 melpa 로 등록
 (add-to-list 'package-selected-packages 'promise)
 (add-to-list 'package-selected-packages 'exercism)
+
 (add-to-list 'package-pinned-packages (cons 'promise "melpa"))
 (add-to-list 'package-pinned-packages (cons 'nerd-icons "melpa"))
+(add-to-list 'package-pinned-packages (cons 'nerd-icons-dired "melpa"))
+(add-to-list 'package-pinned-packages (cons 'nerd-icons-completion "melpa"))
 (add-to-list 'package-pinned-packages (cons 'exercism "melpa"))
 (add-to-list 'package-pinned-packages (cons 'treesit-auto "melpa"))
+(add-to-list 'package-pinned-packages (cons 'magit "melpa"))
 
 ;; judy-evil
 (add-to-list 'package-selected-packages 'evil-surround)
@@ -173,7 +176,7 @@
   (tab-bar-select-tab 3)
   (dired user-org-directory) ;; per-machine.el
   (tab-bar-select-tab 4)
-  (find-file "~/.config/emacs/init.el")
+  (find-file user-init-file)
   (delete-other-windows)
   (tab-bar-select-tab 1)
   (org-agenda nil "a")
@@ -184,6 +187,34 @@
 (setq treesit-auto-install 'prompt)
 (crafted-ide-configure-tree-sitter)
 ;; install all language grammars, except protobuf
+
+;;; corgi-bindings corkey
+
+(dolist (dir '("corkey" "corgi-bindings"))
+  (push (expand-file-name dir user-emacs-directory) load-path))
+
+(message "Loading corgi-bindings")
+(require 'corgi-bindings)
+;; Corgi's keybinding system, which builds on top of Evil. See the manual, or
+;; visit the key binding and signal files (with `SPC f e k', `SPC f e K', `SPC
+;; f e s' `SPC f e S')
+;; Put this last here, otherwise keybindings for commands that aren't loaded
+;; yet won't be active.
+
+(message "Loading corkey")
+(require 'corkey)
+(corkey-mode 1)
+;; Automatically pick up keybinding changes
+(corkey/load-and-watch)
+
+(message "End of init.el")
+
+;; (use-package esup
+;;   :ensure nil
+;;   :init
+;;   (unless (package-installed-p 'esup)
+;;     (package-vc-install "https://github.com/kiennq/esup.git"))
+;;   :commands esup)
 
 ;;; _
 (provide 'init)

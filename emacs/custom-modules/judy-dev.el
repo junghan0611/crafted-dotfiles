@@ -140,13 +140,66 @@
 
 ;; (outli :location (recipe :fetcher github :repo "jdtsmith/outli"))
 (require 'outli)
-(setq outli-blend nil)
+
+;; (add-to-list 'outli-heading-config '(tex-mode "%%" ?% t))
+(add-to-list 'outli-heading-config '(js2-mode "//" ?\/ t))
+(add-to-list 'outli-heading-config '(js-ts-mode "//" ?\/ t))
+(add-to-list 'outli-heading-config '(typescript-mode "//" ?\/ t))
+(add-to-list 'outli-heading-config '(typescript-ts-mode "//" ?\/ t))
+(add-to-list 'outli-heading-config '(python-mode "##" ?# t))
+(add-to-list 'outli-heading-config '(python-ts-mode "##" ?# t))
+(add-to-list 'outli-heading-config '(awk-mode "##" ?# t))
+(add-to-list 'outli-heading-config '(awk-ts-mode "##" ?# t))
+(add-to-list 'outli-heading-config '(elixir-mode "##" ?# t))
+(add-to-list 'outli-heading-config '(elixir-ts-mode "##" ?# t))
+(add-to-list 'outli-heading-config '(sh-mode "##" ?# t))
+(add-to-list 'outli-heading-config '(bash-ts-mode "##" ?# t))
+
+;; ess
+
 (add-to-list 'outli-heading-config '(clojure-mode ";;" ?\; t))
 (add-to-list 'outli-heading-config '(clojurescript-mode ";;" ?\; t))
 ;; check - outline-mode-map
 ;; :bind (:map outli-mode-map ; convenience key to get back to containing heading
 ;;             ("C-c o" . (lambda () (interactive) (outline-back-to-heading))))
 (add-hook 'prog-mode-hook 'outli-mode) ; not markdown-mode!
+
+(with-eval-after-load 'outli
+  ;; evil normal keybinding is perfer
+  ;; (evil-define-key '(normal visual) outli-mode-map (kbd "S-<tab>") `(menu-item "" ,(lambda () (interactive) (outline-cycle -1)) :filter outli--on-heading))
+  ;; (evil-define-key '(normal visual) outli-mode-map (kbd "S-TAB") `(menu-item "" ,(lambda () (interactive) (outline-cycle -1)) :filter outli--on-heading))
+  ;; (evil-define-key '(normal visual) outli-mode-map (kbd "<backtab>") `(menu-item "" ,(lambda () (interactive) (outline-cycle -1)) :filter outli--on-heading))
+  ;; (evil-define-key '(normal visual) outli-mode-map (kbd "S-<iso-lefttab>") `(menu-item "" ,(lambda () (interactive) (outline-cycle -1)) :filter outli--on-heading))
+
+  (evil-define-key '(normal visual) outli-mode-map (kbd "S-<tab>") 'recenter-top-bottom)
+  (evil-define-key '(normal visual) outli-mode-map (kbd "S-TAB") 'recenter-top-bottom)
+  (evil-define-key '(normal visual) outli-mode-map (kbd "<backtab>") 'recenter-top-bottom)
+  (evil-define-key '(normal visual) outli-mode-map (kbd "S-<iso-lefttab>") 'recenter-top-bottom)
+
+  ;; 'TAB' for terminal emacs
+  (evil-define-key '(normal visual) outli-mode-map (kbd "<tab>") `(menu-item "" outline-cycle :filter outli--on-heading))
+  (evil-define-key '(normal visual) outli-mode-map (kbd "TAB") `(menu-item "" outline-cycle :filter outli--on-heading))
+
+  (evil-define-key '(normal visual) prog-mode-map (kbd "<tab>") 'indent-for-tab-command)
+  (evil-define-key '(normal visual) prog-mode-map (kbd "TAB") 'indent-for-tab-command)
+
+  (evil-define-key '(normal) outli-mode-map (kbd "C-c 1") (lambda () (interactive) (outline--show-headings-up-to-level 1)))
+  (evil-define-key '(normal) outli-mode-map (kbd "C-c 2") (lambda () (interactive) (outline--show-headings-up-to-level 2)))
+  (evil-define-key '(normal) outli-mode-map (kbd "C-c 3") (lambda () (interactive) (outline--show-headings-up-to-level 3)))
+  (evil-define-key '(normal) outli-mode-map (kbd "C-c 4") (lambda () (interactive) (outline--show-headings-up-to-level 4)))
+  (evil-define-key '(normal) outli-mode-map (kbd "C-c 5") (lambda () (interactive) (outline--show-headings-up-to-level 5)))
+
+  (evil-define-key '(normal) outli-mode-map (kbd "C-M-<tab>") 'outline-cycle-buffer)
+
+  ;; (define-key outli-mode-map (kbd "C-M-<iso-lefttab>")
+  ;;             (lambda () (interactive) (outline-cycle-buffer)))
+
+  (evil-define-key '(normal insert) outli-mode-map (kbd "C-n") 'outline-next-visible-heading) ; this works
+  (evil-define-key '(normal insert) outli-mode-map (kbd "C-p") 'outline-previous-visible-heading)
+
+  (define-key prog-mode-map (kbd "C-c H") 'outline-insert-heading)
+  (define-key prog-mode-map (kbd "C-c o") 'consult-outline)
+  )
 
 ;;;; Common Lisp
 ;; (customize-set-variable 'inferior-lisp-program (if (executable-find "ros")
@@ -162,20 +215,17 @@
 
 ;;; Exercism
 
-;;(global-set-key (kbd "M-c e") 'exercism)
+(require 'exercism)
+(global-set-key (kbd "M-c e") 'exercism)
+(global-set-key (kbd "M-g M-e") 'exercism)
 
 ;; (when (require 'exercism nil :noerror)
 ;;   (customize-set-variable 'exercism-display-tests-after-run t)
 ;;   (keymap-global-set "M-g 0" 'exercism)
 ;;   )
 
-;; (require 'exercism)
 (require 'awk-ts-mode)
 (require 'bats-mode)
-(bats-mode)
-
-;; (require 'asdf)
-;; (asdf-enable)
 
 ;;; _
 (provide 'judy-dev)

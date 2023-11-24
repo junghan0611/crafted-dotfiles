@@ -174,6 +174,8 @@
 (evil-define-key 'normal wdired-mode-map (kbd "^") 'evil-first-non-blank)
 (evil-define-key 'normal dired-mode-map
   (kbd "C-c C-e") 'wdired-change-to-wdired-mode
+  (kbd ".") 'consult-line
+  (kbd "S-SPC") 'dired-toggle-marks
   (kbd "h") 'dired-up-directory
   (kbd "l") 'dired-find-file)
 
