@@ -34,11 +34,6 @@
 
 ;;; Base UI
 (customize-set-variable 'initial-scratch-message nil)
-(scroll-bar-mode -1)   ;; Disable visible scrollbar
-(tool-bar-mode -1)     ;; Disable toolbar
-(tooltip-mode 1)      ;; Enable tooltips
-(menu-bar-mode -1)     ;; disable menubar
-(set-fringe-mode 10)   ;; "breathing room"
 (setq ring-bell-function 'ignore)
 
 ;;; Line Numbers
