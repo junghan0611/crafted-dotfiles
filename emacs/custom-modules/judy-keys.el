@@ -306,7 +306,8 @@
 
 ;;; flyspell
 
-(unbind-key "C-M-i" 'flyspell-mode-map)
+(with-eval-after-load 'flyspell
+  (unbind-key "C-M-i" 'flyspell-mode-map))
 
 (provide 'judy-keys)
 ;;; judy-keys.el ends here

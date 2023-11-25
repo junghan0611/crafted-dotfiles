@@ -257,10 +257,12 @@
       shackle-rules `(
                       ;; (help-mode                       :select t :align right :size ,fill-column)
                       ;; (helpful-mode                    :select t :align right :size ,fill-column)
+
+                      ;; select nil 일 때, 'q' 로 바로 닫을 수 있다.
                       (help-mode                       :select nil :align t)
                       (helpful-mode                    :select nil :align t)
 
-                      ("*Messages*"                    :select t :align t)
+                      ("*Messages*"                    :select nil :align t)
                       ("*eldoc*"                       :align t)
                       (special-mode                    :align t)
                       (process-menu-mode               :align t)

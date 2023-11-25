@@ -15,9 +15,39 @@
 (when (file-exists-p custom-file)
   (load custom-file nil :nomessage))
 
-;;; pinned-melpa-packages
+;;; pinned-stable-packages
 
-(defvar my/package-selected-packages-melpa
+(defvar my/package-selected-packages-stable
+  '(
+    cider
+    clojure-mode
+    ))
+
+(customize-set-variable 'package-pinned-packages
+                        `(,@(mapcar
+                             (lambda (package)
+                               (cons package "stable"))
+                             my/package-selected-packages-stable)))
+
+;;; Bootstrap Crafted Emacs
+(load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))
+
+(setq treesit-extra-load-path `(,(concat user-emacs-directory "tree-sitter/")))
+
+;;; Configure packages to install
+
+(require 'crafted-completion-packages)
+(require 'crafted-evil-packages)
+(require 'crafted-ide-packages)
+(require 'crafted-lisp-packages)
+(require 'crafted-org-packages)
+(require 'crafted-ui-packages)
+(require 'crafted-writing-packages)
+
+;;;; Additional packages for custom modules
+
+;; melpa first
+(defvar my/package-selected-packages
   '(
     nerd-icons nerd-icons-dired nerd-icons-completion kind-icon
 
@@ -86,28 +116,9 @@
     zk zk-index zk-desktop zk-luhmann
     ))
 
-(customize-set-variable 'package-pinned-packages
-                        `(,@(mapcar
-                             (lambda (package)
-                               (cons package "melpa"))
-                             my/package-selected-packages-melpa)))
-
-;;; Bootstrap Crafted Emacs
-(load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))
-
-(setq treesit-extra-load-path `(,(concat user-emacs-directory "tree-sitter/")))
-
-;;; Configure packages to install
-
-(require 'crafted-completion-packages)
-(require 'crafted-evil-packages)
-(require 'crafted-ide-packages)
-(require 'crafted-lisp-packages)
-(require 'crafted-org-packages)
-(require 'crafted-ui-packages)
-(require 'crafted-writing-packages)
-
-;;;; Additional packages for custom modules
+(dolist (p my/package-selected-packages)
+  (unless (package-installed-p p)
+    (add-to-list 'package-selected-packages p 'append)))
 
 ;; judy-theme
 (unless (member 'modus-vivendi (custom-available-themes))
@@ -117,10 +128,6 @@
 ;; ct
 ;; auto-dim-other-buffers
 ;; rainbow-mode
-
-(dolist (p my/package-selected-packages-melpa)
-  (unless (package-installed-p p)
-    (add-to-list 'package-selected-packages p 'append)))
 
 ;; judy-term
 (if (member system-type '(windows-nt ms-dos))

@@ -9,7 +9,26 @@
 (setq default-directory "~/")
 
 ;; Answering just 'y' or 'n' will do
-(defalias 'yes-or-no-p 'y-or-n-p)
+;; (defalias 'yes-or-no-p 'y-or-n-p)
+
+;; (setq
+;;  ;; ====== Default behavior ======
+;;  ;; Inhibit startup message
+;;  inhibit-splash-screen t
+;;  inhibit-startup-message t ; default nil
+;;  ;; Always prompt in minibuffer (no GUI)
+;;  use-dialog-box nil
+;;  ;; Use y or n instead of yes or no
+;;  use-short-answers t
+;;  ;; Confirm before quitting
+;;  confirm-kill-emacs 'y-or-n-p
+;;  )
+
+(customize-set-variable 'inhibit-splash-screen t)
+(customize-set-variable 'inhibit-startup-message t)
+(customize-set-variable 'use-dialog-box nil)
+(customize-set-variable 'use-short-answers t)
+(customize-set-variable 'confirm-kill-emacs 'y-or-n-p)
 
 ;; 불필요한 Package cl is deprecated 경고 숨기기
 (customize-set-variable 'byte-compile-warnings '(not cl-functions))
@@ -142,6 +161,7 @@
 (tool-bar-mode -1)          ; Disable the toolbar
 (menu-bar-mode -1)          ; Disable the menu bar
 
+
 ;;;; dired
 
 (require 'dired)
@@ -202,9 +222,12 @@
 
 ;;; gui and terminal
 
-(unless *is-termux*
-  ;; Disable visible scrollbar
-  (scroll-bar-mode -1))
+
+
+;; (tooltip-mode -1)           ; Disable tooltips
+(tool-bar-mode -1)          ; Disable the toolbar
+(menu-bar-mode -1)          ; Disable the menu bar
+(toggle-scroll-bar -1) ;; Disable visible scrollbar
 
 (when (display-graphic-p) ; gui
 
@@ -221,7 +244,6 @@
   )
 
 (unless (display-graphic-p) ; terminal
-  (menu-bar-mode -1)          ; Disable the menu bar
   (blink-cursor-mode -1)
   (gpm-mouse-mode -1)
   (xterm-mouse-mode -1)
