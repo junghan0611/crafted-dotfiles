@@ -255,6 +255,20 @@
   (evil-define-key 'normal 'evil-org-mode "X" 'delete-backward-char)
   )
 
+;;; binder side-notes
+
+(require 'side-notes)
+(add-hook 'side-notes-hook #'visual-line-mode) ; Good
+
+(require 'binder)
+(require 'binder-tutorial)
+
+(require 'side-hustle)
+
+(global-set-key (kbd "M-g b") 'binder-toggle-sidebar)
+(global-set-key (kbd "M-g s") 'side-notes-toggle-notes) ;; M-s n
+(global-set-key (kbd "M-g h") 'side-hustle-toggle)
+
 ;;; _
 (provide 'judy-org)
 ;;; judy-org.el ends here

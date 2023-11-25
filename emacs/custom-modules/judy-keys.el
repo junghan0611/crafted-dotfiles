@@ -304,6 +304,9 @@
 ;;          (interactive "P")
 ;;          (scroll-other-window (- (or arg 1)))))
 
+;;; flyspell
+
+(unbind-key "C-M-i" 'flyspell-mode-map)
 
 (provide 'judy-keys)
 ;;; judy-keys.el ends here

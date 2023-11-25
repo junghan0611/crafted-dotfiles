@@ -39,18 +39,23 @@
 (setq ring-bell-function 'ignore)
 
 ;;; Line Numbers
-(defun my/disable-line-numbers ()
-  "Disabling line numbers."
-  (display-line-numbers-mode 0))
+
+;; (defun my/disable-line-numbers ()
+;;   "Disabling line numbers."
+;;   (display-line-numbers-mode 0))
 
 (column-number-mode)
-;; (setq display-line-numbers-type 'relative)
-(global-display-line-numbers-mode t)
-(dolist (mode '(term-mode-hook
-                shell-mode-hook
-                eshell-mode-hook
-                vterm-mode-hook))
-  (add-hook mode #'my/disable-line-numbers))
+(setq display-line-numbers-type 'relative)
+
+;; (dolist (mode '(term-mode-hook
+;;                 shell-mode-hook
+;;                 eshell-mode-hook
+;;                 vterm-mode-hook))
+;;   (add-hook mode #'my/disable-line-numbers))
+
+(add-hook 'org-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'markdown-mode-hook 'display-line-numbers-mode)
 
 ;;; Time
 
@@ -189,7 +194,8 @@
 (setq keycast-tab-bar-minimal-width 50)
 (setq keycast-tab-bar-format "%10s%k%c%r")
 
-;; (add-hook 'after-init-hook 'keycast-tab-bar-mode)
+(when (string= (system-name)"jhnuc")
+  (add-hook 'after-init-hook 'keycast-tab-bar-mode))
 
 (dolist (input '(self-insert-command
                  org-self-insert-command))
@@ -248,8 +254,12 @@
 
 (require 'shackle)
 (setq shackle-default-size 0.4
-      shackle-rules `((help-mode                       :select t :align right :size ,fill-column)
-                      (helpful-mode                    :select t :align right :size ,fill-column)
+      shackle-rules `(
+                      ;; (help-mode                       :select t :align right :size ,fill-column)
+                      ;; (helpful-mode                    :select t :align right :size ,fill-column)
+                      (help-mode                       :select nil :align t)
+                      (helpful-mode                    :select nil :align t)
+
                       ("*Messages*"                    :select t :align t)
                       ("*eldoc*"                       :align t)
                       (special-mode                    :align t)

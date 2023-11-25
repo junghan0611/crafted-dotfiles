@@ -99,8 +99,24 @@ initialized with the current directory instead of filename."
                 ;; ?\a = C-g, ?\e = Esc and C-[
                 ((memq key '(?\a ?\e)) (keyboard-quit))))))))
 
-(defun delete-current-buffer-file ()
-  "Remove file connected to current buffer and kill buffer."
+;; (defun delete-current-buffer-file ()
+;;   "Remove file connected to current buffer and kill buffer."
+;;   (interactive)
+;;   (let ((filename (buffer-file-name))
+;;         (buffer (current-buffer))
+;;         (name (buffer-name)))
+;;     (if (not (and filename (file-exists-p filename)))
+;;         (ido-kill-buffer)
+;;       (if (yes-or-no-p
+;;            (format "Are you sure you want to delete this file: '%s'?" name))
+;;           (progn
+;;             (delete-file filename t)
+;;             (kill-buffer buffer)
+;;             (message "File deleted: '%s'" filename))
+;;         (message "Canceled: File deletion")))))
+
+(defun spacemacs/delete-current-buffer-file ()
+  "Removes file connected to current buffer and kills buffer."
   (interactive)
   (let ((filename (buffer-file-name))
         (buffer (current-buffer))
@@ -112,6 +128,9 @@ initialized with the current directory instead of filename."
           (progn
             (delete-file filename t)
             (kill-buffer buffer)
+            ;; (when (and (configuration-layer/package-used-p 'projectile)
+            ;;            (projectile-project-p))
+            ;;   (call-interactively #'projectile-invalidate-cache))
             (message "File deleted: '%s'" filename))
         (message "Canceled: File deletion")))))
 
@@ -386,6 +405,19 @@ a dedicated window."
 
 ;;; spacemacs
 
+;; https://github.com/junghan0611/spacemacs/commit/9ce37c1ef68300f006bd2223e85cca836493a1f9
+(defun spacemacs/compleseus-search-project ()
+  "Search in current project."
+  (interactive)
+  (spacemacs/compleseus-search t (project-root (project-current t)))
+  ;; (spacemacs/compleseus-search t (projectile-project-root))
+  )
+
+(defun spacemacs/compleseus-search-default ()
+  "Search."
+  (interactive)
+  (spacemacs/compleseus-search-project))
+
 (defun spacemacs/compleseus-switch-to-buffer ()
   "`consult-buffer' with buffers provided by persp."
   (interactive)
@@ -496,33 +528,6 @@ If the universal prefix argument is used then kill also the window."
 This solves the problem: Binding a key to: `find-file' calls: `ido-find-file'"
   (interactive)
   (call-interactively 'find-file))
-
-;; (defun spacemacs/embark-preview ()
-;;   "Previews candidate in vertico buffer, unless it's a consult command"
-;;   (interactive)
-;;   (unless (bound-and-true-p consult--preview-function)
-;;     (save-selected-window
-;;       (let ((embark-quit-after-action nil))
-;;         (embark-dwim)))))
-
-;; (defun spacemacs/delete-current-buffer-file ()
-;;   "Removes file connected to current buffer and kills buffer."
-;;   (interactive)
-;;   (let ((filename (buffer-file-name))
-;;         (buffer (current-buffer))
-;;         (name (buffer-name)))
-;;     (if (not (and filename (file-exists-p filename)))
-;;         (ido-kill-buffer)
-;;       (if (yes-or-no-p
-;;            (format "Are you sure you want to delete this file: '%s'?" name))
-;;           (progn
-;;             (delete-file filename t)
-;;             (kill-buffer buffer)
-;;             ;; (when (and (configuration-layer/package-used-p 'projectile)
-;;             ;;            (projectile-project-p))
-;;             ;;   (call-interactively #'projectile-invalidate-cache))
-;;             (message "File deleted: '%s'" filename))
-;;         (message "Canceled: File deletion")))))
 
 ;; from magnars
 (defun spacemacs/sudo-edit (&optional arg)
@@ -708,4 +713,99 @@ only those in the selected frame."
     (neotree-toggle)))
 
 (provide 'core-funcs)
+;;; embark
+
+;; vertico
+(defun spacemacs/embark-preview ()
+  "Previews candidate in vertico buffer, unless it's a consult command"
+  (interactive)
+  (unless (bound-and-true-p consult--preview-function)
+    (save-selected-window
+      (let ((embark-quit-after-action nil))
+        (embark-dwim)))))
+
+(defun spacemacs/next-candidate-preview (&optional n)
+  "Go forward N candidates and preview"
+  (interactive)
+  (vertico-next (or n 1))
+  (spacemacs/embark-preview))
+
+(defun spacemacs/previous-candidate-preview (&optional n)
+  "Go backward N candidates and preview"
+  (interactive)
+  (vertico-previous (or n 1))
+  (spacemacs/embark-preview))
+
+;; which-key integration functions for embark
+;; https://github.com/oantolin/embark/wiki/Additional-Configuration#use-which-key-like-a-key-menu-prompt
+(defun spacemacs/embark-which-key-indicator ()
+  "An embark indicator that displays keymaps using which-key.
+The which-key help message will show the type and value of the
+current target followed by an ellipsis if there are further
+targets."
+  (lambda (&optional keymap targets prefix)
+    (if (null keymap)
+        (which-key--hide-popup-ignore-command)
+      (which-key--show-keymap
+       (if (eq (plist-get (car targets) :type) 'embark-become)
+           "Become"
+         (format "Act on %s '%s'%s"
+                 (plist-get (car targets) :type)
+                 (embark--truncate-target (plist-get (car targets) :target))
+                 (if (cdr targets) "…" "")))
+       (if prefix
+           (pcase (lookup-key keymap prefix 'accept-default)
+             ((and (pred keymapp) km) km)
+             (_ (key-binding prefix 'accept-default)))
+         keymap)
+       nil nil t (lambda (binding)
+                   (not (string-suffix-p "-argument" (cdr binding))))))))
+
+(defun spacemacs/embark-hide-which-key-indicator (fn &rest args)
+  "Hide the which-key indicator immediately when using the completing-read prompter."
+  (which-key--hide-popup-ignore-command)
+  (let ((embark-indicators
+         (remq #'spacemacs/embark-which-key-indicator embark-indicators)))
+    (apply fn args)))
+
+(defun spacemacs/embark-action-completing-read ()
+  "Bypass `embark-act' and execute `embark-keymap-help' directly.
+
+This function mimics the Helm action menu.
+Note: this function relies on embark internals and might break upon embark updates.
+"
+  (interactive)
+  (require 'embark)
+  (let* ((targets (or (embark--targets) (user-error "No target found")))
+         (indicators (mapcar #'funcall embark-indicators))
+         (default-done nil))
+    (unwind-protect
+        (while
+            (let* ((target (car targets))
+                   (action (embark-completing-read-prompter
+                            (let ((embark-default-action-overrides
+                                   (if default-done
+                                       `((t . ,default-done))
+                                     embark-default-action-overrides)))
+                              (embark--action-keymap (plist-get target :type)
+                                                     (cdr targets)))
+                            nil))
+                   (default-action (or default-done
+                                       (embark--default-action
+                                        (plist-get target :type)))))
+              ;; if the action is non-repeatable, cleanup indicator now
+              (mapc #'funcall indicators)
+              (condition-case err
+                  (embark--act
+                   action
+                   (if (and (eq action default-action)
+                            (eq action embark--command)
+                            (not (memq action embark-multitarget-actions)))
+                       (embark--orig-target target)
+                     target)
+                   (embark--quit-p action))
+                (user-error
+                 (funcall (if repeat #'message #'user-error)
+                          "%s" (cadr err))))))
+      (mapc #'funcall indicators))))
 ;;; core-funcs.el ends here

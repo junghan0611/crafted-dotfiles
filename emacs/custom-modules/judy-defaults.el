@@ -8,6 +8,9 @@
 ;; Default to home
 (setq default-directory "~/")
 
+;; Answering just 'y' or 'n' will do
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; 불필요한 Package cl is deprecated 경고 숨기기
 (customize-set-variable 'byte-compile-warnings '(not cl-functions))
 (customize-set-variable 'large-file-warning-threshold nil)

@@ -96,7 +96,7 @@
     ("f" "Find file" :file/open)
     ("s" "Save file" :file/save)
     ("S" "Save all" :file/save-all)
-    ("D" "delete current buffer file" delete-current-buffer-file)
+    ("D" "delete current buffer file" spacemacs/delete-current-buffer-file)
     ("r" "Recently opened files" :file/open-recent)
     ("A" "Find alternate file" find-alternate-file)
     ("e" "Emacs files"

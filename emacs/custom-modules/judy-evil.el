@@ -160,6 +160,17 @@
 (evil-escape-mode)
 ;; (add-to-list 'evil-escape-excluded-major-modes 'code-review-mode)
 
+;;; help helpful
+
+(evil-define-key '(normal) helpful-mode-map (kbd "q") 'quit-window)
+(evil-define-key '(normal) help-mode-map (kbd "q") 'quit-window)
+
+(global-set-key (kbd "C-M-i") 'completion-at-point)
+(global-set-key (kbd "C-M-:") 'pp-eval-expression)
+
+(global-set-key (kbd "<f3>") 'eval-last-sexp)
+;; spacemacs/eval-current-form-to-comment-sp
+
 ;;; _
 (provide 'judy-evil)
 ;;; judy-evil.el ends here

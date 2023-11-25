@@ -214,7 +214,7 @@
 
 (require 'exercism)
 (global-set-key (kbd "M-c e") 'exercism)
-(global-set-key (kbd "M-g M-e") 'exercism)
+(global-set-key (kbd "M-g e") 'exercism)
 
 ;; (when (require 'exercism nil :noerror)
 ;;   (customize-set-variable 'exercism-display-tests-after-run t)
@@ -242,6 +242,12 @@
    (t (call-interactively 'apheleia-format-buffer))))
 
 (global-set-key (kbd "M-g =") 'my/format-buffer)
+
+;;; aggressive-indent
+
+;; aggressive-indent-mode for all lisp modes
+(when (locate-library "aggressive-indent")
+  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
 
 ;;; _
 (provide 'judy-dev)

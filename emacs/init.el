@@ -17,29 +17,80 @@
 
 ;;; pinned-melpa-packages
 
-(defvar my/pinned-melpa-packages
+(defvar my/package-selected-packages-melpa
   '(
-    corfu
-    kind-icon
-    evil-org
-    tempel
-    promise
-    nerd-icons
-    nerd-icons-dired
-    nerd-icons-completion
-    exercism
-    treesit-auto
-    magit
-    evil-textobj-tree-sitter
+    nerd-icons nerd-icons-dired nerd-icons-completion kind-icon
+
     dash-functional
-    )
-  )
+    treesit-auto
+
+    which-key
+    pcre2el
+    doom-modeline
+    winum
+    avy
+    string-edit-at-point
+    expand-region
+    goto-last-change
+    imenu-list
+    undo-fu
+    tempel
+    neotree
+    revert-buffer-all
+
+    ef-themes
+    popper
+    shackle
+
+    hydra
+    major-mode-hydra ; contains pretty-hydra
+
+    ;; judy-dev (also writing)
+    let-alist
+    flymake-aspell
+
+    magit
+    transient
+    xref
+    eldoc
+    puni
+    diff-hl
+    tabspaces
+
+    ;; Programming modes
+    web-mode
+    yaml-mode
+    keycast
+    apheleia
+    awk-ts-mode
+    bats-mode
+    xclip
+    promise
+    exercism
+
+    org-contrib
+    breadcrumb
+    side-hustle
+
+    hungry-delete
+    evil-org
+    evil-surround
+    evil-textobj-tree-sitter
+    evil-escape
+
+    citar
+    citar-denote
+    binder
+    side-notes
+
+    zk zk-index zk-desktop zk-luhmann
+    ))
 
 (customize-set-variable 'package-pinned-packages
-      `(,@(mapcar
-           (lambda (package)
-             (cons package "melpa"))
-           my/pinned-melpa-packages)))
+                        `(,@(mapcar
+                             (lambda (package)
+                               (cons package "melpa"))
+                             my/package-selected-packages-melpa)))
 
 ;;; Bootstrap Crafted Emacs
 (load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))
@@ -58,80 +109,23 @@
 
 ;;;; Additional packages for custom modules
 
-;; judy-keys
-;; (add-to-list 'package-selected-packages 'general)
-;; (add-to-list 'package-selected-packages 'combobulate)
-(add-to-list 'package-selected-packages 'which-key)
-(add-to-list 'package-selected-packages 'pcre2el)
-(add-to-list 'package-selected-packages 'doom-modeline)
-(add-to-list 'package-selected-packages 'winum)
-(add-to-list 'package-selected-packages 'kind-icon)
-(add-to-list 'package-selected-packages 'avy)
-(add-to-list 'package-selected-packages 'string-edit-at-point)
-(add-to-list 'package-selected-packages 'expand-region)
-(add-to-list 'package-selected-packages 'goto-last-change)
-(add-to-list 'package-selected-packages 'nerd-icons-dired)
-(add-to-list 'package-selected-packages 'nerd-icons-completion)
-(add-to-list 'package-selected-packages 'imenu-list)
-(add-to-list 'package-selected-packages 'undo-fu)
-(add-to-list 'package-selected-packages 'tempel)
-(add-to-list 'package-selected-packages 'neotree)
-(add-to-list 'package-selected-packages 'revert-buffer-all)
-
-;; (add-to-list 'package-selected-packages 'citar)
-;; (add-to-list 'package-selected-packages 'citar-denote)
-
-(add-to-list 'package-selected-packages 'evil-escape)
-(add-to-list 'package-selected-packages 'popper)
-(add-to-list 'package-selected-packages 'shackle)
-
-;; (add-to-list 'package-selected-packages 'doom-themes)
-;; (add-to-list 'package-selected-packages 'ct)
-;; (add-to-list 'package-selected-packages 'auto-dim-other-buffers)
-;; (add-to-list 'package-selected-packages 'rainbow-mode)
-
-(add-to-list 'package-selected-packages 'hydra)
-(add-to-list 'package-selected-packages 'major-mode-hydra) ; contains pretty-hydra
-
 ;; judy-theme
 (unless (member 'modus-vivendi (custom-available-themes))
   (add-to-list 'package-selected-packages 'modus-themes))
 
-(add-to-list 'package-selected-packages 'ef-themes)
-;; (add-to-list 'package-selected-packages 'fontaine)
-(add-to-list 'package-selected-packages 'keycast)
-(add-to-list 'package-selected-packages 'apheleia)
-(add-to-list 'package-selected-packages 'awk-ts-mode)
-(add-to-list 'package-selected-packages 'bats-mode)
-(add-to-list 'package-selected-packages 'xclip)
-(add-to-list 'package-selected-packages 'evil-org)
-(add-to-list 'package-selected-packages 'promise)
-(add-to-list 'package-selected-packages 'exercism)
-(add-to-list 'package-selected-packages 'evil-textobj-tree-sitter)
-(add-to-list 'package-selected-packages 'hungry-delete)
-(add-to-list 'package-selected-packages 'evil-surround)
-(add-to-list 'package-selected-packages 'org-contrib)
+;; doom-themes
+;; ct
+;; auto-dim-other-buffers
+;; rainbow-mode
+
+(dolist (p my/package-selected-packages-melpa)
+  (unless (package-installed-p p)
+    (add-to-list 'package-selected-packages p 'append)))
 
 ;; judy-term
 (if (member system-type '(windows-nt ms-dos))
     (add-to-list 'package-selected-packages 'powershell)
   (add-to-list 'package-selected-packages 'vterm))
-
-;; judy-dev (also writing)
-(add-to-list 'package-selected-packages 'let-alist)
-(add-to-list 'package-selected-packages 'flymake-aspell)
-
-(add-to-list 'package-selected-packages 'magit)
-(add-to-list 'package-selected-packages 'transient)
-(add-to-list 'package-selected-packages 'xref)
-(add-to-list 'package-selected-packages 'eldoc)
-(add-to-list 'package-selected-packages 'puni)
-(add-to-list 'package-selected-packages 'diff-hl)
-(add-to-list 'package-selected-packages 'tabspaces)
-
-;; Programming modes
-(add-to-list 'package-selected-packages 'web-mode)
-(add-to-list 'package-selected-packages 'yaml-mode)
 
 ;; (add-to-list 'package-selected-packages 'dockerfile-mode)
 ;; (add-to-list 'package-selected-packages 'glsl-mode)

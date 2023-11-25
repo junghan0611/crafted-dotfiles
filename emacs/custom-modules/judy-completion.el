@@ -52,7 +52,7 @@
 (consult-customize
  consult-theme
  :preview-key '("M-." "C-SPC"
-                :debounce 0.2 any)
+                :debounce 3.0 any)
 
  ;; slightly delayed preview upon candidate selection
  ;; one usually wants quick feedback
@@ -62,9 +62,25 @@
  consult-grep
  consult-bookmark
  consult-yank-pop
+
+ consult-line ; :prompt "Consult-line: "
+ consult-recent-file
+ consult-xref
+ consult-org-heading
+ consult-outline ; 2023-05-23
+ spacemacs/consult-line
+ spacemacs/compleseus-switch-to-buffer
+ spacemacs/compleseus-search-dir
+ spacemacs/compleseus-search-auto
+ spacemacs/compleseus-find-file ; 2023-05-14 추가
+ spacemacs/embark-preview ; 2023-05-23
+ spacemacs/compleseus-search-default
+ my/compleseus-search-dir
+
  :preview-key '("M-." "C-SPC"
                 :debounce 0.3 "<up>" "<down>" "C-n" "C-p"
-                :debounce 0.6 any))
+                ;; :debounce 0.6 any
+                ))
 
 ;; hide magit buffer
 (add-to-list 'consult-buffer-filter "magit.*:.*")
@@ -77,6 +93,16 @@
 
 (define-key vertico-map (kbd "C-j") #'vertico-next)
 (define-key vertico-map (kbd "C-k") #'vertico-previous)
+(define-key vertico-map (kbd "C-l") #'vertico-insert)
+(define-key vertico-map (kbd "C-S-j") #'vertico-next-group)
+(define-key vertico-map (kbd "C-S-k") #'vertico-previous-group)
+(define-key vertico-map (kbd "C-n") #'spacemacs/next-candidate-preview)
+(define-key vertico-map (kbd "C-p") #'spacemacs/previous-candidate-preview)
+
+(define-key vertico-map (kbd "M-RET") #'vertico-exit-input)
+(define-key vertico-map (kbd "C-SPC") #'spacemacs/embark-preview)
+(define-key vertico-map (kbd "C-r") #'consult-history)
+
 (define-key vertico-map (kbd "C-<backspace>") #'vertico-directory-delete-word)
 
 ;;; TODO Corfu/Cape
@@ -119,6 +145,70 @@
 
 (global-set-key (kbd "M-+") 'tempel-complete)
 (global-set-key (kbd "M-*") 'tempel-insert)
+
+;;; embark
+
+;; (("M-o" . embark-act)         ;; pick some comfortable binding
+;;  ("C-;" . embark-dwim)        ;; good alternative: M-.
+;;  ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+(require 'embark)
+
+;; this gets you the available-key preview minibuffer popup
+(setq prefix-help-command #'embark-prefix-help-command
+      ;; don't use C-h for paging, instead `describe-prefix-bindings`.
+      which-key-use-C-h-commands nil)
+;; same key binding as ivy-occur
+(define-key minibuffer-local-map (kbd "C-c C-o") #'embark-export)
+(define-key minibuffer-local-map (kbd "C-c C-l") #'embark-collect)
+;; mimic action key bindings from helm
+(define-key minibuffer-local-map (kbd "C-z") #'spacemacs/embark-action-completing-read)
+(define-key minibuffer-local-map (kbd "C-c C-e") #'spacemacs/consult-edit)
+;; which keys nice display
+(which-key-add-keymap-based-replacements minibuffer-local-map "C-c C-o" "Embark export")
+(which-key-add-keymap-based-replacements minibuffer-local-map "C-c C-l" "Embark collect")
+(which-key-add-keymap-based-replacements minibuffer-local-map "C-c C-e" "Edit buffer")
+(which-key-add-keymap-based-replacements minibuffer-local-map "C-z" "Embark actions...")
+(define-key embark-file-map "s" 'spacemacs/compleseus-search-from)
+
+;; which key integration setup
+;; https://github.com/oantolin/embark/wiki/Additional-Configuration#use-which-key-like-a-key-menu-prompt
+(setq embark-indicators
+      '(spacemacs/embark-which-key-indicator
+        embark-highlight-indicator
+        embark-isearch-highlight-indicator))
+(advice-add #'embark-completing-read-prompter
+            :around #'spacemacs/embark-hide-which-key-indicator)
+
+(global-set-key (kbd "M-o") 'embark-act)
+(global-set-key (kbd "C-;") 'embark-dwim)
+(global-set-key (kbd "C-h B") 'embark-bindings)
+
+;;; display-buffer-alist
+
+;; /prot-dotfiles/emacs/.emacs.d/prot-emacs-modules/prot-emacs-window.el:55
+(add-to-list 'display-buffer-alist
+             `("\\*\\(Output\\|Register Preview\\).*"
+               (display-buffer-reuse-mode-window display-buffer-at-bottom)))
+(add-to-list 'display-buffer-alist
+             `("\\*\\(Calendar\\|Bookmark Annotation\\|Buffer List\\).*"
+               (display-buffer-reuse-mode-window display-buffer-below-selected)
+               (window-height . fit-window-to-buffer)))
+
+(add-to-list 'display-buffer-alist
+             ;; bottom side window
+             `("\\*Org Select\\*" ; the `org-capture' key selection
+               (display-buffer-in-side-window)
+               (dedicated . t)
+               (side . bottom)
+               (slot . 0)
+               (window-parameters . ((mode-line-format . none)))))
+(add-to-list 'display-buffer-alist
+             `("\\*Embark Actions\\*"
+               (display-buffer-reuse-mode-window display-buffer-at-bottom)
+               (window-height . fit-window-to-buffer)
+               (window-parameters . ((no-other-window . t)
+                                     (mode-line-format . none)))))
 
 ;;; _
 (provide 'judy-completion)
