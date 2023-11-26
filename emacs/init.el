@@ -169,6 +169,7 @@
 (require 'crafted-defaults-config)
 (remove-hook 'text-mode-hook #'flyspell-mode)
 (remove-hook 'prog-mode-hook #'flyspell-prog-mode)
+(repeat-mode -1)
 
 (require 'crafted-startup-config)
 (require 'crafted-completion-config)
