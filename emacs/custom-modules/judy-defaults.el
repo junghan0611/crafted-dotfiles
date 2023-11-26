@@ -222,12 +222,9 @@
 
 ;;; gui and terminal
 
-
-
 ;; (tooltip-mode -1)           ; Disable tooltips
 (tool-bar-mode -1)          ; Disable the toolbar
 (menu-bar-mode -1)          ; Disable the menu bar
-(toggle-scroll-bar -1) ;; Disable visible scrollbar
 
 (when (display-graphic-p) ; gui
 
