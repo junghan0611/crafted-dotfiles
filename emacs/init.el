@@ -21,12 +21,13 @@
   '(
     cider
     clojure-mode
+    compat
     ))
 
 (customize-set-variable 'package-pinned-packages
                         `(,@(mapcar
                              (lambda (package)
-                               (cons package "stable"))
+                               (cons package "gnu"))
                              my/package-selected-packages-stable)))
 
 ;;; Bootstrap Crafted Emacs
