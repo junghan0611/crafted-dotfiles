@@ -8,15 +8,6 @@
 
 ;;; Code:
 
-(defvar *is-mac*     (eq system-type 'darwin))
-(defvar *is-windows* (eq system-type 'windows-nt))
-(defvar *is-cygwin*  (eq system-type 'cygwin))
-(defvar *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
-(defvar *is-wsl*     (eq (string-match "Linux.*microsoft.*WSL2.*Linux" (shell-command-to-string "uname -a")) 0))
-(defvar *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
-(defvar *is-termux*
-  (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
-
 (require 'pcre2el)
 
 ;;;; File

@@ -8,6 +8,18 @@
 
 ;;; Code:
 
+;;; Defvar OS
+
+(defvar *is-mac*     (eq system-type 'darwin))
+(defvar *is-windows* (eq system-type 'windows-nt))
+(defvar *is-cygwin*  (eq system-type 'cygwin))
+(defvar *is-linux*   (or (eq system-type 'gnu/linux) (eq system-type 'linux)))
+(defvar *is-wsl*     (eq (string-match "Linux.*microsoft.*WSL2.*Linux" (shell-command-to-string "uname -a")) 0))
+(defvar *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
+(defvar *is-android*  (eq system-type 'android))
+(defvar *is-termux*
+  (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
+
 ;;; Garbage Collection/Startup Message
 (setq gc-cons-threshold most-positive-fixnum)
 
@@ -51,6 +63,14 @@
 
 (load (expand-file-name "modules/crafted-early-init-config.el"
                         crafted-emacs-home))
+
+;;; is-android
+
+(when *is-android*
+  (message "Loading Android Emacs\n")
+  (setenv "PATH" (format "%s:%s" "/data/data/com.termux/files/usr/bin" (getenv "PATH")))
+  (setenv "LD_LIBRARY_PATH" (format "%s:%s" "/data/data/com.termux/files/usr/lib" (getenv "LD_LIBRARY_PATH")))
+  (push "/data/data/com.termux/files/usr/bin" exec-path))
 
 ;;; Load a dark theme to avoid flashing on load
 (if (member 'modus- (custom-available-themes))
