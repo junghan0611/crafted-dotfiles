@@ -157,10 +157,6 @@
 
 ;; (global-visual-line-mode +1)
 
-;; (tooltip-mode -1)           ; Disable tooltips
-(tool-bar-mode -1)          ; Disable the toolbar
-(menu-bar-mode -1)          ; Disable the menu bar
-
 
 ;;;; dired
 
@@ -222,12 +218,13 @@
 
 ;;; gui and terminal
 
-;; (tooltip-mode -1)           ; Disable tooltips
 (tool-bar-mode -1)          ; Disable the toolbar
 (menu-bar-mode -1)          ; Disable the menu bar
 
-(when (display-graphic-p) ; gui
+(unless *is-termux*
+  (scroll-bar-mode -1))
 
+(when (display-graphic-p) ; gui
   ;; Read 'The Forgotten History of the Blinking Cursor'
   (blink-cursor-mode 1)
   (set-fringe-mode 10) ;; Give some breathing room
