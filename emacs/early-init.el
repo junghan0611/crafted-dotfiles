@@ -28,8 +28,9 @@
 
 ;;; Crafted Emacs
 ;; (defconst my/crafted-emacs-branch "craftedv2RC1"
-(defconst my/crafted-emacs-branch "master"
-  "Branch to clone (does not update branch if already cloned).")
+;; (defconst my/crafted-emacs-branch "master"
+  (defconst my/crafted-emacs-branch "ko"
+    "Branch to clone (does not update branch if already cloned).")
 
 (defvar crafted-emacs-home
   (expand-file-name "crafted-emacs"
@@ -43,7 +44,8 @@
   (message "Cloning crafted-emacs ...")
   (shell-command-to-string
    ;; (format "git clone https://github.com/SystemCrafters/crafted-emacs -b %s %s"
-   (format "git clone https://github.com/jvdydev/crafted-emacs -b %s %s"
+   ;; (format "git clone https://github.com/jvdydev/crafted-emacs -b %s %s"
+   (format "git clone https://github.com/junghan0611/crafted-emacs -b %s %s"
            my/crafted-emacs-branch
            crafted-emacs-home)))
 

@@ -1,0 +1,4 @@
+* MEETING %^{What did we discuss | Phone Call or Interruption} %^G:meeting:
+%U
+- Attendees: %^{Who was part of the discussion}, Vedang
+- %?
