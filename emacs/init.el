@@ -49,7 +49,7 @@
 ;; melpa first
 (defvar my/package-selected-packages
   '(
-    nerd-icons nerd-icons-dired nerd-icons-completion kind-icon
+    ;; nerd-icons nerd-icons-dired nerd-icons-completion kind-icon
 
     dash-functional
     treesit-auto
@@ -128,6 +128,13 @@
 ;; ct
 ;; auto-dim-other-buffers
 ;; rainbow-mode
+
+(unless *is-termux*
+  (add-to-list 'package-selected-packages 'nerd-icons)
+  (add-to-list 'package-selected-packages 'nerd-icons-dired)
+  (add-to-list 'package-selected-packages 'nerd-icons-completion)
+  (add-to-list 'package-selected-packages 'kind-icon)
+  )
 
 ;; judy-term
 (if (member system-type '(windows-nt ms-dos))

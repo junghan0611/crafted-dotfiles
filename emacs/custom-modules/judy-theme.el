@@ -226,12 +226,14 @@
 
 ;;; nerd-icons
 
-(require 'nerd-icons-dired)
-(require 'nerd-icons-completion)
+(unless *is-termux*
+  (require 'nerd-icons-dired)
+  (require 'nerd-icons-completion)
 
-(when (display-graphic-p) ; gui
-  (add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
-  (nerd-icons-completion-mode))
+  (when (display-graphic-p) ; gui
+    (add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
+    (nerd-icons-completion-mode))
+  )
 
 ;;; neotree
 
