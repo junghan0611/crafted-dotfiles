@@ -35,6 +35,8 @@
 (customize-set-variable 'large-file-warning-threshold nil)
 (customize-set-variable 'vc-follow-symlinks t)
 
+(customize-set-variable 'enable-recursive-minibuffers t)
+
 ;; Auto-revert buffers
 (customize-set-variable 'global-auto-revert-non-file-buffers t)
 (global-auto-revert-mode t)
@@ -221,6 +223,8 @@
 (tool-bar-mode -1)          ; Disable the toolbar
 (menu-bar-mode -1)          ; Disable the menu bar
 
+(unless *is-termux*
+  (scroll-bar-mode -1))
 
 (when (display-graphic-p) ; gui
   ;; Read 'The Forgotten History of the Blinking Cursor'
