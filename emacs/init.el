@@ -26,7 +26,7 @@
 (customize-set-variable 'package-pinned-packages
                         `(,@(mapcar
                              (lambda (package)
-                               (cons package "gnu"))
+                               (cons package "stable"))
                              my/package-selected-packages-stable)))
 
 ;;; Bootstrap Crafted Emacs
@@ -162,19 +162,19 @@
 ;; (unless (package-installed-p 'outli)
 ;;   (package-vc-install "https://github.com/jdtsmith/outli"))
 
+;; emacs-verson > 30
 (when (version< "30" emacs-version)
   ;; Get some Emacs 29 compatibility functions. Notably missing is
   ;; `setopt' which the `compat' library deliberately does not
   ;; provide, so we continue to use the `customize-set-variable'
   ;; function for setting user options, unless we have a version guard
   ;; around a block, in which case we use `setopt' instead.
-    (package-vc-install "https://github.com/junghan0611/compat"))
+  (package-vc-install "https://github.com/junghan0611/compat"))
 
 ;; (when *is-android*
 ;;   (add-to-list 'dotspacemacs-additional-packages
 ;;                '(compat :location (recipe :fetcher github
 ;;                                           :repo "emacs-compat/compat" :branch "emacs-30"))))
-
 
 ;;; Install packages
 (package-install-selected-packages :noconfirm)
