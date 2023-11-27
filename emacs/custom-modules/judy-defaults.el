@@ -221,15 +221,13 @@
 (tool-bar-mode -1)          ; Disable the toolbar
 (menu-bar-mode -1)          ; Disable the menu bar
 
-(unless *is-termux*
-  (scroll-bar-mode -1))
 
 (when (display-graphic-p) ; gui
   ;; Read 'The Forgotten History of the Blinking Cursor'
   (blink-cursor-mode 1)
   (set-fringe-mode 10) ;; Give some breathing room
   (tooltip-mode 1)
-  (global-display-fill-column-indicator-mode)
+  ;; (global-display-fill-column-indicator-mode)
 
   ;; For my mouse that also has left - right mouse scroll
   (setq mouse-wheel-tilt-scroll t)
