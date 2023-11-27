@@ -162,14 +162,13 @@
 ;; (unless (package-installed-p 'outli)
 ;;   (package-vc-install "https://github.com/jdtsmith/outli"))
 
-(when (version< emacs-version "30")
+(when (version< "30" emacs-version)
   ;; Get some Emacs 29 compatibility functions. Notably missing is
   ;; `setopt' which the `compat' library deliberately does not
   ;; provide, so we continue to use the `customize-set-variable'
   ;; function for setting user options, unless we have a version guard
   ;; around a block, in which case we use `setopt' instead.
-  (unless (require 'compat nil :noerror)
-    (package-vc-install "https://github.com/junghan0611/compat")))
+    (package-vc-install "https://github.com/junghan0611/compat"))
 
 ;; (when *is-android*
 ;;   (add-to-list 'dotspacemacs-additional-packages
