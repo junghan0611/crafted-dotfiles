@@ -111,7 +111,7 @@
     binder
     side-notes
 
-    ;; zk zk-index zk-desktop zk-luhmann
+    zk zk-index zk-desktop zk-luhmann
     ))
 
 (dolist (p my/package-selected-packages)
@@ -151,14 +151,12 @@
 (unless (package-installed-p 'term-keys)
   (package-vc-install "https://github.com/junghan0611/term-keys"))
 
-(unless (package-installed-p 'zk)
-  (package-vc-install "https://github.com/localauthor/zk"))
-
-(unless (package-installed-p 'zk-luhmann)
-  (package-vc-install "https://github.com/junghan0611/zk-luhmann"))
-
-(unless (package-installed-p 'link-hint-preview)
-  (package-vc-install "https://github.com/localauthor/link-hint-preview"))
+;; zk packages
+;; (unless (package-installed-p 'zk-luhmann)
+;;   ;; (package-vc-install "https://github.com/localauthor/zk")
+;;   (package-vc-install "https://github.com/junghan0611/zk-luhmann")
+;;   (package-vc-install "https://github.com/localauthor/link-hint-preview")
+;;   )
 
 (unless (package-installed-p 'orgabilize)
   (package-vc-install "https://github.com/akirak/orgabilize.el"))
@@ -180,11 +178,6 @@
   ;; function for setting user options, unless we have a version guard
   ;; around a block, in which case we use `setopt' instead.
   (package-vc-install "https://github.com/junghan0611/compat"))
-
-;; (when *is-android*
-;;   (add-to-list 'dotspacemacs-additional-packages
-;;                '(compat :location (recipe :fetcher github
-;;                                           :repo "emacs-compat/compat" :branch "emacs-30"))))
 
 ;;; Install packages
 (package-install-selected-packages :noconfirm)
