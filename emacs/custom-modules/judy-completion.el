@@ -15,81 +15,77 @@
 ;; (customize-set-variable 'corfu-popupinfo-max-height 15)  ;; more docs
 ;; (add-hook 'corfu-mode-hook #'corfu-popupinfo-mode)
 
-;; Optionally configure the register formatting. This improves the register
-;; preview for `consult-register', `consult-register-load',
-;; `consult-register-store' and the Emacs built-ins.
-(setq register-preview-delay 0
-      register-preview-function #'consult-register-format)
-
-;; Optionally tweak the register preview window.
-;; This adds thin lines, sorting and hides the mode line of the window.
-(advice-add #'register-preview :override #'consult-register-window)
-
-;; Use Consult to select xref locations with preview
-(setq xref-prompt-for-identifier '(not xref-find-definitions
-                                       xref-find-definitions-other-window
-                                       xref-find-definitions-other-frame
-                                       xref-find-references
-                                       ;; spacemacs/jump-to-definition
-                                       ))
-(setq xref-show-xrefs-function #'consult-xref)
-
-;; Configure other variables and modes in the :config section,
-;; after lazily loading the package.
-
 ;; disable automatic preview by default,
 ;; selectively enable it for some prompts below.
-(setq consult-preview-key '("M-." "C-SPC"))
-
-(unless *is-termux*
-  (setq vertico-count 20)
-  (setq vertico-resize 'grow-only))
-(when *is-termux*
-  (setq vertico-resize nil)
-  (setq vertico-count 7))
-
-;; customize preview activation and delay while selecting candiates
-(consult-customize
- consult-theme
- :preview-key '("M-." "C-SPC"
-                :debounce 3.0 any)
-
- ;; slightly delayed preview upon candidate selection
- ;; one usually wants quick feedback
- consult-buffer
- consult-ripgrep
- consult-git-grep
- consult-grep
- consult-bookmark
- consult-yank-pop
-
- consult-line ; :prompt "Consult-line: "
- consult-recent-file
- consult-xref
- consult-org-heading
- consult-outline ; 2023-05-23
- spacemacs/consult-line
- spacemacs/compleseus-switch-to-buffer
- spacemacs/compleseus-search-dir
- spacemacs/compleseus-search-auto
- spacemacs/compleseus-find-file ; 2023-05-14 추가
- spacemacs/embark-preview ; 2023-05-23
- spacemacs/compleseus-search-default
- my/compleseus-search-dir
-
- :preview-key '("M-." "C-SPC"
-                :debounce 0.3 "<up>" "<down>" "C-n" "C-p"
-                ;; :debounce 0.6 any
-                ))
-
-;; hide magit buffer
-(add-to-list 'consult-buffer-filter "magit.*:.*")
-
-(setq consult-line-start-from-top nil)
+;; (setq consult-preview-key '("M-." "C-SPC"))
+;; (setq vertico-count 20)
 
 ;; Optionally configure the narrowing key.
 ;; Both < and C-+ work reasonably well.
-(setq consult-narrow-key "<") ;; (kbd "C-+")
+;; (customize-set-variable 'consult-narrow-key "<") ;; (kbd "C-+")
+
+;; (customize-set-variable 'register-preview-delay 0)
+;; (customize-set-variable 'register-preview-function #'consult-register-format)
+
+;; Configure other variables and modes in the :config section,
+;; after lazily loading the package.
+;; (when *is-termux*
+;;   (customize-set-variable 'vertico-resize nil)
+;;   (customize-set-variable 'vertico-count 7))
+
+;; Optionally configure the register formatting. This improves the register
+;; preview for `consult-register', `consult-register-load',
+;; `consult-register-store' and the Emacs built-ins.
+
+;; Optionally tweak the register preview window.
+;; This adds thin lines, sorting and hides the mode line of the window.
+;; (advice-add #'register-preview :override #'consult-register-window)
+
+;; Use Consult to select xref locations with preview
+;; (setq 'xref-prompt-for-identifier '(not xref-find-definitions
+;;                                         xref-find-definitions-other-window
+;;                                         xref-find-definitions-other-frame
+;;                                         xref-find-references
+;;                                         ;; spacemacs/jump-to-definition
+;;                                         ))
+;; (customize-set-variable 'xref-show-xrefs-function #'consult-xref)
+
+;; customize preview activation and delay while selecting ;; candiates
+;; (consult-customize
+;;  consult-theme
+;;  :preview-key '("M-." "C-SPC"
+;;                 :debounce 3.0 any)
+
+;;  ;; slightly delayed preview upon candidate selection
+;;  ;; one usually wants quick feedback
+;;  consult-buffer
+;;  consult-ripgrep
+;;  consult-git-grep
+;;  consult-grep
+;;  consult-bookmark
+;;  consult-yank-pop
+
+;;  consult-line ; :prompt "Consult-line: "
+;;  consult-recent-file
+;;  consult-xref
+;;  consult-org-heading
+;;  consult-outline ; 2023-05-23
+;;  spacemacs/consult-line
+;;  spacemacs/compleseus-switch-to-buffer
+;;  spacemacs/compleseus-search-dir
+;;  spacemacs/compleseus-search-auto
+;;  spacemacs/compleseus-find-file ; 2023-05-14 추가
+;;  spacemacs/embark-preview ; 2023-05-23
+;;  spacemacs/compleseus-search-default
+;;  my/compleseus-search-dir
+
+;;  :preview-key '("M-." "C-SPC"
+;;                 :debounce 0.3 "<up>" "<down>" "C-n" "C-p"
+;;                 ;; :debounce 0.6 any
+;;                 ))
+
+;; hide magit buffer
+;; (add-to-list 'consult-buffer-filter "magit.*:.*")
 
 (define-key vertico-map (kbd "C-j") #'vertico-next)
 (define-key vertico-map (kbd "C-k") #'vertico-previous)
@@ -107,14 +103,14 @@
 
 ;;; TODO Corfu/Cape
 
-(require 'corfu)
-(setq corfu-bar-width 0.5
-      corfu-auto-delay 0.3
-      corfu-on-exact-match nil
-      corfu-preselect nil
-      corfu-min-width 35
-      corfu-max-width 80
-      )
+;; (require 'corfu)
+;; (setq corfu-bar-width 0.5
+;;       corfu-auto-delay 0.3
+;;       corfu-on-exact-match nil
+;;       corfu-preselect nil
+;;       corfu-min-width 35
+;;       corfu-max-width 80
+;;       )
 
 (define-key corfu-map (kbd "M-.") #'corfu-move-to-minibuffer)
 

@@ -44,6 +44,224 @@
 ;; Single dired-buffer
 (customize-set-variable 'dired-kill-when-opening-new-dired-buffer t)
 
+;;; spacemacs overide
+
+(setq
+ ;; ====== Default behavior ======
+ ;; Inhibit startup message
+ inhibit-splash-screen t
+ inhibit-startup-message t ; default nil
+ ;; Do not ring
+ ;; ring-bell-function 'ignore
+ ;; Increase the large file threshold to 50 MiB
+ large-file-warning-threshold (* 50 1024 1024)
+
+ ;; Initial scratch message (will be overridden if "fortune" is installed)
+ ;; initial-scratch-message ";; MinEmacs -- start here!"
+ ;; Set initial buffer to fundamental-mode for faster load
+ ;; initial-major-mode 'fundamental-mode
+
+ ;; Always prompt in minibuffer (no GUI)
+ use-dialog-box nil
+ ;; Use y or n instead of yes or no
+ use-short-answers t
+ ;; Confirm before quitting
+ confirm-kill-emacs 'y-or-n-p
+ ;; Filter duplicate entries in kill ring
+ kill-do-not-save-duplicates t
+ ;; Save existing clipboard text into the kill ring before replacing it.
+ save-interprogram-paste-before-kill t
+
+ ;; Save files only in sub-directories of current project
+ ;; save-some-buffers-default-predicate 'save-some-buffers-root
+
+ ;; Use single space between sentences
+ sentence-end-double-space nil
+ ;; Move stuff to trash
+ delete-by-moving-to-trash t
+ ;; trash-directory "~/.Trash"
+
+ ;; Select help window for faster quit!
+ help-window-select t
+
+ ;; FIXME More info on completions
+ completions-detailed t
+
+ ;; Do not ask obvious questions, follow symlinks
+ vc-follow-symlinks t
+
+ ;; Kill the shell buffer after exit
+ shell-kill-buffer-on-exit t
+
+ ;; ====== Passwords and encryption ======
+ ;; Default auth-sources to GPG
+ auth-sources '("~/.authinfo.gpg")
+ ;; Enable password caching
+ password-cache t
+ ;; 10 minutes, default is 16 sec
+ password-cache-expiry 600
+ ;; Enable caching, do not keep asking about GPG key
+ auth-source-do-cache t
+ ;; All day, default is 2h (7200)
+ auth-source-cache-expiry 86400
+
+ ;; ====== Performances ======
+ ;; Don’t compact font caches during GC
+ inhibit-compacting-font-caches t
+ ;; Increase single chunk bytes to read from subprocess (default 4096)
+ read-process-output-max (if (eq system-type 'gnu/linux)
+                             (condition-case nil
+                                 ;; Android may raise permission-denied error
+                                 (with-temp-buffer
+                                   (insert-file-contents
+                                    "/proc/sys/fs/pipe-max-size")
+                                   (string-to-number (buffer-string)))
+                               ;; If an error occured, fallback to the default value
+                               (error read-process-output-max))
+                           (* 1024 1024))
+
+ ;; TODO 2023-06-19 왜 갑자기 클라이언트 프레임 사이즈가 이상하지?!
+ ;; Do force frame size to be a multiple of char size
+ frame-resize-pixelwise t
+
+ ;; ;; Emacsclient does not use full frame size (NIL 필수!)
+ frame-inhibit-implied-resize nil
+
+ ;; Stretch cursor to the glyph width
+ ;; make cursor the width of the character it is under
+ ;; i.e. full width of a TAB
+ x-stretch-cursor t
+ ;; Show trailing whitespaces
+ show-trailing-whitespace t
+ ;; Resize window combinations proportionally
+ window-combination-resize t
+ ;; Enable time in the mode-line
+ ;; display-time-string-forms '((propertize (concat 24-hours ":" minutes)))
+ ;; No ugly button for widgets
+ widget-image-enable nil
+ ;; Show unprettified symbol under cursor (when in `prettify-symbols-mode')
+ ;; prettify-symbols-unprettify-at-point t
+ ;; Make tooltips last a bit longer (default 10s)
+ tooltip-hide-delay 20
+ ;; Use small frames to display tooltips instead of the default OS tooltips
+ use-system-tooltips nil
+
+ ;; ====== Undo ======
+ ;; 10MB (default is 160kB)
+ undo-limit 10000000
+ ;; 50MB (default is 240kB)
+ undo-strong-limit 50000000
+ ;; 150MB (default is 24MB)
+ undo-outer-limit 150000000
+
+ ;; ====== Editing ======
+ ;; Default behavior for `whitespace-cleanup'
+ ;; whitespace-action '(cleanup auto-cleanup)
+ ;; End files with newline
+ require-final-newline t
+
+ ;; Enable Drag-and-Drop of regions
+ mouse-drag-copy-region t
+ mouse-drag-and-drop-region t
+ ;; Enable Drag-and-Drop of regions from Emacs to external programs
+ mouse-drag-and-drop-region-cross-program t
+
+ ;; ====== Scrolling ======
+ ;; Do not adjust window-vscroll to view tall lines
+ auto-window-vscroll nil
+ ;; Keep the point in the same position while scrolling
+ scroll-preserve-screen-position t
+ ;; Do not move cursor to the center when scrolling
+ ;; scroll-conservatively 101
+ ;; Scroll at a margin of one line
+ scroll-margin 1
+ ;; Better scrolling on Emacs29+, specially on a touchpad
+ pixel-scroll-precision-use-momentum t
+
+ column-number-mode t ; default nil
+
+ ;; 복붙만 한다.
+ ;; ;; ====== Compilation ======
+ ;; ;; Scroll compilation buffer
+ ;; compilation-scroll-output t ; 'first-error can be a good option
+ ;; ;; Always kill current compilation process before starting a new one
+ ;; compilation-always-kill t
+ ;; ;; Skip visited messages on compilation motion commands
+ ;; compilation-skip-visited t
+ ;; ;; Keep it readable
+ ;; compilation-window-height 12
+ )
+;; Kill minibuffer when switching by mouse to another window
+;; Taken from: https://trey-jackson.blogspot.com/2010/04/emacs-tip-36-abort-minibuffer-when.html
+;; (add-hook
+;;  'mouse-leave-buffer-hook
+;;  (defun +minibuffer--kill-on-mouse-h ()
+;;    "Kill the minibuffer when switching to window with mouse."
+;;    (when (and (>= (recursion-depth) 1) (active-minibuffer-window))
+;;      (abort-recursive-edit))))
+
+;; Scroll pixel by pixel, in Emacs29+ there is a more pricise mode way to scroll
+(pixel-scroll-precision-mode 1)
+
+;; Files with known long lines
+;; SPC f l to open files literally to disable most text processing
+;; So long mode when Emacs thinks a file would affect performance
+(global-so-long-mode 1)
+
+;; Easily navigate sillycased words
+(global-subword-mode 1)
+
+;; Emacs text rendering optimizations
+;; https://200ok.ch/posts/2020-09-29_comprehensive_guide_on_handling_long_lines_in_emacs.html
+;; Only render text left to right
+(setq-default bidi-paragraph-direction 'left-to-right)
+
+;; 라인 컬럼 보여주는 검은 세로선
+(when (display-graphic-p) ; gui
+  (global-display-fill-column-indicator-mode))
+
+;; http://yummymelon.com/devnull/surprise-and-emacs-defaults.html
+;;텍스트를 선택한 다음 그 위에 입력하면 해당 텍스트가 삭제되어야 합니다.
+;;놀랍게도 기본 Emac 에서는 이 동작이 기본적으로 제공되지 않습니다. 명시적으로
+;;활성화해야 합니다.
+(setq delete-selection-mode t) ; default nil
+;; (setq magit-save-repository-buffers 'dontask) ; default t
+
+;; Show a message when garbage collection happens? Useful while tuning the GC
+;; (setq garbage-collection-messages t)
+;; (add-function :after
+;;               after-focus-change-function
+;;               (lambda () (unless (frame-focus-state)
+;;                            (garbage-collect))))
+
+;; ====== Recent files ======
+;; Increase the maximum number of saved items
+;; Ignore case when searching recentf files
+(setq recentf-case-fold-search t)
+;; Exclude some files from being remembered by recentf
+(setq recentf-max-saved-items 200) ; default 20
+
+;; Show recursion depth in minibuffer (see `enable-recursive-minibuffers')
+(minibuffer-depth-indicate-mode 1)
+
+;; default 120 emacs-29, 60 emacs-28
+(setq kill-ring-max 30) ; keep it small
+
+;; automatically revert buffers for changed files
+(setq auto-revert-interval 5) ; default 5
+
+;; 시간 표시 형식은 영어로 표시해서 호환성을 높입니다.
+(setq system-time-locale "C")
+
+;; Disable .# lock files
+(setq create-lockfiles nil)
+
+;; Shr group: Simple HTML Renderer 를 의미한다. 여기 설정을 바꾸면 faces 를 수정할 수 있음
+(setq shr-use-fonts nil)
+
+;; buffer size 를 표기 합니다.
+(setq size-indication-mode t)
+
 ;;; Editing
 ;; Helping with visual things
 (global-prettify-symbols-mode t)
@@ -109,17 +327,17 @@
   (load custom-file nil t))
 
 ;; setup backups of files
-(setq backup-directory-alist
-      `(("." . ,(expand-file-name ".cache/backups" user-emacs-directory)))
-      make-backup-files t
-      vc-make-backup-files t
-      version-control t
-      delete-old-versions t
-      kept-old-versions 0
-      kept-new-versions 10
-      delete-old-versions t
-      delete-by-moving-to-trash t
-      backup-by-copying t)
+;; (setq backup-directory-alist
+;;       `(("." . ,(expand-file-name ".cache/backups" user-emacs-directory)))
+;;       make-backup-files t
+;;       vc-make-backup-files t
+;;       version-control t
+;;       delete-old-versions t
+;;       kept-old-versions 0
+;;       kept-new-versions 10
+;;       delete-old-versions t
+;;       delete-by-moving-to-trash t
+;;       backup-by-copying t)
 
 ;; setup recovery
 (setq auto-save-list-file-prefix
@@ -136,29 +354,6 @@
 
 ;; Emacs 28 adds better word wrap / line break support for CJK.
 (setq word-wrap-by-category t) ; default nil
-
-;;;; default value
-
-;; default 120 emacs-29, 60 emacs-28
-(setq kill-ring-max 30) ; keep it small
-
-;; automatically revert buffers for changed files
-(setq auto-revert-interval 5) ; default 5
-
-;; 시간 표시 형식은 영어로 표시해서 호환성을 높입니다.
-(setq system-time-locale "C")
-
-;; Disable .# lock files
-(setq create-lockfiles nil)
-
-;; Shr group: Simple HTML Renderer 를 의미한다. 여기 설정을 바꾸면 faces 를 수정할 수 있음
-(setq shr-use-fonts nil)
-
-;; buffer size 를 표기 합니다.
-(setq size-indication-mode t)
-
-;; (global-visual-line-mode +1)
-
 
 ;;;; dired
 
@@ -233,8 +428,7 @@
   (tooltip-mode 1)
   ;; (global-display-fill-column-indicator-mode)
 
-  ;; For my mouse that also has left - right mouse scroll
-  (setq mouse-wheel-tilt-scroll t)
+  (setq mouse-wheel-tilt-scroll nil)
   (setq mouse-wheel-scroll-amount-horizontal 2)
   (setq mouse-wheel-flip-direction nil) ; default nil
   )

@@ -50,7 +50,6 @@
 (defvar my/package-selected-packages
   '(
     ;; nerd-icons nerd-icons-dired nerd-icons-completion kind-icon
-
     dash-functional
     treesit-auto
 
@@ -68,7 +67,6 @@
     neotree
     revert-buffer-all
 
-    ef-themes
     popper
     shackle
 
@@ -113,7 +111,7 @@
     binder
     side-notes
 
-    zk zk-index zk-desktop zk-luhmann
+    ;; zk zk-index zk-desktop zk-luhmann
     ))
 
 (dolist (p my/package-selected-packages)
@@ -152,6 +150,18 @@
 
 (unless (package-installed-p 'term-keys)
   (package-vc-install "https://github.com/junghan0611/term-keys"))
+
+(unless (package-installed-p 'zk)
+  (package-vc-install "https://github.com/localauthor/zk"))
+
+(unless (package-installed-p 'zk-luhmann)
+  (package-vc-install "https://github.com/junghan0611/zk-luhmann"))
+
+(unless (package-installed-p 'link-hint-preview)
+  (package-vc-install "https://github.com/localauthor/link-hint-preview"))
+
+(unless (package-installed-p 'orgabilize)
+  (package-vc-install "https://github.com/akirak/orgabilize.el"))
 
 ;; (unless (package-installed-p 'org-mode-crate)
 ;;   (package-vc-install "https://github.com/junghan0611/org-mode-crate"))
