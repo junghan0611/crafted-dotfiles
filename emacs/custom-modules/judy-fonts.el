@@ -3,34 +3,20 @@
 
 ;;; Code:
 
+(when (display-graphic-p)
+  (set-face-attribute 'default nil :family "Monoplex KR Nerd" :width 'normal :weight 'regular :height 140)
+  (set-fontset-font nil 'hangul (font-spec :family "Monoplex KR Nerd"))
+  ;; (set-face-attribute 'fixed-pitch nil :family "Sarasa Term K" :width 'normal :weight 'regular)
+  ;; (set-face-attribute 'fixed-pitch-serif nil :family "Hahmlet" :width 'normal :weight 'regular)
+  ;; (set-face-attribute 'variable-pitch nil :family "Pretendard Variable"
+  ;;                     :width 'normal :weight 'regular)
 
-;; android 일 때 폰트 설정하라.
-(when *is-android*
-  (message "Loading Android Emacs\n")
-
-  ;; '(default ((t (:inherit nil :extend nil :stipple nil :background "#181a26" :foreground "gray80" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight regular :height 119 :width normal :family "SEC Regular_SamsungKoreanR" :foundry "GOOG")))))
-  (set-face-attribute 'default nil :family "SEC Regular_SamsungKoreanR" :foundry "GOOG" :width 'normal :weight 'regular :height 118)
-  (set-fontset-font nil 'hangul (font-spec :family "SEC Regular_SamsungKoreanR" :foundry "GOOG"))
   (set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil)
   (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend) ; Top
-  )
 
-(unless *is-android*
-  (when (display-graphic-p)
-    (set-face-attribute 'default nil :family "Monoplex KR Nerd" :width 'normal :weight 'regular :height 136)
-    (set-fontset-font nil 'hangul (font-spec :family "Monoplex KR Nerd"))
-    ;; (set-face-attribute 'fixed-pitch nil :family "Sarasa Term K" :width 'normal :weight 'regular)
-    ;; (set-face-attribute 'fixed-pitch-serif nil :family "Hahmlet" :width 'normal :weight 'regular)
-    ;; (set-face-attribute 'variable-pitch nil :family "Pretendard Variable"
-    ;;                     :width 'normal :weight 'regular)
-
-    (set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji") nil)
-    (set-fontset-font t 'emoji (font-spec :family "Noto Emoji") nil 'prepend) ; Top
-
-    (set-fontset-font t 'symbol (font-spec :family "Symbola") nil)
-    (set-fontset-font t 'symbol (font-spec :family "Noto Sans Symbols 2") nil 'prepend)
-    (set-fontset-font t 'symbol (font-spec :family "Noto Sans Symbols") nil 'prepend)
-    )
+  (set-fontset-font t 'symbol (font-spec :family "Symbola") nil)
+  (set-fontset-font t 'symbol (font-spec :family "Noto Sans Symbols 2") nil 'prepend)
+  (set-fontset-font t 'symbol (font-spec :family "Noto Sans Symbols") nil 'prepend)
   )
 
 (defvar after-load-theme-hook nil

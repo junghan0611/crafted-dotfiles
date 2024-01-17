@@ -149,7 +149,7 @@
 (add-to-list 'outli-heading-config '(python-mode "##" ?# t))
 (add-to-list 'outli-heading-config '(python-ts-mode "##" ?# t))
 (add-to-list 'outli-heading-config '(awk-mode "##" ?# t))
-(add-to-list 'outli-heading-config '(awk-ts-mode "##" ?# t))
+;; (add-to-list 'outli-heading-config '(awk-ts-mode "##" ?# t))
 (add-to-list 'outli-heading-config '(elixir-mode "##" ?# t))
 (add-to-list 'outli-heading-config '(elixir-ts-mode "##" ?# t))
 (add-to-list 'outli-heading-config '(sh-mode "##" ?# t))
@@ -221,7 +221,7 @@
 ;;   (keymap-global-set "M-g 0" 'exercism)
 ;;   )
 
-(require 'awk-ts-mode)
+                                        ; (require 'awk-ts-mode)
 (require 'bats-mode)
 
 ;;; apheleia

@@ -15,19 +15,41 @@
 (when (file-exists-p custom-file)
   (load custom-file nil :nomessage))
 
+(customize-set-variable 'package-archive-priorities
+                        '(
+                          ("melpa"  . 99) ;; melpa first
+                          ("gnu"    . 90)   ; prefer GNU packages
+                          ("nongnu" . 80)   ; use non-gnu packages if
+                                        ; not found in GNU elpa
+                          ("stable" . 70)   ; prefer "released" versions
+                                        ; from melpa
+                          ))
+
 ;;; pinned-stable-packages
 
-(defvar my/package-selected-packages-stable
-  '(
-    cider
-    clojure-mode
-    ))
+;; (defvar my/package-selected-packages-melpa
+;;   '(
+;;     promise
+;;     exercism
+;;     ))
 
-(customize-set-variable 'package-pinned-packages
-                        `(,@(mapcar
-                             (lambda (package)
-                               (cons package "stable"))
-                             my/package-selected-packages-stable)))
+;; (customize-set-variable 'package-pinned-packages
+;;                         `(,@(mapcar
+;;                              (lambda (package)
+;;                                (cons package "melpa"))
+;;                              my/package-selected-packages-melpa)))
+
+;; (defvar my/package-selected-packages-stable
+;;   '(
+;;     cider
+;;     clojure-mode
+;;     ))
+
+;; (customize-set-variable 'package-pinned-packages
+;;                         `(,@(mapcar
+;;                              (lambda (package)
+;;                                (cons package "stable"))
+;;                              my/package-selected-packages-stable)))
 
 ;;; Bootstrap Crafted Emacs
 (load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))
@@ -55,7 +77,7 @@
 
     which-key
     pcre2el
-    doom-modeline
+    ;; doom-modeline
     winum
     avy
     string-edit-at-point
@@ -90,9 +112,9 @@
     yaml-mode
     keycast
     apheleia
-    awk-ts-mode
     bats-mode
     xclip
+    ;; awk-ts-mode
     promise
     exercism
 
@@ -110,8 +132,6 @@
     citar-denote
     binder
     side-notes
-
-    zk zk-index zk-desktop zk-luhmann
     ))
 
 (dolist (p my/package-selected-packages)
@@ -148,15 +168,11 @@
 ;; (add-to-list 'package-selected-packages 'arduino-mode)
 ;; (add-to-list 'package-selected-packages 'arduino-cli-mode)
 
+(unless (package-installed-p 'promise) ;; for exercism
+  (package-vc-install "https://github.com/chuntaro/emacs-promise"))
+
 (unless (package-installed-p 'term-keys)
   (package-vc-install "https://github.com/junghan0611/term-keys"))
-
-;; zk packages
-;; (unless (package-installed-p 'zk-luhmann)
-;;   ;; (package-vc-install "https://github.com/localauthor/zk")
-;;   (package-vc-install "https://github.com/junghan0611/zk-luhmann")
-;;   (package-vc-install "https://github.com/localauthor/link-hint-preview")
-;;   )
 
 (unless (package-installed-p 'orgabilize)
   (package-vc-install "https://github.com/akirak/orgabilize.el"))
@@ -166,18 +182,6 @@
 
 (unless (package-installed-p 'outli)
   (package-vc-install "https://github.com/jdtsmith/outli"))
-
-;; (unless (package-installed-p 'outli)
-;;   (package-vc-install "https://github.com/jdtsmith/outli"))
-
-;; emacs-verson > 30
-(when (version< "30" emacs-version)
-  ;; Get some Emacs 29 compatibility functions. Notably missing is
-  ;; `setopt' which the `compat' library deliberately does not
-  ;; provide, so we continue to use the `customize-set-variable'
-  ;; function for setting user options, unless we have a version guard
-  ;; around a block, in which case we use `setopt' instead.
-  (package-vc-install "https://github.com/junghan0611/compat"))
 
 ;;; Install packages
 (package-install-selected-packages :noconfirm)

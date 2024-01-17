@@ -53,9 +53,9 @@
 ;;                 vterm-mode-hook))
 ;;   (add-hook mode #'my/disable-line-numbers))
 
-(add-hook 'org-mode-hook 'display-line-numbers-mode)
+;; (add-hook 'org-mode-hook 'display-line-numbers-mode)
+;; (add-hook 'markdown-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'markdown-mode-hook 'display-line-numbers-mode)
 
 ;;; Time
 
@@ -155,38 +155,38 @@
 ;; Load theme
 (load-theme 'modus-operandi t)
 
-;;; Doom-modeline
+;;; DONT Doom-modeline
 
-(require 'doom-modeline)
-(setq doom-modeline-time nil)
-(setq doom-modeline-time-icon nil)
-(setq doom-modeline-minor-modes nil)
-(setq doom-modeline-battery nil)
-(setq doom-modeline-height 30)
-(setq doom-modeline-bar-width 10) ; = fringe-mode
-(setq Info-breadcrumbs-in-mode-line-mode nil)
+;; (require 'doom-modeline)
+;; (setq doom-modeline-time nil)
+;; (setq doom-modeline-time-icon nil)
+;; (setq doom-modeline-minor-modes nil)
+;; (setq doom-modeline-battery nil)
+;; (setq doom-modeline-height 30)
+;; (setq doom-modeline-bar-width 10) ; = fringe-mode
+;; (setq Info-breadcrumbs-in-mode-line-mode nil)
 
-(setq doom-modeline-window-width-limit (- fill-column 10))
+;; (setq doom-modeline-window-width-limit (- fill-column 10))
 
-(setq doom-modeline-icon nil)
+;; (setq doom-modeline-icon nil)
 
-;; (setq doom-modeline-enable-word-count t)
-(setq doom-modeline-repl t)
-(setq doom-modeline-lsp t)
-(setq doom-modeline-github t)
-(setq doom-modeline-indent-info t)
-(setq doom-modeline-hud t)
+;; ;; (setq doom-modeline-enable-word-count t)
+;; (setq doom-modeline-repl t)
+;; (setq doom-modeline-lsp t)
+;; (setq doom-modeline-github t)
+;; (setq doom-modeline-indent-info t)
+;; (setq doom-modeline-hud t)
 
-;; truncate-upto-project => ~/P/F/emacs/lisp/comint.el
-(setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
+;; ;; truncate-upto-project => ~/P/F/emacs/lisp/comint.el
+;; (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
 
-;; (setq doom-modeline-env-python-executable "python")
-;; (setq doom-modeline-window-width-limit nil)
-;; (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
-(remove-hook 'display-time-mode-hook #'doom-modeline-override-time)
-(remove-hook 'doom-modeline-mode-hook #'doom-modeline-override-time)
+;; ;; (setq doom-modeline-env-python-executable "python")
+;; ;; (setq doom-modeline-window-width-limit nil)
+;; ;; (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
+;; (remove-hook 'display-time-mode-hook #'doom-modeline-override-time)
+;; (remove-hook 'doom-modeline-mode-hook #'doom-modeline-override-time)
 
-(doom-modeline-mode 1)
+;; (doom-modeline-mode 1)
 
 ;;; keycast
 

@@ -41,10 +41,8 @@
                                  user-emacs-directory)))
 
 ;;; Crafted Emacs
-;; (defconst my/crafted-emacs-branch "craftedv2RC1"
-;; (defconst my/crafted-emacs-branch "master"
-  (defconst my/crafted-emacs-branch "ko"
-    "Branch to clone (does not update branch if already cloned).")
+(defconst my/crafted-emacs-branch "master" ;; ko
+  "Branch to clone (does not update branch if already cloned).")
 
 (defvar crafted-emacs-home
   (expand-file-name "crafted-emacs"
@@ -68,11 +66,11 @@
 
 ;;; is-android
 
-(when *is-android*
-  (message "Loading Android Emacs\n")
-  (setenv "PATH" (format "%s:%s" "/data/data/com.termux/files/usr/bin" (getenv "PATH")))
-  (setenv "LD_LIBRARY_PATH" (format "%s:%s" "/data/data/com.termux/files/usr/lib" (getenv "LD_LIBRARY_PATH")))
-  (push "/data/data/com.termux/files/usr/bin" exec-path))
+;; (when *is-android*
+;;   (message "Loading Android Emacs\n")
+;;   (setenv "PATH" (format "%s:%s" "/data/data/com.termux/files/usr/bin" (getenv "PATH")))
+;;   (setenv "LD_LIBRARY_PATH" (format "%s:%s" "/data/data/com.termux/files/usr/lib" (getenv "LD_LIBRARY_PATH")))
+;;   (push "/data/data/com.termux/files/usr/bin" exec-path))
 
 ;;; Load a dark theme to avoid flashing on load
 (if (member 'modus- (custom-available-themes))
