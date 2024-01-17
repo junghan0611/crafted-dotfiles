@@ -277,7 +277,7 @@
 (add-hook 'after-save-hook #'executable-make-buffer-file-executable-if-script-p)
 
 ;; Default editing
-(setq-default tab-width 2)
+(setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 (setq-default display-line-numbers-width-start t)
 ;; (setq-default evil-shift-width tab-width)

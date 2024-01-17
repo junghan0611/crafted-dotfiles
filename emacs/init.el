@@ -54,7 +54,7 @@
 ;;; Bootstrap Crafted Emacs
 (load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))
 
-(setq treesit-extra-load-path `(,(concat user-emacs-directory "tree-sitter/")))
+;; (setq treesit-extra-load-path `(,(concat user-emacs-directory "tree-sitter/")))
 
 ;;; Configure packages to install
 
@@ -118,7 +118,10 @@
     promise
     exercism
 
+    org-mime ;; for org-mode-a8dff4a.el
+    org-contacts
     org-contrib
+    org-pomodoro
     breadcrumb
     side-hustle
 
@@ -127,6 +130,8 @@
     evil-surround
     evil-textobj-tree-sitter
     evil-escape
+
+    combobulate
 
     citar
     citar-denote
@@ -286,9 +291,10 @@
 
 ;; install all language grammars hello
 
-(setq treesit-auto-install 'prompt)
-;; (crafted-ide-configure-tree-sitter)
+(crafted-ide-eglot-auto-ensure-all)
+
 ;; install all language grammars, except protobuf
+(crafted-ide-configure-tree-sitter '(protobuf))
 
 ;;; _
 (provide 'init)

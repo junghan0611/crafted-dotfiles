@@ -141,6 +141,8 @@
 ;; (outli :location (recipe :fetcher github :repo "jdtsmith/outli"))
 (require 'outli)
 
+(customize-set-variable 'outli-blend nil)
+
 ;; (add-to-list 'outli-heading-config '(tex-mode "%%" ?% t))
 (add-to-list 'outli-heading-config '(js2-mode "//" ?\/ t))
 (add-to-list 'outli-heading-config '(js-ts-mode "//" ?\/ t))
@@ -205,10 +207,10 @@
 
 ;;; Web-mode
 (with-eval-after-load 'web-mode
-  (customize-set-variable 'web-mode-markup-indent-offset 2)
-  (customize-set-variable 'web-mode-css-indent-offset 2)
-  (customize-set-variable 'web-mode-code-indent-offset 2)
-  (customize-set-variable 'web-mode-indent-style 2))
+  (customize-set-variable 'web-mode-markup-indent-offset 4)
+  (customize-set-variable 'web-mode-css-indent-offset 4)
+  (customize-set-variable 'web-mode-code-indent-offset 4)
+  (customize-set-variable 'web-mode-indent-style 4))
 
 ;;; Exercism
 
