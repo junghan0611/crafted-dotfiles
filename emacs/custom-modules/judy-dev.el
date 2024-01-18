@@ -164,6 +164,7 @@
 (add-hook 'prog-mode-hook 'outli-mode) ; not markdown-mode!
 
 (with-eval-after-load 'outli
+
   ;; evil normal keybinding is perfer
   ;; (evil-define-key '(normal visual) outli-mode-map (kbd "S-<tab>") `(menu-item "" ,(lambda () (interactive) (outline-cycle -1)) :filter outli--on-heading))
   ;; (evil-define-key '(normal visual) outli-mode-map (kbd "S-TAB") `(menu-item "" ,(lambda () (interactive) (outline-cycle -1)) :filter outli--on-heading))
@@ -248,8 +249,8 @@
 ;;; aggressive-indent
 
 ;; aggressive-indent-mode for all lisp modes
-(when (locate-library "aggressive-indent")
-  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
+;; (when (locate-library "aggressive-indent")
+;;   (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
 
 ;;; _
 (provide 'judy-dev)

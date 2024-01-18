@@ -24,6 +24,8 @@
 ;;  confirm-kill-emacs 'y-or-n-p
 ;;  )
 
+(customize-set-variable 'tab-always-indent t)
+
 (customize-set-variable 'inhibit-splash-screen t)
 (customize-set-variable 'inhibit-startup-message t)
 (customize-set-variable 'use-dialog-box nil)

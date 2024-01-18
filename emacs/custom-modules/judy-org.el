@@ -77,11 +77,7 @@
 ;; (global-set-key (kbd "<f12>") 'org-agenda)
 
 ;; (setq org-directory user-org-directory)
-;; (setq denote-directory (concat org-directory "roam/notes/"))
 ;; ;; (setq org-roam-directory (concat org-directory "roam/"))
-
-;; ;; (require 'org-mode-crate)
-;; ;; (require 'org-mode-crate)
 
 ;; (setq org-tag-alist
 ;;       '(("next" . ?x)
@@ -138,7 +134,6 @@
 
 ;; ;;;  org-agenda
 
-;; (require 'org-agenda)
 
 ;; ;; The following setting is different from the document so that you
 ;; ;; can override the document org-agenda-files by setting your
@@ -153,9 +148,6 @@
 
 ;; (setq diary-file org-agenda-diary-file)
 
-;; (with-eval-after-load 'org-agenda
-;;   (autoload #'evil-org-agenda-set-keys "evil-org-agenda" nil t)
-;;   (evil-org-agenda-set-keys))
 
 ;; (with-eval-after-load 'org-capture
 ;;   (add-hook 'org-capture-mode-hook #'evil-insert-state)
@@ -631,59 +623,25 @@
 ;; Element cache persists across Emacs sessions
 (setq org-element-cache-persistent nil) ; default t
 
-;;; DONT org-roam
+;;; for crafte : Important
 
-;; (require 'org-roam)
-;; (require' emacsql-sqlite-builtin)
-;; (setq org-roam-database-connector 'sqlite-builtin)
+(require 'org-agenda)
+(require 'evil-org)
 
-;; (setq org-roam-index-file (concat org-roam-directory "_index.org"))
+(with-eval-after-load 'org-agenda
+  (autoload #'evil-org-agenda-set-keys "evil-org-agenda" nil t)
+  (evil-org-agenda-set-keys))
 
-;; ;; Navigation in the backlink buffer is intuitive (use RET, C-u RET).
-;; ;; If org-roam-visit-thing does not work for you, this below might:
-;; (define-key org-roam-mode-map [mouse-1] #'org-roam-preview-visit)
+(add-hook 'evil-org-mode-hook #'evil-normalize-keymaps)
+(add-hook 'org-mode-hook 'evil-org-mode)
 
-;; (setq org-roam-file-exclude-regexp '("temp/" "layers/" "reveal-root/" "attach/" "oldseq/" "data/" "archive/" "\\<todo\\.org" "\\<people\\.org" "\\<index\\.org" "\\<OSS\\.org" "\\<habits\\.org"
-;;                                      ))
-;; ;; https://www.orgroam.com/manual.html#Customizing-Node-Caching
-;; (setq org-roam-db-node-include-function
-;;       (lambda ()
-;;         (not (member "ATTACH" (org-get-tags)))))
-
-;; (setq org-roam-db-gc-threshold most-positive-fixnum)
-;; (setq org-roam-v2-ack t)
-
-;; (setq org-roam-node-display-template
-;;       (concat
-;;        (propertize "${directories:10} " 'face 'org-checkbox)
-;;        (propertize "${hierarchy:80} " 'face 'org-roam-title)
-;;        (propertize "${backlinkscount:5} " 'face 'org-formula)
-;;        (propertize "${tags:40}" 'face 'org-tag))
-;;       org-roam-node-annotation-function
-;;       (lambda (node) (marginalia--time (org-roam-node-file-mtime node))))
-
-;; ;; https://github.com/org-roam/org-roam/wiki/User-contributed-Tricks#showing-node-hierarchy
-;; (cl-defmethod org-roam-node-hierarchy ((node org-roam-node))
-;;   (let ((level (org-roam-node-level node)))
-;;     (concat
-;;      (when (> level 0) (concat (org-roam-node-file-title node) " > "))
-;;      (when (> level 1) (concat (string-join (org-roam-node-olp node) " > ") " > "))
-;;      (org-roam-node-title node))))
-
-;; ;; ;; suggested keymap based on example from project documentation
-;; (keymap-global-set "C-c r l" #'org-roam-buffer-toggle)
-;; (keymap-global-set "C-c r f" #'org-roam-node-find)
-;; (keymap-global-set "C-c r g" #'org-roam-graph)
-;; (keymap-global-set "C-c r i" #'org-roam-node-insert)
-;; (keymap-global-set "C-c r c" #'org-roam-capture)
-;; ;; (keymap-global-set "C-c r j" . org-roam-dailies-capture-today)
-
-;; ;; ;; Enable automatic sync of the SQLite database
-;; (org-roam-db-autosync-mode)
 ;;; denote
 
 (require 'denote)
 (require 'denote-org-dblock)
+
+(setq denote-directory (concat org-directory "roam/notes/"))
+
 (setq denote-known-keywords '("emacs" "philosophy" "politics" "economics"))
 (setq denote-infer-keywords t)
 (setq denote-sort-keywords t)

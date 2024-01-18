@@ -157,36 +157,31 @@
 
 ;;; DONT Doom-modeline
 
-;; (require 'doom-modeline)
-;; (setq doom-modeline-time nil)
-;; (setq doom-modeline-time-icon nil)
-;; (setq doom-modeline-minor-modes nil)
-;; (setq doom-modeline-battery nil)
-;; (setq doom-modeline-height 30)
-;; (setq doom-modeline-bar-width 10) ; = fringe-mode
-;; (setq Info-breadcrumbs-in-mode-line-mode nil)
+(require 'doom-modeline)
+(setq doom-modeline-time nil)
+(setq doom-modeline-time-icon nil)
+(setq doom-modeline-minor-modes nil)
+(setq doom-modeline-battery nil)
+(setq doom-modeline-height 30)
+(setq doom-modeline-bar-width 10) ; = fringe-mode
+(setq Info-breadcrumbs-in-mode-line-mode nil)
+(setq doom-modeline-icon nil)
 
-;; (setq doom-modeline-window-width-limit (- fill-column 10))
+;; (setq doom-modeline-enable-word-count t)
+(setq doom-modeline-repl t)
+(setq doom-modeline-lsp t)
+(setq doom-modeline-github t)
+(setq doom-modeline-indent-info t)
+(setq doom-modeline-hud t)
 
-;; (setq doom-modeline-icon nil)
-
-;; ;; (setq doom-modeline-enable-word-count t)
-;; (setq doom-modeline-repl t)
-;; (setq doom-modeline-lsp t)
-;; (setq doom-modeline-github t)
-;; (setq doom-modeline-indent-info t)
-;; (setq doom-modeline-hud t)
-
-;; ;; truncate-upto-project => ~/P/F/emacs/lisp/comint.el
+;; truncate-upto-project => ~/P/F/emacs/lisp/comint.el
 ;; (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
+(setq doom-modeline-buffer-file-name-style 'truncate-upto-root)
 
-;; ;; (setq doom-modeline-env-python-executable "python")
-;; ;; (setq doom-modeline-window-width-limit nil)
-;; ;; (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
-;; (remove-hook 'display-time-mode-hook #'doom-modeline-override-time)
-;; (remove-hook 'doom-modeline-mode-hook #'doom-modeline-override-time)
+(remove-hook 'display-time-mode-hook #'doom-modeline-override-time)
+(remove-hook 'doom-modeline-mode-hook #'doom-modeline-override-time)
 
-;; (doom-modeline-mode 1)
+(doom-modeline-mode +1)
 
 ;;; keycast
 
@@ -194,7 +189,8 @@
 (setq keycast-tab-bar-minimal-width 50)
 (setq keycast-tab-bar-format "%10s%k%c%r")
 
-(when (string= (system-name)"jhnuc")
+;; (when (string= (system-name)"jhnuc")
+(unless *is-termux*
   (add-hook 'after-init-hook 'keycast-tab-bar-mode))
 
 (dolist (input '(self-insert-command

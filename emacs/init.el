@@ -77,7 +77,7 @@
 
     which-key
     pcre2el
-    ;; doom-modeline
+    doom-modeline
     winum
     avy
     string-edit-at-point
@@ -204,10 +204,14 @@
 (require 'crafted-completion-config)
 (require 'crafted-ui-config)
 
-;; X (require 'crafted-evil-config)
+;; (require 'crafted-evil-config) -- replaced core-evil
 (require 'core-evil)
 
 (require 'crafted-ide-config)
+;; (crafted-ide-eglot-auto-ensure-all)
+;; install all language grammars, except protobuf
+(crafted-ide-configure-tree-sitter)
+
 (require 'crafted-lisp-config)
 (require 'crafted-org-config)
 (require 'crafted-writing-config)
@@ -234,7 +238,6 @@
 (require 'judy-keys)
 
 ;; (require 'functions)
-;; (require 'functions-1)
 
 (require 'workspace)
 
@@ -242,9 +245,6 @@
 
 (require 'judy-transparency)
 (judy-transparency-init 94)
-
-
-(message "END")
 
 ;;; corkey bindings
 
@@ -265,36 +265,24 @@
 ;; Automatically pick up keybinding changes
 (corkey/load-and-watch)
 
-;;; Dashboard
+;;; DONT Dashboard
 
 (message "Loading Dashboard...")
-
 (when (= 1 (length (tab-bar-tabs)))
   (tab-bar-new-tab)
   (tab-bar-new-tab)
-  (tab-bar-new-tab)
-  (tab-bar-rename-tab "Org" 1)
-  (tab-bar-rename-tab "Note" 2)
-  (tab-bar-rename-tab "Code" 3)
-  (tab-bar-rename-tab "Emacs" 4)
+  (tab-bar-rename-tab "Note" 1)
+  (tab-bar-rename-tab "Work" 2)
+  (tab-bar-rename-tab "Emacs" 3)
   (tab-bar-select-tab 2)
-  (dired denote-directory)
-  (tab-bar-select-tab 3)
   (dired user-org-directory) ;; per-machine.el
-  (tab-bar-select-tab 4)
+  (tab-bar-select-tab 3)
   (find-file user-init-file)
-  (delete-other-windows)
   (tab-bar-select-tab 1)
-  ;; (delete-other-windows)
-  ;; (org-agenda nil "a")
+  (dired denote-directory)
+  (delete-other-windows)
+  ;; (org-agenda nil " ")
   )
-
-;; install all language grammars hello
-
-(crafted-ide-eglot-auto-ensure-all)
-
-;; install all language grammars, except protobuf
-(crafted-ide-configure-tree-sitter '(protobuf))
 
 ;;; _
 (provide 'init)
