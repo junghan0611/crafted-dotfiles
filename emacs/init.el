@@ -15,29 +15,15 @@
 (when (file-exists-p custom-file)
   (load custom-file nil :nomessage))
 
-(customize-set-variable 'package-archive-priorities
-                        '(
-                          ("melpa"  . 99) ;; melpa first
-                          ("gnu"    . 90)   ; prefer GNU packages
-                          ("nongnu" . 80)   ; use non-gnu packages if
-                                        ; not found in GNU elpa
-                          ("stable" . 70)   ; prefer "released" versions
-                                        ; from melpa
-                          ))
+(customize-set-variable
+ 'package-archive-priorities
+ '(("melpa"  . 99) ;; melpa first
+   ("gnu"    . 90)   ; prefer GNU packages
+   ("nongnu" . 80)   ; use non-gnu packages if not found in GNU elpa
+   ("stable" . 70)   ; prefer "released" versions from melpa
+   ))
 
 ;;; pinned-stable-packages
-
-;; (defvar my/package-selected-packages-melpa
-;;   '(
-;;     promise
-;;     exercism
-;;     ))
-
-;; (customize-set-variable 'package-pinned-packages
-;;                         `(,@(mapcar
-;;                              (lambda (package)
-;;                                (cons package "melpa"))
-;;                              my/package-selected-packages-melpa)))
 
 ;; (defvar my/package-selected-packages-stable
 ;;   '(
@@ -53,8 +39,6 @@
 
 ;;; Bootstrap Crafted Emacs
 (load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))
-
-;; (setq treesit-extra-load-path `(,(concat user-emacs-directory "tree-sitter/")))
 
 ;;; Configure packages to install
 
@@ -115,12 +99,11 @@
     bats-mode
     xclip
     ;; awk-ts-mode
-    promise
-    exercism
 
     org-mime ;; for org-mode-a8dff4a.el
     org-contacts
     org-contrib
+    org-project-capture
     org-pomodoro
     breadcrumb
     side-hustle
@@ -130,8 +113,6 @@
     evil-surround
     evil-textobj-tree-sitter
     evil-escape
-
-    combobulate
 
     citar
     citar-denote
@@ -176,17 +157,20 @@
 (unless (package-installed-p 'promise) ;; for exercism
   (package-vc-install "https://github.com/chuntaro/emacs-promise"))
 
+(unless (package-installed-p 'exercism)
+  (package-vc-install "https://github.com/anonimitoraf/exercism.el"))
+
 (unless (package-installed-p 'term-keys)
   (package-vc-install "https://github.com/junghan0611/term-keys"))
 
 (unless (package-installed-p 'orgabilize)
   (package-vc-install "https://github.com/akirak/orgabilize.el"))
 
-;; (unless (package-installed-p 'org-mode-crate)
-;;   (package-vc-install "https://github.com/junghan0611/org-mode-crate"))
-
 (unless (package-installed-p 'outli)
   (package-vc-install "https://github.com/jdtsmith/outli"))
+
+(unless (package-installed-p 'combobulate)
+  (package-vc-install "https://github.com/mickeynp/combobulate"))
 
 ;;; Install packages
 (package-install-selected-packages :noconfirm)

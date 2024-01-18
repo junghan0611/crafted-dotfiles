@@ -27,6 +27,7 @@
 (setq org-log-file (concat org-workflow-directory "20220101T010100--log__agenda.org"))
 (setq org-user-agenda-diary-file org-log-file)
 
+
 ;;; load org-mode.el
 
 (load-file (concat user-emacs-directory "custom-modules/org-mode-a8dff4a.el"))
@@ -64,95 +65,15 @@
 
 (message "Press `C-c a' to get started with your agenda...")
 
-;; ;;; Code:
+;;; Code:
 
-;; (global-set-key (kbd "C-c l") 'org-store-link)
-;; (global-set-key (kbd "C-c i") 'org-insert-link)
-;; (global-set-key (kbd "C-c a") 'org-agenda)
-;; (global-set-key (kbd "C-c c") 'org-capture)
-;; (global-set-key (kbd "C-c \\") 'org-tags-sparse-tree)
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c i") 'org-insert-link)
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c \\") 'org-tags-sparse-tree)
+(global-set-key (kbd "<f12>") 'org-capture)
 
-;; ;; Agenda does not have a key-binding by default.
-;; ;; Provide one as a starting point.
-;; (global-set-key (kbd "<f12>") 'org-agenda)
-
-;; (setq org-directory user-org-directory)
-;; ;; (setq org-roam-directory (concat org-directory "roam/"))
-
-;; (setq org-tag-alist
-;;       '(("next" . ?x)
-;;         ("notes" . ?n)
-;;         ("important" . ?i)
-;;         ("action_items" . ?a)
-;;         ("joy" . ?j)
-;;         ("waiting" . ?w)))
-
-;; (defvar bh/organization-task-id "eb155a82-92b2-4f25-a3c6-0304591af2f9")
-
-;; ;; Some pretty settings
-;; (setq org-pretty-entities nil
-;;       org-hide-emphasis-markers t
-;;       org-hide-block-startup nil
-;;       org-fontify-quote-and-verse-blocks t
-;;       org-edit-src-content-indentation 0
-;;       org-src-fontify-natively t
-;;       org-src-tab-acts-natively t
-;;       org-src-preserve-indentation t
-;;       org-src-window-setup 'current-window)
-
-;; ;; fast src blocks etc.
-;; ;; (require 'org-tempo)
-
-;; ;; ;; Load babel languages for evaluating blocks
-;; ;; (org-babel-do-load-languages
-;; ;;  'org-babel-load-languages
-;; ;;  '((emacs-lisp . t)
-;; ;;    (C . t)
-;; ;;    (shell . t)
-;; ;;    (latex . t)
-;; ;;    (lisp . t)
-;; ;;    (org . t)
-;; ;;    (clojure . t)
-;; ;;    (R . t)
-;; ;;    (scheme . t)))
-
-;; ;; ;;; org-export
-;; ;; (require 'ox-md)
-;; ;; (require 'ox-beamer)
-;; ;; (require 'ox-texinfo)
-
-;; (setq org-export-coding-system 'utf-8)
-
-;; ;; ;; set up LaTeX export to work with minted package
-;; ;; (setq org-latex-listings 'minted
-;; ;;       org-latex-packages-alist '(("" "minted"))
-;; ;;       org-latex-pdf-process
-;; ;;       '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-;; ;;         "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
-;; (message "3")
-
-;; ;;;  org-agenda
-
-
-;; ;; The following setting is different from the document so that you
-;; ;; can override the document org-agenda-files by setting your
-;; ;; org-agenda-files in the variable org-user-agenda-files
-;; (if (boundp 'org-user-agenda-files)
-;;     (setq org-agenda-files org-user-agenda-files)
-;;   (setq org-agenda-files (quote ("~/org/inbox.org"))))
-
-;; (if (boundp 'org-user-agenda-diary-file)
-;;     (setq org-agenda-diary-file org-user-agenda-diary-file)
-;;   (setq org-agenda-diary-file "~/org/diary.org"))
-
-;; (setq diary-file org-agenda-diary-file)
-
-
-;; (with-eval-after-load 'org-capture
-;;   (add-hook 'org-capture-mode-hook #'evil-insert-state)
-;;   (add-hook 'org-capture-after-finalize-hook #'evil-normal-state)
-;;   )
 
 ;;; paste
 
@@ -750,6 +671,15 @@
 (global-set-key (kbd "M-g b") 'binder-toggle-sidebar)
 (global-set-key (kbd "M-g s") 'side-notes-toggle-notes) ;; M-s n
 (global-set-key (kbd "M-g h") 'side-hustle-toggle)
+
+;;; org-project-capture
+
+(require 'org-project-capture)
+(setq org-project-capture-default-backend (make-instance 'org-project-capture-project-backend))
+(setq org-project-capture-projects-file (file-truename (concat org-workflow-directory "20230101T010100--project.org")))
+(org-project-capture-single-file)
+(push (org-project-capture-project-todo-entry :empty-lines 1)
+      org-capture-templates)
 
 ;;; _
 (provide 'judy-org)

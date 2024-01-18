@@ -249,8 +249,32 @@
 ;;; aggressive-indent
 
 ;; aggressive-indent-mode for all lisp modes
-;; (when (locate-library "aggressive-indent")
-;;   (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
+(when (locate-library "aggressive-indent")
+  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq-local comment-column 0)
+            (define-key emacs-lisp-mode-map (kbd "M-[") 'backward-sexp)
+            (define-key emacs-lisp-mode-map (kbd "M-]") 'forward-sexp)))
+
+;;; python
+
+(setq-default python-indent-offset 4)
+
+;;; combobulate
+;; https://github.com/mickeynp/combobulate
+
+;;  M-x customize-group RET combobulate RET
+(require 'combobulate)
+;; You can customize Combobulate's key prefix here.
+;; Note that you may have to restart Emacs for this to take effect!
+(customize-set-variable 'combobulate-key-prefix "C-c o")
+
+;; You can manually enable Combobulate with `M-x ;; combobulate-mode'.
+;; (dolist (hook '(python-ts-mode js-ts-mode css-ts-mode yaml-ts-mode
+;;                                json-ts-mode typescript-ts-mode tsx-ts-mode))
+;;   (add-hook hook #'combobulate-mode))
 
 ;;; _
 (provide 'judy-dev)

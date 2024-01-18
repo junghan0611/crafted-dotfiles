@@ -72,6 +72,12 @@
     ("i" info-lookup-symbol "info lookup")))
   )
 
+(major-mode-hydra-define python-ts-mode
+  (:title "python-ts-mode" :color pink :separator "=" :quit-key "<escape>")
+  ("Movement"
+   (("o" combobulate "combobulate" :exit t)))
+  )
+
 (major-mode-hydra-define clojure-mode
   (:title "Clojure-mode" :color pink :separator "=" :quit-key "<escape>")
   ("Load"

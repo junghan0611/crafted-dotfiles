@@ -12,7 +12,7 @@
 ;; Standard key bindings
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
+;; (global-set-key "\C-cb" 'org-iswitchb)
 (global-set-key "\C-c " 'org-table-blank-field)
 
 ;; Custom Key Bindings
@@ -42,7 +42,7 @@
 (global-set-key (kbd "<f11>") 'org-clock-goto)
 (global-set-key (kbd "C-<f11>") 'org-clock-in)
 ;; (global-set-key (kbd "C-s-<f12>") 'bh/save-then-publish)
-(global-set-key (kbd "C-c c") 'org-capture)
+;; (global-set-key (kbd "C-c c") 'org-capture)
 
 (defun bh/set-truncate-lines ()
   "Toggle value of truncate-lines and refresh window display."
