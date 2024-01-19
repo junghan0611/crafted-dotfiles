@@ -328,6 +328,8 @@
 (when (file-exists-p custom-file)
   (load custom-file nil t))
 
+(customize-set-variable 'make-backup-files nil)
+
 ;; setup backups of files
 ;; (setq backup-directory-alist
 ;;       `(("." . ,(expand-file-name ".cache/backups" user-emacs-directory)))
@@ -464,6 +466,24 @@
   (term-keys-mode t)
   )
 
+;;; show-paren-mode / electric-pair-mode
+
+;; 기본은 켜져 있다.
+;; (electric-indent-mode -1) ; important!! 이렇게 따로 꺼야 한다.
+
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Matching.html
+;; 괄호 입력 후 내용 입력시 괄호를 강조
+(customize-set-variable 'show-paren-when-point-inside-paren t)
+;; (setq show-paren-when-point-in-periphery t)
+
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Matching.html
+;; 괄호, 구분자(delimiter) 자동 쌍 맞추기
+;; (setq electric-pair-pairs '((?\{ . ?\})
+;;                             (?\( . ?\))
+;;                             (?\[ . ?\])
+;;                             (?\" . ?\")))
+
 ;;; _
+
 (provide 'judy-defaults)
 ;;; judy-defaults.el ends here

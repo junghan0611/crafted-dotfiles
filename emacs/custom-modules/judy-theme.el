@@ -218,7 +218,8 @@
     (display-time-mode t))
   )
 
-(add-hook 'after-init-hook #'my/load-global-mode-string)
+(unless *is-termux*
+  (add-hook 'after-init-hook #'my/load-global-mode-string))
 
 ;;; nerd-icons
 

@@ -25,17 +25,15 @@
 
 ;;; pinned-stable-packages
 
-;; (defvar my/package-selected-packages-stable
-;;   '(
-;;     cider
-;;     clojure-mode
-;;     ))
+(defvar my/package-selected-packages-stable
+  '(
+    cider
+    clojure-mode
+    ))
 
-;; (customize-set-variable 'package-pinned-packages
-;;                         `(,@(mapcar
-;;                              (lambda (package)
-;;                                (cons package "stable"))
-;;                              my/package-selected-packages-stable)))
+(customize-set-variable 'package-pinned-packages
+                        `(,@(mapcar (lambda (package) (cons package "stable"))
+                                    my/package-selected-packages-stable)))
 
 ;;; Bootstrap Crafted Emacs
 (load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))

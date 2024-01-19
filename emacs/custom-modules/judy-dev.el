@@ -14,24 +14,69 @@
 ;; (add-hook 'text-mode-hook #'flymake-aspell-setup)
 
 ;;; eglot (Language Server)
+
 ;; Auto-shutdown eglot (when all associated buffers are killed)
 (customize-set-variable 'eglot-autoshutdown t)
 
 ;;; Parens Helpers
-;; (require 'smartparens-config)
-;; (smartparens-global-mode)
 
 ;; Use puni-mode only for certain major modes.
 (require 'puni)
+
+(let ((map puni-mode-map))
+  ;; ("M-<backspace>" . puni-splice)
+  (define-key map (kbd "M-<delete>") #'puni-splice) ; sp-unwrap-sexp
+  (define-key map (kbd "C-<right>")  #'puni-slurp-forward)
+  (define-key map (kbd "C-<left>") #'puni-barf-forward)
+
+  (define-key map (kbd "C-M-<left>") 'puni-slurp-backward)
+  (define-key map (kbd "C-M-<right>") 'puni-barf-backward)
+
+  ;; ("C-M-<delete>" . puni-splice-killing-forward)
+  ;; ("C-M-<backspace>" . puni-splice-killing-backward)
+
+  (define-key map (kbd "C-M-a") 'beginning-of-defun) ; default
+  (define-key map (kbd "C-M-e") 'end-of-defun)
+
+  ;; ("M-]" . forward-sexp) ; default
+  ;; ("M-[" . backward-sexp)
+
+  ;; ("C-M-f" . puni-forward-sexp)
+  ;; ("C-M-b" . puni-backward-sexp)
+
+  ;; ("C-M-p" . puni-beginning-of-sexp)
+  ;; ("C-M-n" . puni-end-of-sexp)
+
+  ;; ("C-M-t" . transpose-sexp)
+  ;; ("C-M-?" . puni-convolute)
+
+  ;; ("C-M-k" . kill-sexp)
+  ;; ("C-M-K"   . backward-kill-sexp)
+
+  ;; ("M-)" . puni-syntactic-forward-punct)
+  ;; ("M-(" . puni-syntactic-backward-punct)
+
+  ;; ("C-c DEL" . puni-force-delete)
+  ;; ("C-M-z" . puni-squeeze) ; unwrap
+
+  ;; ("C-c {" . puni-wrap-curly)
+  ;; ("C-c (" . puni-wrap-round)
+  ;; ("C-c [" . puni-wrap-square)
+  )
+
 (dolist (hook '(prog-mode-hook sgml-mode-hook nxml-mode-hook tex-mode-hook eval-expression-minibuffer-setup-hook))
   (add-hook hook #'puni-mode))
 
 ;;; diff-hl
+
+(require 'diff-hl)
 ;; Highlight changes since last commit
+(customize-set-variable 'diff-hl-side 'right)
 (add-hook 'prog-mode-hook #'turn-on-diff-hl-mode)
 (add-hook 'vc-dir-mode-hook #'turn-on-diff-hl-mode)
 
 ;;; Autoscroll compile buffer
+
 (customize-set-variable 'compilation-scroll-output t)
 
 ;;; clojure

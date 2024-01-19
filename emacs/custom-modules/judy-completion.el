@@ -6,7 +6,25 @@
 
 ;;; Code:
 
+;;; Vertico on 'top'
+
+(unless *is-termux*
+  (require 'vertico-buffer)
+  (customize-set-variable 'vertico-resize 'grow-only)
+  (customize-set-variable 'vertico-count 20)
+  (customize-set-variable 'vertico-buffer-display-action `(display-buffer-in-side-window
+                                                           (window-height . ,(+ 3 vertico-count))
+                                                           (side . top)))
+  (vertico-mode +1)
+  (vertico-buffer-mode +1)
+  )
+
+(when *is-termux*
+  (customize-set-variable 'vertico-resize nil)
+  (customize-set-variable 'vertico-count 7))
+
 ;;; TODO Consult Vertico
+
 ;; Do not auto-complete, ever
 ;; (customize-set-variable 'corfu-auto nil)
 
@@ -100,6 +118,7 @@
 (define-key vertico-map (kbd "C-r") #'consult-history)
 
 (define-key vertico-map (kbd "C-<backspace>") #'vertico-directory-delete-word)
+
 
 ;;; TODO Corfu/Cape
 

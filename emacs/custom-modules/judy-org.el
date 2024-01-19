@@ -515,7 +515,7 @@
 
 (setq org-datetree-add-timestamp t)
 
-(push `("j" "Journal" entry (file+datetree org-log-file)
+(push `("j" "Journal" entry (file+olp+datetree org-log-file)
         "* %<%H:%M> - %?\n%U\n" :clock-in t :clock-resume t) ; remove %a
       org-capture-templates)
 ;; :empty-lines 1 :prepend t -- 역순 등록
@@ -544,7 +544,8 @@
 ;; Element cache persists across Emacs sessions
 (setq org-element-cache-persistent nil) ; default t
 
-;;; for crafte : Important
+;;; for crafted emacs : Important
+
 
 (require 'org-agenda)
 (require 'evil-org)
@@ -553,6 +554,7 @@
   (autoload #'evil-org-agenda-set-keys "evil-org-agenda" nil t)
   (evil-org-agenda-set-keys))
 
+;; 이게 없으면 org 파일에서 TAB 문제
 (add-hook 'evil-org-mode-hook #'evil-normalize-keymaps)
 (add-hook 'org-mode-hook 'evil-org-mode)
 

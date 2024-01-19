@@ -17,11 +17,9 @@
 (defvar *is-wsl*     (eq (string-match "Linux.*microsoft.*WSL2.*Linux" (shell-command-to-string "uname -a")) 0))
 (defvar *is-unix*    (or *is-linux* (eq system-type 'usg-unix-v) (eq system-type 'berkeley-unix)))
 (defvar *is-android*  (eq system-type 'android))
-(defvar *is-termux*
-  (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
+(defvar *is-termux* (string-suffix-p "Android" (string-trim (shell-command-to-string "uname -a"))))
 
-(when *is-termux*
-  (setq root-path "/data/data/com.termux/files/"))
+(when *is-termux* (setq root-path "/data/data/com.termux/files/"))
 
 ;;; Garbage Collection/Startup Message
 (setq gc-cons-threshold most-positive-fixnum)
