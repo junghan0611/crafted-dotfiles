@@ -51,6 +51,11 @@
   ;; replace "." search with consul-line in Evil normal state
   ;; use default "/" evil search
   ;; (evil-global-set-key 'normal "." 'consult-line)
+  (evil-global-set-key 'insert (kbd "C-k") 'kill-line)
+
+  ;; o :: ace-link-info 이거면 충분하다.
+  ;; [[file:~/spacemacs/doc/DOCUMENTATION.org::*Binding keys][Binding keys]]
+  (define-key evil-insert-state-map (kbd "C-]") 'forward-char)
 
   (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
   (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)

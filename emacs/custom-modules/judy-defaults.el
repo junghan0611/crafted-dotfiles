@@ -468,8 +468,8 @@
 
 ;;; show-paren-mode / electric-pair-mode
 
-;; 기본은 켜져 있다.
-;; (electric-indent-mode -1) ; important!! 이렇게 따로 꺼야 한다.
+;; 기본은 켜져 있다. 꺼야 한다.
+(electric-indent-mode -1) ; important!! 이렇게 따로 꺼야 한다.
 
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Matching.html
 ;; 괄호 입력 후 내용 입력시 괄호를 강조

@@ -13,10 +13,6 @@
 ;;                         '("--sug-mode=normal" "--lang=de"))
 ;; (add-hook 'text-mode-hook #'flymake-aspell-setup)
 
-;;; eglot (Language Server)
-
-;; Auto-shutdown eglot (when all associated buffers are killed)
-(customize-set-variable 'eglot-autoshutdown t)
 
 ;;; Parens Helpers
 
@@ -274,7 +270,7 @@
 ;;   (keymap-global-set "M-g 0" 'exercism)
 ;;   )
 
-                                        ; (require 'awk-ts-mode)
+;; (require 'awk-ts-mode)
 (require 'bats-mode)
 
 ;;; apheleia
@@ -296,7 +292,7 @@
 
 (global-set-key (kbd "M-g =") 'my/format-buffer)
 
-;;; aggressive-indent
+;;; aggressive-indent for emacs-lisp-mode
 
 ;; aggressive-indent-mode for all lisp modes
 (when (locate-library "aggressive-indent")
@@ -308,9 +304,49 @@
             (define-key emacs-lisp-mode-map (kbd "M-[") 'backward-sexp)
             (define-key emacs-lisp-mode-map (kbd "M-]") 'forward-sexp)))
 
-;;; python
+;;; eglot (Language Server)
 
-(setq-default python-indent-offset 4)
+;; Auto-shutdown eglot (when all associated buffers are killed)
+(customize-set-variable 'eglot-autoshutdown t)
+
+(with-eval-after-load 'eglot
+  (define-key eglot-mode-map (kbd "C-c d") 'eldoc) ;; use eldoc-toggle
+  (define-key eglot-mode-map (kbd "C-c a") 'eglot-code-actions)
+  (define-key eglot-mode-map (kbd "C-c r") 'eglot-rename))
+
+;;; eldoc
+
+;; recommand echo area as simple as possible
+(customize-set-variable 'eldoc-echo-area-use-multiline-p nil) ; important
+
+;; eldoc-echo-area-prefer-doc-buffer t ; default nil - aloway show echo-area
+;; ;; eldoc-display-functions '(eldoc-display-in-echo-area eldoc-display-in-buffer)
+;; ;; eldoc-documentation-strategy 'eldoc-documentation-compose)
+
+(defun eldoc-toggle ()
+  "Toggle eldoc's documentation buffer."
+  (interactive)
+  (let ((buffer (eldoc-doc-buffer)))
+    (if-let (w (and buffer (get-buffer-window buffer)))
+        (delete-window w)
+      (eldoc-doc-buffer t))))
+(global-set-key (kbd "C-M-'") 'eldoc-toggle)
+
+;;; python ide
+
+;; use editorconfig
+(customize-set-variable 'python-indent-offset 4)
+
+(define-key python-ts-mode-map (kbd "<f5>") 'recompile)
+(define-key python-ts-mode-map (kbd "<f6>") 'eglot-format)
+
+;; pipenv 로 커버
+
+(require 'highlight-indent-guides)
+(add-hook 'python-ts-mode-hook 'highlight-indent-guides-mode)
+(setq highlight-indent-guides-method 'character)
+;; for dark theme
+(set-face-foreground 'highlight-indent-guides-character-face "DimGray")
 
 ;;; combobulate
 ;; https://github.com/mickeynp/combobulate
@@ -320,6 +356,9 @@
 (require 'html-ts-mode)
 
 (global-set-key (kbd "M-g o") 'consult-outline)
+(global-set-key (kbd "M-g f") 'consult-flymake)
+
+(desktop-save-mode 1)
 
 ;; You can customize Combobulate's key prefix here.
 ;; Note that you may have to restart Emacs for this to take effect!
@@ -349,6 +388,7 @@
                                     html-ts-mode-hook json-ts-mode-hook typescript-ts-mode-hook tsx-ts-mode-hook))
   (add-hook hook #'combobulate-mode))
 
+;;;
 
 ;;; _
 (provide 'judy-dev)

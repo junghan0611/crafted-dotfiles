@@ -63,7 +63,10 @@
   (evil-define-key '(insert) corfu-map (kbd "S-<iso-lefttab>") 'jump-backward-pair)
 
   (evil-define-key '(insert) corfu-map (kbd "C-<return>") 'newline-and-indent) ;; <C-return>
+  (evil-define-key '(insert) corfu-map (kbd "<return>") 'corfu-insert)
+
   (evil-define-key '(insert) prog-mode-map (kbd "C-<return>") 'newline-and-indent) ;; <C-return>
+  (evil-define-key '(insert) prog-mode-map (kbd "<return>") 'newline-and-indent)
 
   ;;     ;; M-g                             corfu-info-location
   ;;     ;; M-h                             corfu-info-documentation

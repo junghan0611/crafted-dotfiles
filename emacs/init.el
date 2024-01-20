@@ -60,6 +60,7 @@
     pcre2el
     doom-modeline
     doom-themes
+    highlight-indent-guides
     winum
     avy
     string-edit-at-point
@@ -90,6 +91,7 @@
     tabspaces
 
     ;; Programming modes
+    pipenv
     web-mode
     yaml-mode
     keycast
