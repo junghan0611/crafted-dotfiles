@@ -299,10 +299,11 @@
   (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
 
 (add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (setq-local comment-column 0)
-            (define-key emacs-lisp-mode-map (kbd "M-[") 'backward-sexp)
-            (define-key emacs-lisp-mode-map (kbd "M-]") 'forward-sexp)))
+    (lambda ()
+        (setq-local comment-column 0)
+        (electric-indent-mode -1)
+        (define-key emacs-lisp-mode-map (kbd "M-[") 'backward-sexp)
+        (define-key emacs-lisp-mode-map (kbd "M-]") 'forward-sexp)))
 
 ;;; eglot (Language Server)
 
@@ -337,16 +338,21 @@
 ;; use editorconfig
 (customize-set-variable 'python-indent-offset 4)
 
-(define-key python-ts-mode-map (kbd "<f5>") 'recompile)
-(define-key python-ts-mode-map (kbd "<f6>") 'eglot-format)
-
 ;; pipenv 로 커버
 
+(add-hook 'python-ts-mode-hook
+    (lambda ()
+        (define-key python-ts-mode-map (kbd "<f5>") 'recompile)
+        (define-key python-ts-mode-map (kbd "<f6>") 'eglot-format)))
+
 (require 'highlight-indent-guides)
+
 (add-hook 'python-ts-mode-hook 'highlight-indent-guides-mode)
+
 (setq highlight-indent-guides-method 'character)
+
 ;; for dark theme
-(set-face-foreground 'highlight-indent-guides-character-face "DimGray")
+(set-face-foreground 'highlight-indent-guides-character-face "#a9a9a9")
 
 ;;; combobulate
 ;; https://github.com/mickeynp/combobulate
@@ -357,8 +363,6 @@
 
 (global-set-key (kbd "M-g o") 'consult-outline)
 (global-set-key (kbd "M-g f") 'consult-flymake)
-
-(desktop-save-mode 1)
 
 ;; You can customize Combobulate's key prefix here.
 ;; Note that you may have to restart Emacs for this to take effect!

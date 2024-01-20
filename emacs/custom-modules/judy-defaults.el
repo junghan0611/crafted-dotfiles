@@ -483,6 +483,10 @@
 ;;                             (?\[ . ?\])
 ;;                             (?\" . ?\")))
 
+;;; desktop-save-mode
+
+(desktop-save-mode 1)
+
 ;;; _
 
 (provide 'judy-defaults)
