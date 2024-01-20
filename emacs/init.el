@@ -53,13 +53,13 @@
 ;; melpa first
 (defvar my/package-selected-packages
   '(
-    ;; nerd-icons nerd-icons-dired nerd-icons-completion kind-icon
     dash-functional
     treesit-auto
 
     which-key
     pcre2el
     doom-modeline
+    doom-themes
     winum
     avy
     string-edit-at-point
@@ -126,11 +126,6 @@
 (unless (member 'modus-vivendi (custom-available-themes))
   (add-to-list 'package-selected-packages 'modus-themes))
 
-;; doom-themes
-;; ct
-;; auto-dim-other-buffers
-;; rainbow-mode
-
 (unless *is-termux*
   (add-to-list 'package-selected-packages 'nerd-icons)
   (add-to-list 'package-selected-packages 'nerd-icons-dired)
@@ -148,9 +143,6 @@
 ;; (add-to-list 'package-selected-packages 'clang-format)
 ;; (add-to-list 'package-selected-packages 'cmake-mode)
 ;; (add-to-list 'package-selected-packages 'rust-mode)
-;; (add-to-list 'package-selected-packages 'scad-mode)
-;; (add-to-list 'package-selected-packages 'arduino-mode)
-;; (add-to-list 'package-selected-packages 'arduino-cli-mode)
 
 (unless (package-installed-p 'promise) ;; for exercism
   (package-vc-install "https://github.com/chuntaro/emacs-promise"))
@@ -169,6 +161,9 @@
 
 (unless (package-installed-p 'combobulate)
   (package-vc-install "https://github.com/mickeynp/combobulate"))
+
+(unless (package-installed-p 'html-ts-mode)
+  (package-vc-install "https://github.com/mickeynp/html-ts-mode"))
 
 ;;; Install packages
 (package-install-selected-packages :noconfirm)
@@ -191,6 +186,7 @@
 
 (require 'crafted-ide-config)
 ;; (crafted-ide-eglot-auto-ensure-all)
+
 ;; install all language grammars, except protobuf
 (crafted-ide-configure-tree-sitter)
 
@@ -264,6 +260,8 @@
   (dired denote-directory)
   (delete-other-windows)
   ;; (org-agenda nil " ")
+  (redraw-display)
+  (tab-bar-select-tab 1)
   )
 
 ;;; _

@@ -64,8 +64,13 @@
   ;; ("C-c [" . puni-wrap-square)
   )
 
-(dolist (hook '(prog-mode-hook sgml-mode-hook nxml-mode-hook tex-mode-hook eval-expression-minibuffer-setup-hook))
+(dolist (hook '(sgml-mode-hook nxml-mode-hook tex-mode-hook eval-expression-minibuffer-setup-hook))
   (add-hook hook #'puni-mode))
+
+(dolist (hook '(emacs-lisp-mode-hook clojure-mode-hook))
+  (add-hook hook #'puni-mode))
+
+(add-hook 'puni-mode-hook 'electric-pair-mode)
 
 ;;; diff-hl
 
@@ -312,14 +317,38 @@
 
 ;;  M-x customize-group RET combobulate RET
 (require 'combobulate)
+(require 'html-ts-mode)
+
+(global-set-key (kbd "M-g o") 'consult-outline)
+
 ;; You can customize Combobulate's key prefix here.
 ;; Note that you may have to restart Emacs for this to take effect!
 (customize-set-variable 'combobulate-key-prefix "C-c o")
 
+(global-set-key (kbd "C-c 0") 'combobulate)
+
+;; Optional, but recommended. Tree-sitter enabled major modes are
+;; distinct from their ordinary counterparts.
+;;
+;; You can remap major modes with `major-mode-remap-alist'. Note
+;; that this does *not* extend to hooks! Make sure you migrate them
+(dolist (mapping '((python-mode . python-ts-mode)
+                   (css-mode . css-ts-mode)
+                   (typescript-mode . tsx-ts-mode)
+                   (json-mode . json-ts-mode)
+                   (js-mode . js-ts-mode)
+                   (css-mode . css-ts-mode)
+                   (html-mode . html-ts-mode)
+                   (yaml-mode . yaml-ts-mode)))
+  (add-to-list 'major-mode-remap-alist mapping))
+
+(remove-hook 'prog-mode-hook #'combobulate-mode)
+
 ;; You can manually enable Combobulate with `M-x ;; combobulate-mode'.
-;; (dolist (hook '(python-ts-mode js-ts-mode css-ts-mode yaml-ts-mode
-;;                                json-ts-mode typescript-ts-mode tsx-ts-mode))
-;;   (add-hook hook #'combobulate-mode))
+(dolist (hook '(python-ts-mode-hook js-ts-mode-hook css-ts-mode-hook yaml-ts-mode-hook
+                                    html-ts-mode-hook json-ts-mode-hook typescript-ts-mode-hook tsx-ts-mode-hook))
+  (add-hook hook #'combobulate-mode))
+
 
 ;;; _
 (provide 'judy-dev)

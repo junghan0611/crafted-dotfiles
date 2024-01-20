@@ -56,6 +56,8 @@
   (setq tab-bar-separator nil) ; important
   )
 
+(setq auto-resize-tab-bars nil) ;; It works
+
 (setq tab-bar-select-tab-modifiers '(control meta))
 (setq tab-bar-new-tab-choice "*scratch*")
 (setq tab-bar-close-button-show nil)
@@ -92,7 +94,9 @@
   (setq tab-bar-show t)
   (tab-bar-history-mode 1)
 
-  (tab-bar-mode 1))
+  (tab-bar-mode 1)
+  (redraw-display)
+  )
 
 ;; explicitly re-enable the cat for the first GUI client
 ;; 순서 상으로 먼저 탭바를 로드하고 테마를 로딩하는게 맞다.
