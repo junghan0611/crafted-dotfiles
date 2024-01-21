@@ -343,15 +343,6 @@
         (define-key python-ts-mode-map (kbd "<f5>") 'recompile)
         (define-key python-ts-mode-map (kbd "<f6>") 'eglot-format)))
 
-(require 'highlight-indent-guides)
-
-(add-hook 'python-ts-mode-hook 'highlight-indent-guides-mode)
-
-(setq highlight-indent-guides-method 'character)
-
-;; for dark theme
-(set-face-foreground 'highlight-indent-guides-character-face "#a9a9a9")
-
 ;;; combobulate
 ;; https://github.com/mickeynp/combobulate
 
@@ -387,10 +378,35 @@
 
 ;; You can manually enable Combobulate with `M-x ;; combobulate-mode'.
 (dolist (hook '(python-ts-mode-hook js-ts-mode-hook css-ts-mode-hook yaml-ts-mode-hook
-                                    html-ts-mode-hook json-ts-mode-hook typescript-ts-mode-hook tsx-ts-mode-hook))
-  (add-hook hook #'combobulate-mode))
+                   html-ts-mode-hook json-ts-mode-hook typescript-ts-mode-hook tsx-ts-mode-hook))
+    (add-hook hook #'combobulate-mode))
 
-;;;
+;;; indent-bars for python-ts-mode
+
+(require 'indent-bars)
+
+(setq indent-bars-treesit-support t
+    indent-bars-no-descend-string t
+    indent-bars-treesit-ignore-blank-lines-types '("module")
+    indent-bars-treesit-wrap '((python argument_list parameters ; for python, as an example
+                                   list list_comprehension
+                                   dictionary dictionary_comprehension
+                                   parenthesized_expression subscript)))
+(add-hook 'python-ts-mode-hook 'indent-bars-mode)
+
+;; simple
+;; (setq
+;;     indent-bars-pattern "."
+;;     indent-bars-width-frac 0.5
+;;     indent-bars-pad-frac 0.25
+;;     indent-bars-color-by-depth nil
+;;     indent-bars-highlight-current-depth '(:face default :blend 0.4))
+;; terminal
+(setq
+    indent-bars-color '(highlight :face-bg t :blend 0.75)
+    indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1)
+    indent-bars-unspecified-fg-color "white"
+    indent-bars-unspecified-bg-color "black")
 
 ;;; _
 (provide 'judy-dev)

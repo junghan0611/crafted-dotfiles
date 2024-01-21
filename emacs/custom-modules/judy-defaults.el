@@ -485,7 +485,7 @@
 
 ;;; desktop-save-mode
 
-(desktop-save-mode 1)
+;; (desktop-save-mode -1)
 
 ;;; _
 

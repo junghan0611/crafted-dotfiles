@@ -38,42 +38,37 @@
 
 ;; Replace Emacs Tabs key bindings with Workspace key bindings
 (with-eval-after-load 'evil-maps
-  ;; 되는 것인가?
-  (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
-  (define-key evil-motion-state-map "gc" 'evilnc-comment-operator)
+    ;; 되는 것인가?
+    (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
+    (define-key evil-motion-state-map "gc" 'evilnc-comment-operator)
 
-  ;; 편집 창 포커스 이동을 간단하게
-  ;; (define-key evil-normal-state-map (kbd "<SPC> <right> ") 'evil-window-right)
-  ;; (define-key evil-normal-state-map (kbd "<SPC> <left> ") 'evil-window-left)
-  ;; (define-key evil-normal-state-map (kbd "<SPC> <up> ") 'evil-window-up)
-  ;; (define-key evil-normal-state-map (kbd "<SPC> <down> ") 'evil-window-down)
+    ;; replace "." search with consul-line in Evil normal state
+    ;; use default "/" evil search
+    ;; (evil-global-set-key 'normal "." 'consult-line)
 
-  ;; replace "." search with consul-line in Evil normal state
-  ;; use default "/" evil search
-  ;; (evil-global-set-key 'normal "." 'consult-line)
-  (evil-global-set-key 'insert (kbd "C-k") 'kill-line)
+    (evil-global-set-key 'insert (kbd "C-k") 'kill-line)
 
-  ;; o :: ace-link-info 이거면 충분하다.
-  ;; [[file:~/spacemacs/doc/DOCUMENTATION.org::*Binding keys][Binding keys]]
-  (define-key evil-insert-state-map (kbd "C-]") 'forward-char)
+    ;; o :: ace-link-info 이거면 충분하다.
+    (define-key evil-insert-state-map (kbd "C-]") 'forward-char)
 
-  (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
-  (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
-  (define-key evil-insert-state-map (kbd "C-a") 'evil-beginning-of-line)
-  (define-key evil-insert-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
-  ;; =C-w= 'insert 'evil-delete-backward-word
-  ;; =C-w= 'visual 'evil-window-map
-  )
+    (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
+    (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
+    (define-key evil-insert-state-map (kbd "C-a") 'evil-beginning-of-line)
+    (define-key evil-insert-state-map (kbd "C-e") 'evil-end-of-line-or-visual-line)
+    ;; =C-w= 'insert 'evil-delete-backward-word
+    ;; =C-w= 'visual 'evil-window-map
+    )
 
 ;;; evil-surround
+
 (defun my/org-additional-surround-pairs ()
-  "Additional surround pairs for evil-surround in org-mode."
-  (push '(?| . ("| " . " |")) evil-surround-pairs-alist))
+    "Additional surround pairs for evil-surround in org-mode."
+    (push '(?| . ("| " . " |")) evil-surround-pairs-alist))
 
 (add-hook 'org-mode-hook #'my/org-additional-surround-pairs)
 (global-evil-surround-mode t)
 
-;;;; winner
+;;; winner
 
 (require 'winner)
 (setq winner-boring-buffers-regexp "\\*.*\\*")
@@ -124,31 +119,21 @@
 
 (global-hungry-delete-mode t)
 
-;;; evil-textobj-tree-sitter
-
-(require 'evil-textobj-tree-sitter)
-;; bind `function.outer`(entire function block) to `f` for use in things like `vaf`, `yaf`
-(define-key evil-outer-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.outer"))
-;; bind `function.inner`(function block without name and args) to `f` for use in things like `vif`, `yif`
-(define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.inner"))
-;; You can also bind multiple items and we will match the first one we can find
-(define-key evil-outer-text-objects-map "a" (evil-textobj-tree-sitter-get-textobj ("conditional.outer" "loop.outer")))
-
 ;;; hangul input method
 
 ;; 입력 모드에서만 한영 변환 가능!
 (defun my/turn-off-input-method (&rest _)
-  (if current-input-method
-      (deactivate-input-method)))
+    (if current-input-method
+        (deactivate-input-method)))
 
 (advice-add 'evil-normal-state :before #'my/turn-off-input-method)
 (mapc (lambda (mode)
-        (let ((keymap (intern (format "evil-%s-state-map" mode))))
-          (define-key (symbol-value keymap) [?\S- ]
-                      #'(lambda () (interactive)
-                          (message
-                           (format "Input method is disabled in %s state." evil-state))))))
-      '(motion normal visual))
+          (let ((keymap (intern (format "evil-%s-state-map" mode))))
+              (define-key (symbol-value keymap) [?\S- ]
+                  #'(lambda () (interactive)
+                        (message
+                            (format "Input method is disabled in %s state." evil-state))))))
+    '(motion normal visual))
 
 ;;; evil-escape
 

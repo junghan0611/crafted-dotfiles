@@ -11,29 +11,29 @@
 (customize-set-variable 'crafted-startup-inhibit-splash t)
 
 (setq custom-file
-      (expand-file-name ".cache/custom-vars.el" user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file nil :nomessage))
+    (expand-file-name ".cache/custom-vars.el" user-emacs-directory))
+;; (when (file-exists-p custom-file)
+;;   (load custom-file nil :nomessage))
 
 (customize-set-variable
- 'package-archive-priorities
- '(("melpa"  . 99) ;; melpa first
-   ("gnu"    . 90)   ; prefer GNU packages
-   ("nongnu" . 80)   ; use non-gnu packages if not found in GNU elpa
-   ("stable" . 70)   ; prefer "released" versions from melpa
-   ))
+    'package-archive-priorities
+    '(("melpa"  . 99) ;; melpa first
+         ("gnu"    . 90)   ; prefer GNU packages
+         ("nongnu" . 80)   ; use non-gnu packages if not found in GNU elpa
+         ("stable" . 70)   ; prefer "released" versions from melpa
+         ))
 
 ;;; pinned-stable-packages
 
 (defvar my/package-selected-packages-stable
-  '(
-    cider
-    clojure-mode
-    ))
+    '(
+         cider
+         clojure-mode
+         ))
 
 (customize-set-variable 'package-pinned-packages
-                        `(,@(mapcar (lambda (package) (cons package "stable"))
-                                    my/package-selected-packages-stable)))
+    `(,@(mapcar (lambda (package) (cons package "stable"))
+            my/package-selected-packages-stable)))
 
 ;;; Bootstrap Crafted Emacs
 (load (expand-file-name "modules/crafted-init-config.el" crafted-emacs-home))
@@ -43,10 +43,11 @@
 (require 'crafted-completion-packages)
 (require 'crafted-evil-packages)
 (require 'crafted-ide-packages)
-;; (require 'crafted-lisp-packages) ; X
 (require 'crafted-org-packages)
 (require 'crafted-ui-packages)
 (require 'crafted-writing-packages)
+
+;; (require 'crafted-lisp-packages) -> Migration
 
 ;;;; Additional packages for custom modules
 
@@ -60,7 +61,6 @@
          pcre2el
          doom-modeline
          doom-themes
-         highlight-indent-guides
          winum
          avy
          string-edit-at-point
@@ -70,13 +70,12 @@
          undo-fu
          tempel
          neotree
-         revert-buffer-all
 
          popper
          shackle
 
          hydra
-         major-mode-hydra ; contains pretty-hydra
+         major-mode-hydra
 
          ;; judy-dev (also writing)
          let-alist
@@ -113,7 +112,7 @@
          hungry-delete
          evil-org
          evil-surround
-         evil-textobj-tree-sitter
+         ;; evil-textobj-tree-sitter
          evil-escape
 
          citar
@@ -128,19 +127,19 @@
 
 ;; judy-theme
 (unless (member 'modus-vivendi (custom-available-themes))
-  (add-to-list 'package-selected-packages 'modus-themes))
+    (add-to-list 'package-selected-packages 'modus-themes))
 
 (unless *is-termux*
-  (add-to-list 'package-selected-packages 'nerd-icons)
-  (add-to-list 'package-selected-packages 'nerd-icons-dired)
-  (add-to-list 'package-selected-packages 'nerd-icons-completion)
-  (add-to-list 'package-selected-packages 'kind-icon)
-  )
+    (add-to-list 'package-selected-packages 'nerd-icons)
+    (add-to-list 'package-selected-packages 'nerd-icons-dired)
+    (add-to-list 'package-selected-packages 'nerd-icons-completion)
+    (add-to-list 'package-selected-packages 'kind-icon)
+    )
 
 ;; judy-term
 (if (member system-type '(windows-nt ms-dos))
     (add-to-list 'package-selected-packages 'powershell)
-  (add-to-list 'package-selected-packages 'vterm))
+    (add-to-list 'package-selected-packages 'vterm))
 
 ;; (add-to-list 'package-selected-packages 'dockerfile-mode)
 ;; (add-to-list 'package-selected-packages 'glsl-mode)
@@ -149,25 +148,28 @@
 ;; (add-to-list 'package-selected-packages 'rust-mode)
 
 (unless (package-installed-p 'promise) ;; for exercism
-  (package-vc-install "https://github.com/chuntaro/emacs-promise"))
+    (package-vc-install "https://github.com/chuntaro/emacs-promise"))
 
 (unless (package-installed-p 'exercism)
-  (package-vc-install "https://github.com/anonimitoraf/exercism.el"))
+    (package-vc-install "https://github.com/anonimitoraf/exercism.el"))
 
 (unless (package-installed-p 'term-keys)
-  (package-vc-install "https://github.com/junghan0611/term-keys"))
+    (package-vc-install "https://github.com/junghan0611/term-keys"))
 
 (unless (package-installed-p 'orgabilize)
-  (package-vc-install "https://github.com/akirak/orgabilize.el"))
+    (package-vc-install "https://github.com/akirak/orgabilize.el"))
 
 (unless (package-installed-p 'outli)
-  (package-vc-install "https://github.com/jdtsmith/outli"))
+    (package-vc-install "https://github.com/jdtsmith/outli"))
+
+(unless (package-installed-p 'indent-bars)
+    (package-vc-install "https://github.com/jdtsmith/indent-bars"))
 
 (unless (package-installed-p 'combobulate)
-  (package-vc-install "https://github.com/mickeynp/combobulate"))
+    (package-vc-install "https://github.com/mickeynp/combobulate"))
 
 (unless (package-installed-p 'html-ts-mode)
-  (package-vc-install "https://github.com/mickeynp/html-ts-mode"))
+    (package-vc-install "https://github.com/mickeynp/html-ts-mode"))
 
 ;;; Install packages
 (package-install-selected-packages :noconfirm)
@@ -202,7 +204,7 @@
 (require 'crafted-speedbar-config)
 
 (customize-set-variable 'crafted-startup-module-list
-                        '(crafted-startup-recentf crafted-startup-projects))
+    '(crafted-startup-recentf crafted-startup-projects))
 
 ;; Custom modules
 (require 'per-machine)
@@ -231,7 +233,7 @@
 ;;; corkey bindings
 
 (dolist (dir '("corkey" "corgi-bindings"))
-  (push (expand-file-name dir user-emacs-directory) load-path))
+    (push (expand-file-name dir user-emacs-directory) load-path))
 
 (message "Loading corgi-bindings...")
 (require 'corgi-bindings)
@@ -251,22 +253,22 @@
 
 (message "Loading Dashboard...")
 (when (= 1 (length (tab-bar-tabs)))
-  (tab-bar-new-tab)
-  (tab-bar-new-tab)
-  (tab-bar-rename-tab "Note" 1)
-  (tab-bar-rename-tab "Work" 2)
-  (tab-bar-rename-tab "Emacs" 3)
-  (tab-bar-select-tab 2)
-  (dired user-org-directory) ;; per-machine.el
-  (tab-bar-select-tab 3)
-  (find-file user-init-file)
-  (tab-bar-select-tab 1)
-  (dired denote-directory)
-  (delete-other-windows)
-  ;; (org-agenda nil " ")
-  (redraw-display)
-  (tab-bar-select-tab 1)
-  )
+    (tab-bar-new-tab)
+    (tab-bar-new-tab)
+    (tab-bar-rename-tab "Note" 1)
+    (tab-bar-rename-tab "Work" 2)
+    (tab-bar-rename-tab "Emacs" 3)
+    (tab-bar-select-tab 2)
+    (dired user-org-directory) ;; per-machine.el
+    (tab-bar-select-tab 3)
+    (find-file user-init-file)
+    (tab-bar-select-tab 1)
+    (dired denote-directory)
+    (delete-other-windows)
+    ;; (org-agenda nil " ")
+    (redraw-display)
+    (tab-bar-select-tab 1)
+    )
 
 ;;; _
 (provide 'init)
