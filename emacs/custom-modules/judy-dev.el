@@ -7,8 +7,6 @@
 
 ;;; TODO Spell checking
 
-;; (add-hook 'after-init #'global-flycheck-mode)
-
 ;; (customize-set-variable 'flymake-aspell-aspell-options
 ;;                         '("--sug-mode=normal" "--lang=de"))
 ;; (add-hook 'text-mode-hook #'flymake-aspell-setup)

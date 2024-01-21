@@ -43,7 +43,7 @@
 (require 'crafted-completion-packages)
 (require 'crafted-evil-packages)
 (require 'crafted-ide-packages)
-(require 'crafted-lisp-packages)
+;; (require 'crafted-lisp-packages) ; X
 (require 'crafted-org-packages)
 (require 'crafted-ui-packages)
 (require 'crafted-writing-packages)
@@ -52,77 +52,79 @@
 
 ;; melpa first
 (defvar my/package-selected-packages
-  '(
-    dash-functional
-    treesit-auto
+    '(
+         dash-functional
+         treesit-auto
 
-    which-key
-    pcre2el
-    doom-modeline
-    doom-themes
-    highlight-indent-guides
-    winum
-    avy
-    string-edit-at-point
-    expand-region
-    goto-last-change
-    imenu-list
-    undo-fu
-    tempel
-    neotree
-    revert-buffer-all
+         which-key
+         pcre2el
+         doom-modeline
+         doom-themes
+         highlight-indent-guides
+         winum
+         avy
+         string-edit-at-point
+         expand-region
+         goto-last-change
+         imenu-list
+         undo-fu
+         tempel
+         neotree
+         revert-buffer-all
 
-    popper
-    shackle
+         popper
+         shackle
 
-    hydra
-    major-mode-hydra ; contains pretty-hydra
+         hydra
+         major-mode-hydra ; contains pretty-hydra
 
-    ;; judy-dev (also writing)
-    let-alist
-    flymake-aspell
+         ;; judy-dev (also writing)
+         let-alist
+         flymake-aspell
 
-    magit
-    transient
-    xref
-    eldoc
-    puni
-    diff-hl
-    tabspaces
+         ;; clj-refactor
 
-    ;; Programming modes
-    pipenv
-    web-mode
-    yaml-mode
-    keycast
-    apheleia
-    bats-mode
-    xclip
-    ;; awk-ts-mode
+         magit
+         transient
+         xref
+         eldoc
+         puni
+         diff-hl
+         tabspaces
 
-    org-mime ;; for org-mode-a8dff4a.el
-    org-contacts
-    org-contrib
-    org-project-capture
-    org-pomodoro
-    breadcrumb
-    side-hustle
+         ;; Programming modes
+         pipenv
+         web-mode
+         yaml-mode
+         keycast
+         apheleia
+         bats-mode
+         xclip
+         ;; awk-ts-mode
 
-    hungry-delete
-    evil-org
-    evil-surround
-    evil-textobj-tree-sitter
-    evil-escape
+         org-mime ;; for org-mode-a8dff4a.el
+         org-contacts
+         org-contrib
+         org-project-capture
+         org-pomodoro
+         breadcrumb
+         side-hustle
 
-    citar
-    citar-denote
-    binder
-    side-notes
-    ))
+         hungry-delete
+         evil-org
+         evil-surround
+         evil-textobj-tree-sitter
+         evil-escape
+
+         citar
+         citar-denote
+         binder
+         side-notes
+         ))
 
 (dolist (p my/package-selected-packages)
-  (unless (package-installed-p p)
-    (add-to-list 'package-selected-packages p 'append)))
+    (unless (package-installed-p p)
+        (add-to-list 'package-selected-packages p 'append)))
 
 ;; judy-theme
 (unless (member 'modus-vivendi (custom-available-themes))
@@ -179,6 +181,7 @@
 (remove-hook 'prog-mode-hook #'flyspell-prog-mode)
 (repeat-mode -1)
 
+
 (require 'crafted-startup-config)
 (require 'crafted-completion-config)
 (require 'crafted-ui-config)
@@ -192,7 +195,6 @@
 ;; install all language grammars, except protobuf
 (crafted-ide-configure-tree-sitter)
 
-(require 'crafted-lisp-config)
 (require 'crafted-org-config)
 (require 'crafted-writing-config)
 (require 'crafted-package-config)
