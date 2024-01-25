@@ -43,14 +43,8 @@
         "Opening" (("o" org-open-at-point "open at point"))
         "Clock" (("P" org-pomodoro "Start pomodoro")
                     ("Q" ash/org-pomodoro-til-meeting "Start pomodoro til half hour"))
-        "Roam" (("-" org-roam-buffer-toggle "Backlinks" :toggle t)
-                   (";" org-roam-node-insert "add link")
-                   ("s" consult-org-roam-headline "search headings")
-                   (":" org-roam-node-insert-immediate "add link immediately")
-                   ("#" org-roam-tag-add "add tag")
-                   ("a" org-roam-alias-add "add alias")
-                   ("r" my/org-roam-node-from-cite "add reference note")
-                   ("R" org-roam-ref-add "add ref"))))
+        )
+    )
 
 (major-mode-hydra-define emacs-lisp-mode
     (:title "Emacs-Lisp-mode" :color blue :separator "=" :quit-key "<escape>")
@@ -297,7 +291,6 @@
     ("C" (find-file "~/sync/markdown/cheat") "cheat")
     ("m" (find-file "~/sync/man") "man")
     ("o" (find-file "~/sync/org/") "org")
-    ("r" (find-file "~/sync/org/roam") "org-roam")
     ("s" (find-file "~/.spacemacs.d/snippets/") "snippets")
 
     ("v" (find-file "~/Videos") "Videos")
@@ -314,11 +307,9 @@
     (:color amaranth :exit t :quit-key "<escape>")
     "Jump to system file"
 
-    ("a" (find-file "~/sync/org/roam/workflow/inbox.org") "inbox.org")
     ("b" (find-file "~/.bashrc") "bashrc")
-    ("p" (find-file "~/sync/org/roam/workflow/project.org") "project.org")
     ("z" (find-file "~/.zshrc") "zshrc")
-    ("u" (find-file "~/sync/org/elfeed/elfeed.org") "elfeed.org")
+    ("u" (find-file "~/sync/elfeed/elfeed.org") "elfeed.org")
     ("q" nil "Quit" :color blue))
 
 (global-set-key (kbd "<f1>") 'hydra-all/body)
