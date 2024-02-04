@@ -32,7 +32,6 @@
 (global-set-key (kbd "M-<iso-lefttab>") (lambda() (interactive) (other-window -1))) ; == M-S-<tab>
 (global-set-key (kbd "M-<backtab>") (lambda() (interactive) (other-window -1))) ; for terminal
 
-(global-set-key (kbd "<f7>") 'neotree-toggle)
 (global-set-key (kbd "<f8>") 'imenu-list-smart-toggle)
 (global-set-key (kbd "M-y") 'consult-yank-pop)
 

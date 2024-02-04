@@ -119,9 +119,7 @@
 (define-key winum-keymap (kbd "M-9") 'winum-select-window-9)
 
 (define-key winum-keymap
-            [remap winum-select-window-9] #'switch-to-minibuffer-window)
-(define-key winum-keymap
-            [remap winum-select-window-7] #'spacemacs/neotree-smart-focus)
+    [remap winum-select-window-9] #'switch-to-minibuffer-window)
 
 (winum-mode 1)
 
@@ -155,121 +153,87 @@
 ;; Load theme
 (load-theme 'modus-operandi t)
 
-;;; Doom-modeline
-
-(require 'doom-modeline)
-(setq doom-modeline-time nil)
-(setq doom-modeline-time-icon nil)
-(setq doom-modeline-minor-modes nil)
-(setq doom-modeline-battery nil)
-(setq doom-modeline-height 30)
-(setq doom-modeline-bar-width 10) ; = fringe-mode
-(setq Info-breadcrumbs-in-mode-line-mode nil)
-(setq doom-modeline-icon nil)
-
-;; (setq doom-modeline-enable-word-count t)
-(setq doom-modeline-repl t)
-(setq doom-modeline-lsp t)
-(setq doom-modeline-github t)
-(setq doom-modeline-indent-info t)
-(setq doom-modeline-hud t)
-
-;; truncate-upto-project => ~/P/F/emacs/lisp/comint.el
-;; (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
-(setq doom-modeline-buffer-file-name-style 'truncate-upto-root)
-
-(remove-hook 'display-time-mode-hook #'doom-modeline-override-time)
-(remove-hook 'doom-modeline-mode-hook #'doom-modeline-override-time)
-
-(doom-modeline-mode +1)
-
-;;; doom-themes
-
-(require 'doom-themes)
-
-;; Global settings (defaults)
-(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-      doom-themes-padded-modeline t
-      doom-themes-enable-italic nil) ; if nil, italics is universally disabled
-;; Enable flashing mode-line on errors
-(doom-themes-visual-bell-config)
-
-;; Enable custom neotree theme (all-the-icons must be installed!)
-(setq doom-themes-neotree-line-spacing 1
-      doom-themes-neotree-project-size 1.0
-      doom-themes-neotree-folder-size 1.0)
-(doom-themes-neotree-config)
-;; or for treemacs users
-(setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
-(doom-themes-treemacs-config)
-;; Corrects (and improves) org-mode's native fontification.
-(doom-themes-org-config)
-
 ;;; keycast
 
 (require 'keycast)
-(setq keycast-tab-bar-minimal-width 50)
+(setq keycast-tab-bar-minimal-width 25)
 (setq keycast-tab-bar-format "%10s%k%c%r")
 
-;; (when (string= (system-name)"jhnuc")
-(unless *is-termux*
-  (add-hook 'after-init-hook 'keycast-tab-bar-mode))
+(when (string= (system-name)"jhnuc")
+    (add-hook 'after-init-hook 'keycast-tab-bar-mode))
 
 (dolist (input '(self-insert-command
-                 org-self-insert-command))
-  (add-to-list 'keycast-substitute-alist `(,input ">>>>>>>>" "Typing.....")))
-;; (add-to-list 'keycast-substitute-alist `(,input "." "Typing…")))
+                    org-self-insert-command))
+    (add-to-list 'keycast-substitute-alist `(,input "." "Typing…")))
 
 (dolist (event '(mouse-event-p
-                 mouse-movement-p
-                 mwheel-scroll
+                    mouse-movement-p
+                    mwheel-scroll
 
-                 ;; 2023-10-02 Added for clojure-dev
-                 lsp-ui-doc--handle-mouse-movement
-                 ignore-preserving-kill-region
-                 ;; mouse-set-region
-                 ;; mouse-set-point
-                 ))
-  (add-to-list 'keycast-substitute-alist `(,event nil)))
+                    ;; 2023-10-02 Added for clojure-dev
+                    lsp-ui-doc--handle-mouse-movement
+                    ignore-preserving-kill-region
+                    ;; mouse-set-region
+                    ;; mouse-set-point
+                    ))
+    (add-to-list 'keycast-substitute-alist `(,event nil)))
+
+;;; vanilla modeline with minions
+
+;; Vanilla Mode line
+(setq mode-line-percent-position '(-3 "%p"))
+(setq mode-line-position-column-line-format '(" %l,%c")) ; Emacs 28
+(setq mode-line-defining-kbd-macro
+    (propertize " Macro" 'face 'mode-line-emphasis))
+(setq mode-line-compact nil)            ; Emacs 28
+
+(setq-default mode-line-format
+    '("%e"
+         mode-line-front-space
+         mode-line-mule-info
+         mode-line-client
+         mode-line-modified
+         mode-line-remote
+         mode-line-frame-identification
+         mode-line-buffer-identification
+
+         "  "
+         mode-line-position
+         mode-line-modes
+         purpose--modeline-string ; 23/01/10--07:10 :: ON
+         "  "
+         (vc-mode vc-mode)
+         "  "
+         ;; Org-mode-line-string
+         mode-line-misc-info
+         mode-line-end-spaces))
+(add-hook 'after-init-hook #'column-number-mode)
+
+(require 'minions)
+(setq minions-mode-line-lighter "Ⓜ")
+(minions-mode 1)
 
 ;;; time
-(defun my/load-global-mode-string ()
-  (interactive)
-  ;; (message "my/load-global-mode-string")
-  (when (not (bound-and-true-p display-time-mode))
-    (display-time-mode t))
-  )
 
-(unless *is-termux*
-  (add-hook 'after-init-hook #'my/load-global-mode-string))
+;; (defun my/load-global-mode-string ()
+;;     (interactive)
+;;     ;; (message "my/load-global-mode-string")
+;;     (when (not (bound-and-true-p display-time-mode))
+;;         (display-time-mode t))
+;;     )
+
+;; (unless *is-termux*
+;;   (add-hook 'after-init-hook #'my/load-global-mode-string))
 
 ;;; nerd-icons
 
 (unless *is-termux*
-  (require 'nerd-icons-dired)
-  (require 'nerd-icons-completion)
+    (require 'nerd-icons-dired)
+    (require 'nerd-icons-completion)
 
-  (when (display-graphic-p) ; gui
-    (add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
-    (nerd-icons-completion-mode))
-  )
-
-;;; neotree
-
-(require 'neotree)
-
-(setq neo-window-width 32
-      neo-create-file-auto-open t
-      neo-banner-message "Press ? for neotree help"
-      neo-show-updir-line nil
-      neo-mode-line-type 'neotree
-      neo-smart-open t
-      neo-dont-be-alone t
-      neo-persist-show nil
-      neo-show-hidden-files t
-      neo-auto-indent-point t
-      neo-modern-sidebar t
-      neo-vc-integration nil)
+    (when (display-graphic-p) ; gui
+        (add-hook 'dired-mode-hook 'nerd-icons-dired-mode)
+        (nerd-icons-completion-mode)))
 
 ;;; shackle
 
@@ -308,7 +272,6 @@
         ;; "^\\*eldoc for"
         "\\*Async-native-compile-log\\*" ; JH
         "^\\*EGLOT" ; JH
-        "^\\*Flycheck.+\\*$" ; JH
         ;; treemacs-mode ; JH
         "*Go-Translate*" ; JH
         "*wordreference*" ; JH
@@ -332,28 +295,28 @@
         ;; "*command-log*" ; JH
         flymake-diagnostics-buffer-mode))
 (add-to-list
- 'popper-reference-buffers
- '(("^\\*Warnings\\*$" . hide)
-   ("^\\*Compile-Log\\*$" . hide)
-   "^\\*Matlab Help.*\\*$"
-   "^\\*Messages\\*$"
-   ("*typst-ts-compilation*" . hide)
-   ("^\\*dash-docs-errors\\*$" . hide)
-   "^\\*evil-registers\\*"
-   "^\\*Apropos"
-   "^Calc:"
-   "^\\*eldoc\\*"
-   "^\\*TeX errors\\*"
-   "^\\*ielm\\*"
-   "^\\*TeX Help\\*"
-   "^\\*ChatGPT\\*"
-   "^\\*gptel-quick\\*"
-   "^\\*define-it:"
-   "\\*Shell Command Output\\*"
-   "\\*marginal notes\\*"
-   ("\\*Async Shell Command\\*" . hide)
-   "\\*Completions\\*"
-   "[Oo]utput\\*"))
+    'popper-reference-buffers
+    '(("^\\*Warnings\\*$" . hide)
+         ("^\\*Compile-Log\\*$" . hide)
+         "^\\*Matlab Help.*\\*$"
+         "^\\*Messages\\*$"
+         ("*typst-ts-compilation*" . hide)
+         ("^\\*dash-docs-errors\\*$" . hide)
+         "^\\*evil-registers\\*"
+         "^\\*Apropos"
+         "^Calc:"
+         "^\\*eldoc\\*"
+         "^\\*TeX errors\\*"
+         "^\\*ielm\\*"
+         "^\\*TeX Help\\*"
+         "^\\*ChatGPT\\*"
+         "^\\*gptel-quick\\*"
+         "^\\*define-it:"
+         "\\*Shell Command Output\\*"
+         "\\*marginal notes\\*"
+         ("\\*Async Shell Command\\*" . hide)
+         "\\*Completions\\*"
+         "[Oo]utput\\*"))
 
 ;; (global-set-key (kbd "C-`") 'popper-toggle)
 ;; (global-set-key (kbd "C-~") 'popper-kill-latest-popup)

@@ -5,12 +5,13 @@
 
 ;;; Code:
 
-;;; TODO Spell checking
+;;; eldoc / package-lint-flymake
 
-;; (customize-set-variable 'flymake-aspell-aspell-options
-;;                         '("--sug-mode=normal" "--lang=de"))
-;; (add-hook 'text-mode-hook #'flymake-aspell-setup)
+;; Global defaults
+(require 'eldoc)
 
+(when (locate-library "package-lint-flymake")
+    (add-hook 'emacs-lisp-mode-hook #'package-lint-flymake-setup))
 
 ;;; Parens Helpers
 
@@ -383,30 +384,30 @@
 
 ;;; indent-bars for python-ts-mode
 
-(require 'indent-bars)
+;; (require 'indent-bars)
 
-(setq indent-bars-treesit-support t
-    indent-bars-no-descend-string t
-    indent-bars-treesit-ignore-blank-lines-types '("module")
-    indent-bars-treesit-wrap '((python argument_list parameters ; for python, as an example
-                                   list list_comprehension
-                                   dictionary dictionary_comprehension
-                                   parenthesized_expression subscript)))
-(add-hook 'python-ts-mode-hook 'indent-bars-mode)
+;; (setq indent-bars-treesit-support t
+;;     indent-bars-no-descend-string t
+;;     indent-bars-treesit-ignore-blank-lines-types '("module")
+;;     indent-bars-treesit-wrap '((python argument_list parameters ; for python, as an example
+;;                                    list list_comprehension
+;;                                    dictionary dictionary_comprehension
+;;                                    parenthesized_expression subscript)))
+;; (add-hook 'python-ts-mode-hook 'indent-bars-mode)
 
-;; simple
+;; ;; simple
+;; ;; (setq
+;; ;;     indent-bars-pattern "."
+;; ;;     indent-bars-width-frac 0.5
+;; ;;     indent-bars-pad-frac 0.25
+;; ;;     indent-bars-color-by-depth nil
+;; ;;     indent-bars-highlight-current-depth '(:face default :blend 0.4))
+;; ;; terminal
 ;; (setq
-;;     indent-bars-pattern "."
-;;     indent-bars-width-frac 0.5
-;;     indent-bars-pad-frac 0.25
-;;     indent-bars-color-by-depth nil
-;;     indent-bars-highlight-current-depth '(:face default :blend 0.4))
-;; terminal
-(setq
-    indent-bars-color '(highlight :face-bg t :blend 0.75)
-    indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1)
-    indent-bars-unspecified-fg-color "white"
-    indent-bars-unspecified-bg-color "black")
+;;     indent-bars-color '(highlight :face-bg t :blend 0.75)
+;;     indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1)
+;;     indent-bars-unspecified-fg-color "white"
+;;     indent-bars-unspecified-bg-color "black")
 
 ;;; _
 (provide 'judy-dev)

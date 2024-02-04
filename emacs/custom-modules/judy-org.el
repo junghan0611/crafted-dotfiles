@@ -8,21 +8,13 @@
 
 (setq org-crypt-key "B5ADD9F47612A9DB") ; junghanacs
 
-(setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar"
-    org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
-
-;; sudo apt-get install ditaa
-(setq org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
-
 ;;; whhone
 
 ;;;; Miscellaneous
 
 ;; Use year/month/day
 (setq calendar-date-style 'iso)
-
 (xterm-mouse-mode +1)
-
 ;; Remember and restore the last cursor location of opened files
 (save-place-mode 1)
 
@@ -34,12 +26,10 @@
 
 (message "`org-directory' has been set to: %s" org-directory)
 
-
 ;;; paste
 
 ;;;;; ddd
 (setq org-enforce-todo-dependencies t)
-
 
 (setq org-cycle-separator-lines 0)
 
@@ -753,12 +743,10 @@
 ;; buffer-global category, and :path property containing file path for file Org buffers.
 
 (setq org-element-use-cache nil) ; default t
-
 ;; Element cache persists across Emacs sessions
 (setq org-element-cache-persistent nil) ; default t
 
-;;; for crafted emacs : Important
-
+;;; for crafted emacs : IMPORTANT
 
 (require 'org-agenda)
 (require 'evil-org)
@@ -819,7 +807,7 @@
 ;; Denote DOES NOT define any key bindings.  This is for the user to
 ;; decide.  For example:
 (define-prefix-command 'denote-map)
-(define-key global-map (kbd "C-c n") 'denote-map)
+(define-key global-map (kbd "C-c d") 'denote-map)
 (let ((map denote-map))
     ;; (define-key map (kbd "n") #'denote)
     (define-key map (kbd "t") #'denote-type)
@@ -877,15 +865,7 @@
 
 (require 'side-notes)
 (add-hook 'side-notes-hook #'visual-line-mode) ; Good
-
-(require 'binder)
-(require 'binder-tutorial)
-
-(require 'side-hustle)
-
-(global-set-key (kbd "M-g b") 'binder-toggle-sidebar)
 (global-set-key (kbd "M-g s") 'side-notes-toggle-notes) ;; M-s n
-(global-set-key (kbd "M-g h") 'side-hustle-toggle)
 
 ;;; _
 (provide 'judy-org)

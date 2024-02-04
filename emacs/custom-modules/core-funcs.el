@@ -672,14 +672,14 @@ Will create one if it doesn't exist."
     (find-file (corgi/-locate-file 'user-keys))))
 
 (defun corgi/open-user-signals-file ()
-  "Open the user signal file in the emacs user directory
+    "Open the user signal file in the emacs user directory
 Will create one if it doesn't exist."
-  (interactive)
-  (let ((signals-file (corgi/-locate-file 'user-signals)))
-    (when (not signals-file)
-      (copy-file (corgi/-locate-file 'user-signals-template)
-                 (expand-file-name "user-signals.el" user-emacs-directory)))
-    (find-file (corgi/-locate-file 'user-signals))))
+    (interactive)
+    (let ((signals-file (corgi/-locate-file 'user-signals)))
+        (when (not signals-file)
+            (copy-file (corgi/-locate-file 'user-signals-template)
+                (expand-file-name "user-signals.el" user-emacs-directory)))
+        (find-file (corgi/-locate-file 'user-signals))))
 
 ;; Taking this out, see explanation in corgi-keys.el
 ;;
@@ -691,17 +691,6 @@ Will create one if it doesn't exist."
 ;;     (when (commandp cmd)
 ;;       (call-interactively cmd))))
 
-;;; tools
-
-(defun spacemacs/neotree-smart-focus ()
-  "Focus the `neotree' buffer, creating as necessary.
-If the imenu-list buffer is displayed in any window, focus it, otherwise create and focus.
-Note that all the windows in every frame searched, even invisible ones, not
-only those in the selected frame."
-  (interactive)
-  (if (get-buffer-window neo-buffer-name t)
-      (neotree-show)
-    (neotree-toggle)))
 
 (provide 'core-funcs)
 ;;; embark

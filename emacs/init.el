@@ -27,8 +27,7 @@
 
 (defvar my/package-selected-packages-stable
     '(
-         cider
-         clojure-mode
+         async
          ))
 
 (customize-set-variable 'package-pinned-packages
@@ -47,20 +46,25 @@
 (require 'crafted-ui-packages)
 (require 'crafted-writing-packages)
 
-;; (require 'crafted-lisp-packages) -> Migration
+;; (require 'crafted-lisp-packages) -> [X]
 
 ;;;; Additional packages for custom modules
+
+
 
 ;; melpa first
 (defvar my/package-selected-packages
     '(
+         aggressive-indent
+         package-lint-flymake
+
          dash-functional
          treesit-auto
 
          which-key
          pcre2el
-         doom-modeline
-         doom-themes
+         minions
+
          winum
          avy
          string-edit-at-point
@@ -69,7 +73,6 @@
          imenu-list
          undo-fu
          tempel
-         neotree
 
          popper
          shackle
@@ -77,14 +80,8 @@
          hydra
          major-mode-hydra
 
-         ;; judy-dev (also writing)
-         let-alist
-         flymake-aspell
-
-         ;; clj-refactor
-
          magit
-         transient
+         transient ; melpa
          xref
          eldoc
          puni
@@ -99,25 +96,20 @@
          apheleia
          bats-mode
          xclip
-         ;; awk-ts-mode
 
-         org-mime ;; for org-mode-a8dff4a.el
          org-contacts
          org-contrib
          org-project-capture
          org-pomodoro
-         breadcrumb
-         side-hustle
 
          hungry-delete
          evil-org
          evil-surround
-         ;; evil-textobj-tree-sitter
+         evil-textobj-tree-sitter
          evil-escape
 
          citar
          citar-denote
-         binder
          side-notes
          ))
 
@@ -162,14 +154,14 @@
 (unless (package-installed-p 'outli)
     (package-vc-install "https://github.com/jdtsmith/outli"))
 
-(unless (package-installed-p 'indent-bars)
-    (package-vc-install "https://github.com/jdtsmith/indent-bars"))
-
 (unless (package-installed-p 'combobulate)
     (package-vc-install "https://github.com/mickeynp/combobulate"))
 
 (unless (package-installed-p 'html-ts-mode)
     (package-vc-install "https://github.com/mickeynp/html-ts-mode"))
+
+;; (unless (package-installed-p 'indent-bars)
+;;     (package-vc-install "https://github.com/jdtsmith/indent-bars"))
 
 ;;; Install packages
 (package-install-selected-packages :noconfirm)
