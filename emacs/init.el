@@ -54,64 +54,65 @@
 
 ;; melpa first
 (defvar my/package-selected-packages
-    '(
-         aggressive-indent
-         package-lint-flymake
+  '(
+    aggressive-indent
+    package-lint-flymake
 
-         dash-functional
-         treesit-auto
+    dash-functional
+    treesit-auto
 
-         which-key
-         pcre2el
-         minions
+    which-key
+    pcre2el
+    minions
 
-         winum
-         avy
-         string-edit-at-point
-         expand-region
-         goto-last-change
-         imenu-list
-         undo-fu
-         tempel
+    winum
+    avy
+    string-edit-at-point
+    expand-region
+    goto-last-change
+    imenu-list
+    undo-fu
+    tempel
 
-         popper
-         shackle
+    popper
+    shackle
 
-         hydra
-         major-mode-hydra
+    hydra
+    pretty-hydra
+    major-mode-hydra
 
-         magit
-         transient ; melpa
-         xref
-         eldoc
-         puni
-         diff-hl
-         tabspaces
+    magit
+    transient ; melpa
+    xref
+    eldoc
+    puni
+    diff-hl
+    tabspaces
 
-         ;; Programming modes
-         pipenv
-         web-mode
-         yaml-mode
-         keycast
-         apheleia
-         bats-mode
-         xclip
+    ;; Programming modes
+    pipenv
+    web-mode
+    yaml-mode
+    keycast
+    apheleia
+    bats-mode
+    xclip
 
-         org-contacts
-         org-contrib
-         org-project-capture
-         org-pomodoro
+    org-contacts
+    org-contrib
+    org-project-capture
+    org-pomodoro
 
-         hungry-delete
-         evil-org
-         evil-surround
-         evil-textobj-tree-sitter
-         evil-escape
+    hungry-delete
+    evil-org
+    evil-surround
+    evil-textobj-tree-sitter
+    evil-escape
 
-         citar
-         citar-denote
-         side-notes
-         ))
+    citar
+    citar-denote
+    side-notes
+    ))
 
 (dolist (p my/package-selected-packages)
     (unless (package-installed-p p)
@@ -245,22 +246,26 @@
 
 (message "Loading Dashboard...")
 (when (= 1 (length (tab-bar-tabs)))
-    (tab-bar-new-tab)
-    (tab-bar-new-tab)
-    (tab-bar-rename-tab "Note" 1)
-    (tab-bar-rename-tab "Work" 2)
-    (tab-bar-rename-tab "Emacs" 3)
-    (tab-bar-select-tab 2)
-    (dired user-org-directory) ;; per-machine.el
-    (tab-bar-select-tab 3)
-    (find-file user-init-file)
-    (tab-bar-select-tab 1)
-    (dired denote-directory)
-    (delete-other-windows)
-    ;; (org-agenda nil " ")
-    (redraw-display)
-    (tab-bar-select-tab 1)
-    )
+  (tab-bar-new-tab)
+  (tab-bar-new-tab)
+  (tab-bar-rename-tab "Note" 1)
+  (tab-bar-rename-tab "Work" 2)
+  (tab-bar-rename-tab "Emacs" 3)
+  (tab-bar-select-tab 2)
+  (dired user-org-directory) ;; per-machine.el
+  (tab-bar-select-tab 3)
+  (find-file user-init-file)
+  (tab-bar-select-tab 1)
+  (dired denote-directory)
+  (delete-other-windows)
+  ;; (org-agenda nil " ")
+  (redraw-display)
+  (tab-bar-select-tab 1)
+  )
+
+;;; load hydra-keys
+
+(load-file (concat (file-name-as-directory user-emacs-directory) "hydrakeys.el"))
 
 ;;; _
 (provide 'init)
