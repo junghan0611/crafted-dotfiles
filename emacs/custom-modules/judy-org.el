@@ -762,22 +762,59 @@
 ;;; denote
 
 (require 'denote)
-;; (require 'denote-org-extras)
+(require 'denote-silo-extras)
+;; (require 'denote-journal-extras)
+(require 'denote-org-extras)
 
 (setq denote-directory org-directory)
-
-(setq denote-modules '(project xref ffap)) ; Enable integration with Emacs modules
-(setq denote-prompts '(subdirectory title keywords)) ; These are the minimum viable prompts for notes
+(setq denote-sort-components '(signature title keywords identifier))
 (setq denote-known-keywords '("emacs" "philosophy" "politics" "economics"))
 (setq denote-infer-keywords t)
-(setq denote-sort-keywords t)
+(setq denote-backlinks-show-context t)
+(setq denote-excluded-directories-regexp "configs")
+(setq denote-link-find-file-history t)
+
+(setq denote-org-front-matter ":PROPERTIES:
+:ID: %4$s
+:CREATED: %2$s
+:END:
+#+title:      %1$s
+#+filetags:   %3$s
+#+date:       %2$s
+#+identifier: %4$s
+#+category: None
+# #+glossary_sources: global
+\n")
+
+(setq denote-silo-extras-directories (list (expand-file-name denote-directory)))
+
+;; More functionality
+(setq denote-org-store-link-to-heading t ; default t
+    ;; denote-rename-confirmations nil
+    ;; denote-save-buffers t ; default nil
+    )
+
+(setq denote-dired-directories-include-subdirectories t
+    denote-dired-directories denote-silo-extras-directories)
+
+(add-hook 'find-file-hook #'denote-link-buttonize-buffer)
+
+;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
+(denote-rename-buffer-mode 1)
+
+;; denote-link-backlinks buffer
+(setq denote-link-backlinks-display-buffer-action
+    '((display-buffer-reuse-window
+          display-buffer-in-side-window)
+         (side . right)
+         (slot . 99)
+         (window-width . 0.3)
+         (dedicated . t)
+         (preserve-size . (t . t))))
 
 ;; By default, we do not show the context of links.  We just display
 ;; file names.  This provides a more informative view.
 (setq denote-backlinks-show-context t)
-
-;; Pick dates, where relevant, with Org's advanced interface:
-(setq denote-date-prompt-use-org-read-date nil)
 
 ;; If you use Markdown or plain text files (Org renders links as buttons
 ;; right away)
@@ -793,16 +830,10 @@
 ;;             ))
 
 (setq denote-dired-directories
-      (list denote-directory
-            (concat denote-directory "excerpts/")))
+    (list denote-directory
+        (concat denote-directory "excerpts/")))
 
 (add-hook 'dired-mode-hook #'denote-dired-mode)
-
-;; OR if only want it in `denote-dired-directories':
-;; (add-hook 'dired-mode-hook #'denote-dired-mode-in-directories)
-
-;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
-(denote-rename-buffer-mode 1)
 
 ;; Denote DOES NOT define any key bindings.  This is for the user to
 ;; decide.  For example:
@@ -855,11 +886,76 @@
 
 ;; https://emacs.stackexchange.com/questions/39434/evil-dont-yank-with-only-whitespace-to-register/53536#53536
 (with-eval-after-load 'evil-org
-  (define-key evil-normal-state-map "x" 'delete-forward-char)
-  (define-key evil-normal-state-map "X" 'delete-backward-char)
-  (evil-define-key 'normal 'evil-org-mode "x" 'delete-forward-char)
-  (evil-define-key 'normal 'evil-org-mode "X" 'delete-backward-char)
-  )
+    (define-key evil-normal-state-map "x" 'delete-forward-char)
+    (define-key evil-normal-state-map "X" 'delete-backward-char)
+    (evil-define-key 'normal 'evil-org-mode "x" 'delete-forward-char)
+    (evil-define-key 'normal 'evil-org-mode "X" 'delete-backward-char)
+    )
+
+;;; dddo
+
+;;; denote journal : gjg
+
+;;;; denote journal
+;; Use a =journals/= subdirectory to integrate nicely with Logseq
+(require 'denote-journal-extras)
+(fmakunbound 'denote-journal-extras-new-entry) ;; delete
+
+;; (setq denote-journal-extras-keyword "") ; default journal
+(setq denote-journal-extras-title-format "%Y-%m-%d")
+
+;; Denote templates
+;; (add-to-list 'denote-templates '(journal . "* Thoughts\n\n* Tasks (require a category)\n" ))
+
+;; Here's a function for daily journal capture - compatible-ish with Logseq
+(defun gjg/denote-journal ()
+    "Create an entry tagged 'journal' with the date as its title.
+      If an entry for today is already present, visit that file.
+      If there are more than one files that match, present a choice."
+    ;; (directory-files (concat denote-directory "/journals") nil "^[0-9T]+--2022-10-27.+org$")
+    (interactive)
+    (let* ((dt (decode-time))
+              (today (format "%d-%02d-%02d" (nth 5 dt) (nth 4 dt) (nth 3 dt)))
+              (jfileregex (concat "^[0-9T]+--" today ".+org$"))
+              (jfiles (directory-files (concat denote-directory "journal") t jfileregex)))
+        (cond
+            ((= 1 (length jfiles))
+                (find-file (car jfiles)))
+            ((> (length jfiles) 1)
+                (find-file (completing-read "Journal file (more than 1 found for today: " jfiles)))
+            (t
+                (denote
+                    (format-time-string "%Y-%m-%d")
+                    '("journal") ; multiple keywords are a list of strings: '("one" "two")
+                    nil          ; default Org file type
+                    (concat denote-directory "journal")
+                    nil          ; date - default to current-time
+                    'journal
+                    )))
+        (save-buffer) ;; gotta save immediately to avoid creating duplicate dailies
+        ))
+
+;;;; TODO deregister the ':denote' link type
+
+;; 'id' 를 사용해야 org-roam-buffer 가 유용하다.
+
+;; I prefer to not make Denote itself a dependency - just use native Org Mode link types
+;; such as =id= and =file=
+
+;; 저는 Denote 자체를 종속성으로 만들지 않고 =id= 및 =file=과 같은 기본 조직 모드
+;; 링크 유형을 사용하는 것을 선호합니다
+
+(setq org-link-parameters
+    (delq (assoc "denote" org-link-parameters) org-link-parameters))
+
+;; change to denote to default id
+(setq denote-org-link-format "[[id:%s][%s]]")
+(setq denote-id-only-link-format "[[id:%s]]")
+(setq denote-id-only-link-in-context-regexp
+    "\\[\\[id:\\(?1:\\([0-9]\\{8\\}\\)\\(T[0-9]\\{6\\}\\)\\)]]")
+(setq denote-md-link-format "[%2$s](id:%1$s)"
+    denote-md-link-in-context-regexp
+    "\\[.*?](id:\\(?1:\\([0-9]\\{8\\}\\)\\(T[0-9]\\{6\\}\\)\\))")
 
 ;;; binder side-notes
 

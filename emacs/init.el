@@ -246,25 +246,26 @@
 
 (message "Loading Dashboard...")
 (when (= 1 (length (tab-bar-tabs)))
-  (tab-bar-new-tab)
-  (tab-bar-new-tab)
-  (tab-bar-rename-tab "Note" 1)
-  (tab-bar-rename-tab "Work" 2)
-  (tab-bar-rename-tab "Emacs" 3)
-  (tab-bar-select-tab 2)
-  (dired user-org-directory) ;; per-machine.el
-  (tab-bar-select-tab 3)
-  (find-file user-init-file)
-  (tab-bar-select-tab 1)
-  (dired denote-directory)
-  (delete-other-windows)
-  ;; (org-agenda nil " ")
-  (redraw-display)
-  (tab-bar-select-tab 1)
-  )
+    (tab-bar-new-tab)
+    (tab-bar-new-tab)
+    (tab-bar-rename-tab "Note" 1)
+    (tab-bar-rename-tab "Work" 2)
+    (tab-bar-rename-tab "Emacs" 3)
+    (tab-bar-select-tab 2)
+    (dired user-org-directory) ;; per-machine.el
+    (tab-bar-select-tab 3)
+    (find-file user-init-file)
+    (tab-bar-select-tab 1)
+    (dired denote-directory)
+    (delete-other-windows)
+    ;; (org-agenda nil " ")
+    (redraw-display)
+    (tab-bar-select-tab 1)
+    )
 
 ;;; load hydra-keys
 
+(load-file (concat (file-name-as-directory user-emacs-directory) "denote-funcs.el"))
 (load-file (concat (file-name-as-directory user-emacs-directory) "hydrakeys.el"))
 
 ;;; _
